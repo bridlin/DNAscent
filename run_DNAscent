@@ -23,7 +23,7 @@ output_dir=DNAscent_$analysis_name
 
 echo "output_dir = $output_dir"
 echo "analysis name = $analysis_name"
-echo "pod5 input = $pod5"
+echo "pod5 input = $pod5_dir"
 
 
 
