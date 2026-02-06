@@ -12,13 +12,13 @@
 
 
 
-module load dorado/1.2.0
-module load samtools/1.21
-module load apptainer/1.3.6
-# module load singularity
+# module load dorado/1.2.0
+# module load samtools/1.21
+# module load apptainer/1.3.6
+# # module load singularity
 
 
-source scripts/DNAscent/config.txt
+# source scripts/DNAscent/config.txt
 
 
 

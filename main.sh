@@ -16,7 +16,8 @@ module load samtools/1.21
 module load apptainer/1.3.6
 
 # Source config
-source "$(dirname "$0")/config.txt"
+source scripts/DNAscent/config.txt
+#source "$(dirname "$0")/config.txt"
 # Export so child sbatch jobs can reuse variables
 export analysis_name pod5_dir reference kit_name model device \
        container_sif dnascent_index_dir threads_align threads_detect \

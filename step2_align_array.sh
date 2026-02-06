@@ -1,33 +1,3 @@
-# =======================
-# ======= ALIGN =========
-# =======================
-
-# Align each demultiplexed BAM to the reference. You can pass extra minimap2 flags via --mm2-opts.
-# Ref: dorado aligner and mm2 options. [3](https://software-docs.nanoporetech.com/dorado/latest/basecaller/alignment/)
-echo "Aligning per-barcode BAMs..."
-
-
-for bam in "$output_dir/demux"/*.bam; do
-    [ -e "$bam" ] || { echo "No demuxed BAMs found."; break; }
-    bname="$(basename "$bam" .bam)"
-    aligned_bam="$output_dir/aligned/${bname}.bam"
-
-    dorado aligner "$reference" "$bam" \
-      > "$aligned_bam" 2> "$output_dir/logs/${bname}_align.log"
-
-  
-    sorted_bam="$output_dir/aligned/${bname}.sorted.bam"
-        samtools sort -@ "$threads" -o "$sorted_bam" "$aligned_bam"
-        samtools index -@ "$threads" "$sorted_bam"
-    rm -f "$aligned_bam"
-    
-    echo "Aligned: $bname"
-; done
-
-
-
-
-
 #!/usr/bin/env bash
 #SBATCH --job-name=align_array
 #SBATCH --array=1-$(wc -l < analyses/DNAscent_${analysis_name}/demux_list.txt)%20
