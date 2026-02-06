@@ -19,12 +19,12 @@ module load singularity
 
 source scripts/DNAscent/config.txt
 
-output_dir=DNAscent_$anlysis_name
+output_dir=DNAscent_$analysis_name
 
-
-echo "analysis name = $anlysis_name"
+echo "output_dir = $output_dir"
+echo "analysis name = $analysis_name"
 echo "pod5 input = $pod5"
-echo "input_list= ${input_list[@]}"
+
 
 
 mkdir -p "$output_dir"/{basecall,demux,aligned,logs}

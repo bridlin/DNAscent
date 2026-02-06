@@ -1,5 +1,5 @@
 
-pod5_dir="/path/to/pod5"            # directory with .pod5 files
+pod5_dir="pod5_run1"            # directory with .pod5 files
 #outdir="/path/to/output"
 analysis_name="NanoPore-run1"
 
