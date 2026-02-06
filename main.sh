@@ -1,4 +1,3 @@
-
 #!/usr/bin/env bash
 #SBATCH --job-name=main_${USER}
 #SBATCH --cpus-per-task=4
