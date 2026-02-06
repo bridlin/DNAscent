@@ -1,16 +1,23 @@
-
-pod5_dir="pod5_run1"            # directory with .pod5 files
-#outdir="/path/to/output"
+# ---- Required inputs ----
 analysis_name="NanoPore-run1"
+pod5_dir="pod5_run1"                   # directory with .pod5
+reference="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_TbruceiLister427_2018_Genome.fasta"          # fasta
+kit_name="SQK-RBK114-24"                   # your barcode kit
+model="hac"                                # dorado model: fast|hac|sup or full model string
+device="auto"                              # dorado -x: auto|cpu|cuda:all|cuda:0,1
 
-model="hac"                         # or 'sup', 'fast', or a full model string (e.g., dna_r10.4.1_e8.2_400bps_hac@v5.2.0)
-kit_name="SQK-RBK114-24"            # <-- set your barcode kit name
-reference="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_TbruceiLister427_2018_Genome.fasta"   # required for alignment (FASTA or .mmi)
-device="auto"                       # 'auto' | 'cpu' | 'cuda:all' | 'cuda:0,1,...'
-threads="$(nproc)"
+# ---- Derived output root ----
+output_dir=DNAscent_$analysis_name
+
+# ---- DNAscent / container ----
+container_sif="containers/dnascent_2.0.sif"
 
 
-
-
+# ---- Resources ----
+threads_align=8
+threads_detect=8
+partition="long"
+mem_align="48G"
+mem_detect="128G"
 
 
