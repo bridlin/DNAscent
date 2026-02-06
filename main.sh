@@ -24,7 +24,7 @@ export analysis_name pod5_dir reference kit_name model device \
        partition mem_align mem_detect output_root
 
 # Basic checks + directories
-bash "scripts/DNAscent/helpers/check_tools.sh"
+bash "scripts/DNAscent/helper/check_tools.sh"
 
 echo "Starting pipeline for $analysis_name"
 echo "Output root: $output_root"
@@ -41,7 +41,7 @@ echo "Step 1: Basecall + demux"
 bash "scripts/DNAscent/step1_basecall_demux.sh"
 
 # Prepare manifests for arrays
-bash "scripts/DNAscent/helpers/make_manifests.sh"
+bash "scripts/DNAscent/helper/make_manifests.sh"
 
 # Step 2: submit ALN array
 echo "Submitting alignment array..."
