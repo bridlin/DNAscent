@@ -27,7 +27,7 @@ export analysis_name pod5_dir reference kit_name model device \
 bash "scripts/DNAscent/helper/check_tools.sh"
 
 echo "Starting pipeline for $analysis_name"
-echo "Output root: $output_root"
+echo "Output dir: $output_dir"
 
 # FAIR: ensure required container exists (pull once if missing)
 if [[ ! -f "$container_sif" ]]; then
