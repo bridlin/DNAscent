@@ -9,7 +9,7 @@
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
 
-
+module load singularity
 module load cuda-toolkit/12.9.1
 module load dorado/1.2.0
 
