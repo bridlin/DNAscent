@@ -16,11 +16,6 @@ sbatch --array=1-"$N_ALIGN"%20 alignment.sh
 
 set -euo pipefail
 
-# Load modules here so sub-scripts inherit env via login profile if needed
-
-
-module load samtools/1.21
-
 
 # Source config
 source scripts/DNAscent/config.txt

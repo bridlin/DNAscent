@@ -10,21 +10,12 @@
 #SBATCH --mem=32G
 
 
-
-
-
 module load cuda-toolkit/12.9.1
 module load dorado/1.2.0
-
-
-
 
 echo "output_dir = $output_dir"
 echo "analysis name = $analysis_name"
 echo "pod5 input = $pod5_dir"
-
-
-
 
 
 # =======================
