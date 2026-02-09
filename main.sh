@@ -8,14 +8,8 @@
 #SBATCH --mail-type=END
 #SBATCH --mail-user=b-barckmann@chu-montpellier.fr
 
-N_ALIGN=$(wc -l < demux_list.txt)
-sbatch --array=1-"$N_ALIGN"%20 alignment.sh
-
-
-
 
 set -euo pipefail
-
 
 # Source config
 source scripts/DNAscent/config.txt

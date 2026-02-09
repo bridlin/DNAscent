@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-need() { command -v "$1" >/dev/null 2>&1 || { echo "Missing tool: $1"; exit 1; }; }
+# need() { command -v "$1" >/dev/null 2>&1 || { echo "Missing tool: $1"; exit 1; }; }
 
-need dorado
-need samtools
-need apptainer
+# need dorado
+# need samtools
+# need apptainer
 
 [[ -d "$pod5_dir" ]] || { echo "pod5_dir not found: $pod5_dir"; exit 1; }
 shopt -s nullglob
