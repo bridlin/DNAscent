@@ -8,12 +8,19 @@
 #SBATCH --mail-type=END
 #SBATCH --mail-user=b-barckmann@chu-montpellier.fr
 
+N_ALIGN=$(wc -l < demux_list.txt)
+sbatch --array=1-"$N_ALIGN"%20 alignment.sh
+
+
+
+
 set -euo pipefail
 
 # Load modules here so sub-scripts inherit env via login profile if needed
-module load dorado/1.2.0
+
+
 module load samtools/1.21
-module load apptainer/1.3.6
+
 
 # Source config
 source scripts/DNAscent/config.txt
@@ -45,12 +52,14 @@ bash "scripts/DNAscent/helper/make_manifests.sh"
 
 # Step 2: submit ALN array
 echo "Submitting alignment array..."
-ALIGN_JOBID=$(sbatch --parsable "scripts/DNAscent/step2_align_array.sh")
+N_ALIGN=$(wc -l < demux_list.txt)
+ALIGN_JOBID=$(sbatch --array=1-"$N_ALIGN"%20 --parsable "scripts/DNAscent/step2_align_array.sh")
 echo "   Alignment array job id: $ALIGN_JOBID"
 
 # Step 3: submit DNAscent array, dependent on alignment success
 echo "Submitting DNAscent array (after alignment)..."
-DNASCENT_JOBID=$(sbatch --parsable --dependency=afterok:${ALIGN_JOBID} \
+N_BAM=$(wc -l < bam_list.txt)
+DNASCENT_JOBID=$(sbatch --array=1-"$N_BAM"%20 --parsable --dependency=afterok:${ALIGN_JOBID} \
   "scripts/DNAscent/step3_dnascent_array.sh")
 echo "   DNAscent array job id: $DNASCENT_JOBID"
 

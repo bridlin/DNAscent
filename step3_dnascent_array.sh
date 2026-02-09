@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=dnascent_array
-#SBATCH --array=1-$(wc -l < analyses/DNAscent_${analysis_name}/bam_list.txt)%20
-#SBATCH --cpus-per-task=${threads_detect}
-#SBATCH --mem=${mem_detect}
+#SBATCH --partition=cpu
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=32G
 #SBATCH --partition=${partition}
 #SBATCH -o analyses/DNAscent_${analysis_name}/logs/dnascent_%A_%a.out
 #SBATCH -e analyses/DNAscent_${analysis_name}/logs/dnascent_%A_%a.err
 
+module load apptainer/1.3.6
+
 set -euo pipefail
 
-source "$(dirname "$0")/config.txt"
+#source "$(dirname "$0")/config.txt"
 bam_list="analyses/DNAscent_${analysis_name}/bam_list.txt"
 
 dnascent_index_dir=$output_dir/dnascent/index

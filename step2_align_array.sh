@@ -1,16 +1,18 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=align_array
-#SBATCH --array=1-$(wc -l < analyses/DNAscent_${analysis_name}/demux_list.txt)%20
-#SBATCH --cpus-per-task=${threads_align}
-#SBATCH --mem=${mem_align}
-#SBATCH --partition=${partition}
+#SBATCH --partition=cpu
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=32G
 #SBATCH -o analyses/DNAscent_${analysis_name}/logs/align_%A_%a.out
 #SBATCH -e analyses/DNAscent_${analysis_name}/logs/align_%A_%a.err
+
+
 
 # Align each demultiplexed BAM to the reference. You can pass extra minimap2 flags via --mm2-opts.
 # Ref: dorado aligner and mm2 options. [3](https://software-docs.nanoporetech.com/dorado/latest/basecaller/alignment/)
 
-
+module load dorado/1.2.0
+module load samtools/1.21
 
 set -euo pipefail
 
