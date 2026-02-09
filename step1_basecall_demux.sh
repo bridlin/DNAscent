@@ -22,6 +22,12 @@ echo "pod5 input = $pod5_dir"
 # ==== BASECALL + DEMUX =
 # =======================
 
+need() { command -v "$1" >/dev/null 2>&1 || { echo "Missing tool: $1"; exit 1; }; }
+
+need singularity
+need cuda
+need dorado
+
 
 # Classify during basecalling, then split without re-classifying
 # Ref: Inline classification and --no-classify during demux. [2](https://software-docs.nanoporetech.com/dorado/latest/barcoding/barcoding/)
