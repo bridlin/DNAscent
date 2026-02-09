@@ -10,7 +10,7 @@
 #SBATCH --mem=32G
 
 module load singularity
-module load cuda-toolkit/12.9.1
+# module load cuda-toolkit/12.9.1
 module load dorado/1.2.0
 
 echo "output_dir = $output_dir"
@@ -25,7 +25,7 @@ echo "pod5 input = $pod5_dir"
 need() { command -v "$1" >/dev/null 2>&1 || { echo "Missing tool: $1"; exit 1; }; }
 
 need singularity
-need cuda
+#need cuda
 need dorado
 
 

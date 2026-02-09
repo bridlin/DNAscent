@@ -36,6 +36,12 @@ fi
 echo "Step 1: Basecall + demux"
 bash "scripts/DNAscent/step1_basecall_demux.sh"
 
+echo "Submitting Step 1: Basecall + demux..."
+BASECALL_JOBID=$(sbatch --parsable "scripts/DNAscent/step1_basecall_demux.sh")
+echo "   Alignment array job id: $BASECALL_JOBID"
+
+
+
 # Prepare manifests for arrays
 bash "scripts/DNAscent/helper/make_manifests.sh"
 
