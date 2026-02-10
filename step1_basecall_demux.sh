@@ -4,13 +4,13 @@
 #SBATCH -e slurm.%N.%j.err
 #SBATCH --mail-type END
 #SBATCH --mail-user b-barckmann@chu-montpellier.fr
-#SBATCH --partition=gpu
-#SBATCH --gres=gpu:l40s:1
-#SBATCH --cpus-per-task=4
-#SBATCH --mem=32G
+#SBATCH --partition=bigmem
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=180G
+
 
 module load singularity
-# module load cuda-toolkit/12.9.1
+module load cuda-toolkit/12.9.1
 module load dorado/1.2.0
 
 echo "output_dir = $output_dir"
@@ -34,7 +34,8 @@ need dorado
 echo "Basecalling with inline barcoding..."
 basecall_bam="$output_dir/basecall/${analysis_name}.bam"
 dorado basecaller "$model" "$pod5_dir" \
-    -x "$device" \
+    -x cpu \
+    --batchsize 16 \
     --kit-name "$kit_name" \
     > "$basecall_bam" 2> "$output_dir/logs/basecaller.log"
 
