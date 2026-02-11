@@ -28,6 +28,7 @@ need dorado
 echo "output_dir = $output_dir"
 echo "analysis name = $analysis_name"
 echo "pod5 input = $pod5_dir"
+echo "kit-name" = $kit_name
 
 ###############################################################################
 # STEP 1 — Basecalling and demultiplexing
@@ -54,7 +55,7 @@ dorado demux \
 
 # Prepare manifests for alignment
 echo "Building manifest files for alignment..."
-bash "scripts/DNAscent/helper/helper/make_manifest_aligned_reads.sh"
+bash "scripts/DNAscent/helper/make_manifest_aligned_reads.sh"
 echo "Manifest generation completed."
 
 
