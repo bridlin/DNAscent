@@ -12,7 +12,7 @@
 # Ref: dorado aligner and mm2 options. [3](https://software-docs.nanoporetech.com/dorado/latest/basecaller/alignment/)
 
 module load singularity
-module load dorado/1.2.0
+module load dorado/1.0.2
 module load samtools/1.21
 
 set -euo pipefail
