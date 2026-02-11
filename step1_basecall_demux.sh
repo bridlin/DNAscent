@@ -5,22 +5,16 @@
 #SBATCH --mail-type END
 #SBATCH --mail-user b-barckmann@chu-montpellier.fr
 #SBATCH --partition=gpu
-#SBATCH --gres=gpu:l40s:1
-#SBATCH --cpus-per-task=4
-#SBATCH --mem=32G
+#SBATCH --gres=gpu:l40s:2
+#SBATCH --cpus-per-task=6
+#SBATCH --mem=16G
 
+module purge
 module load singularity
-# module load cuda-toolkit/12.9.1
+module load cuda-toolkit/12.9.1
 module load dorado/1.2.0
 
-echo "output_dir = $output_dir"
-echo "analysis name = $analysis_name"
-echo "pod5 input = $pod5_dir"
-
-
-# =======================
-# ==== BASECALL + DEMUX =
-# =======================
+nvidia-smi
 
 need() { command -v "$1" >/dev/null 2>&1 || { echo "Missing tool: $1"; exit 1; }; }
 
@@ -28,6 +22,16 @@ need singularity
 #need cuda
 need dorado
 
+dorado basecaller --list-devices
+
+
+echo "output_dir = $output_dir"
+echo "analysis name = $analysis_name"
+echo "pod5 input = $pod5_dir"
+
+# =======================
+# ==== BASECALL + DEMUX =
+# =======================
 
 # Classify during basecalling, then split without re-classifying
 # Ref: Inline classification and --no-classify during demux. [2](https://software-docs.nanoporetech.com/dorado/latest/barcoding/barcoding/)

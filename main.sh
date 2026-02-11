@@ -2,11 +2,11 @@
 #SBATCH --job-name=main_${USER}
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
-#SBATCH --partition=long
+#SBATCH --partition=fast
 #SBATCH -o main_%j.out
 #SBATCH -e main_%j.err
 #SBATCH --mail-type=END
-#SBATCH --mail-user=b-barckmann@chu-montpellier.fr
+#SBATCH --mail-user=bridlin.barckmann@umontpellier.fr
 
 
 set -euo pipefail
@@ -36,7 +36,7 @@ fi
 echo "Step 1: Basecall + demux"
 echo "Submitting Step 1: Basecall + demux..."
 BASECALL_JOBID=$(sbatch --parsable "scripts/DNAscent/step1_basecall_demux.sh")
-echo "   Alignment array job id: $BASECALL_JOBID"
+echo "   basecalling and demux job id: $BASECALL_JOBID"
 
 
 
