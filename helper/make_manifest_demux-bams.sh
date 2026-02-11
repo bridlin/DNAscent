@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # Inputs
-demux_dir="$output_dir/demux/BSF_1_8/20260202_1009_0_FBE49425_f5007bd2/bam_pass/"
+demux_dir="$output_dir/demux/"
 
 
 # For alignment array
