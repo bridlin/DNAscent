@@ -11,6 +11,7 @@
 # Align each demultiplexed BAM to the reference. You can pass extra minimap2 flags via --mm2-opts.
 # Ref: dorado aligner and mm2 options. [3](https://software-docs.nanoporetech.com/dorado/latest/basecaller/alignment/)
 
+module purge
 module load singularity
 module load dorado/1.0.2
 module load samtools/1.21

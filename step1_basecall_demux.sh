@@ -12,7 +12,7 @@
 module purge
 module load singularity
 module load cuda-toolkit/12.9.1
-module load dorado/1.2.0
+module load dorado/1.0.2
 
 nvidia-smi
 
