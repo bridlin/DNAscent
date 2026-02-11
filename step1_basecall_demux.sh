@@ -40,16 +40,16 @@ echo "pod5 input = $pod5_dir"
 # dorado basecaller "$model" "$pod5_dir" \
 #     -x "$device" \
 #     --kit-name "$kit_name" \
-#     > "$basecall_bam" 2> "$output_dir/logs/basecaller.log"
+#     > "$basecall_bam" \
+#     2> "$output_dir/logs/basecaller.log"
 
-# echo " Demultiplexing (split per barcode, no re-classification)..."
-# dorado demux \
-#     --output-dir "$output_dir/demux" \
-#     --no-classify \
-#     --kit-name "$kit_name" \
-#     "$basecall_bam" \
-#     --emit-summary \
-#     2> "$output_dir/logs/demux.log"
+echo " Demultiplexing (split per barcode, no re-classification)..."
+dorado demux \
+    --output-dir "$output_dir/demux" \
+    #--no-classify \
+    --kit-name "$kit_name" \
+    "$basecall_bam" \
+    --emit-summary 2> "$output_dir/logs/demux.log"
 
 
 # Prepare manifests for alignment
