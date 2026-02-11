@@ -18,8 +18,8 @@ module load samtools/1.21
 
 set -euo pipefail
 
-source "$(dirname "$0")/config.txt"   # for array context
-demux_list="analyses/DNAscent_${analysis_name}/demux_list.txt"
+ # for array context
+demux_list="DNAscent_${analysis_name}/demux_list.txt"
 
 bam=$(sed -n "${SLURM_ARRAY_TASK_ID}p" "$demux_list")
 bname=$(basename "$bam" .bam)
