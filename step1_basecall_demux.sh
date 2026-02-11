@@ -22,16 +22,16 @@ need singularity
 #need cuda
 need dorado
 
-dorado basecaller --list-devices
+
 
 
 echo "output_dir = $output_dir"
 echo "analysis name = $analysis_name"
 echo "pod5 input = $pod5_dir"
 
-# =======================
-# ==== BASECALL + DEMUX =
-# =======================
+###############################################################################
+# STEP 1 — Basecalling and demultiplexing
+###############################################################################
 
 # Classify during basecalling, then split without re-classifying
 # Ref: Inline classification and --no-classify during demux. [2](https://software-docs.nanoporetech.com/dorado/latest/barcoding/barcoding/)
@@ -46,14 +46,31 @@ echo " Demultiplexing (split per barcode, no re-classification)..."
 dorado demux \
     --output-dir "$output_dir/demux" \
     --no-classify \
+    --kit-name "$kit_name" \
     "$basecall_bam" \
     --emit-summary \
     2> "$output_dir/logs/demux.log"
 
 
+# Prepare manifests for alignment
+echo "Building manifest files for alignment..."
+bash "scripts/DNAscent/helper/make_manifests_aligned_reads.sh"
+echo "Manifest generation completed."
 
 
+###############################################################################
+# STEP 2 — Alignment array (depends on Step 1)
+###############################################################################
 
+echo "Submitting alignment array..."
+N_ALIGN=$(wc -l < demux_list.txt)
+ALIGN_JOBID=$(sbatch \
+  --array=1-"$N_ALIGN"%20 \
+  --parsable \
+  --dependency=afterok:$BASECALL_JOBID \
+  "scripts/DNAscent/step2_align_array.sh")
+
+echo "   Alignment array job id: $ALIGN_JOBID"
 
 
 
