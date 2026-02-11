@@ -56,7 +56,7 @@ dorado demux \
 
 # Prepare manifests for alignment
 echo "Building manifest files for alignment..."
-bash "scripts/DNAscent/helper/make_manifest_aligned_reads.sh"
+bash "scripts/DNAscent/helper/make_manifest_demux-bams.sh"
 echo "Manifest generation completed."
 
 
