@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=dnascent_array
-#SBATCH --partition=cpu
-#SBATCH --cpus-per-task=8
-#SBATCH --mem=32G
+#SBATCH --partition=fast
+#SBATCH --cpus-per-task=6
+#SBATCH --mem=16G
 #SBATCH --partition=${partition}
 #SBATCH -o analyses/DNAscent_${analysis_name}/logs/dnascent_%A_%a.out
 #SBATCH -e analyses/DNAscent_${analysis_name}/logs/dnascent_%A_%a.err
