@@ -38,7 +38,7 @@ echo "Aligned: ${bname}"
 
 # Prepare manifests for alignment
 echo "Building manifest files for DNAscent..."
-bash "scripts/DNAscent/helper/make_manifests_demux-bams.sh"
+bash "scripts/DNAscent/helper/make_manifest_demux-bams.sh"
 echo "Manifest generation completed."
 
 

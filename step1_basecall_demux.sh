@@ -35,31 +35,31 @@ echo "pod5 input = $pod5_dir"
 
 # Classify during basecalling, then split without re-classifying
 # Ref: Inline classification and --no-classify during demux. [2](https://software-docs.nanoporetech.com/dorado/latest/barcoding/barcoding/)
-echo "Basecalling with inline barcoding..."
-basecall_bam="$output_dir/basecall/${analysis_name}.bam"
-dorado basecaller "$model" "$pod5_dir" \
-    -x "$device" \
-    --kit-name "$kit_name" \
-    > "$basecall_bam" 2> "$output_dir/logs/basecaller.log"
+# echo "Basecalling with inline barcoding..."
+# basecall_bam="$output_dir/basecall/${analysis_name}.bam"
+# dorado basecaller "$model" "$pod5_dir" \
+#     -x "$device" \
+#     --kit-name "$kit_name" \
+#     > "$basecall_bam" 2> "$output_dir/logs/basecaller.log"
 
-echo " Demultiplexing (split per barcode, no re-classification)..."
-dorado demux \
-    --output-dir "$output_dir/demux" \
-    --no-classify \
-    --kit-name "$kit_name" \
-    "$basecall_bam" \
-    --emit-summary \
-    2> "$output_dir/logs/demux.log"
+# echo " Demultiplexing (split per barcode, no re-classification)..."
+# dorado demux \
+#     --output-dir "$output_dir/demux" \
+#     --no-classify \
+#     --kit-name "$kit_name" \
+#     "$basecall_bam" \
+#     --emit-summary \
+#     2> "$output_dir/logs/demux.log"
 
 
 # Prepare manifests for alignment
 echo "Building manifest files for alignment..."
-bash "scripts/DNAscent/helper/make_manifests_aligned_reads.sh"
+bash "scripts/DNAscent/helper/helper/make_manifest_aligned_reads.sh"
 echo "Manifest generation completed."
 
 
 ###############################################################################
-# STEP 2 — Alignment array (depends on Step 1)
+# STEP 2 — submitting Alignment array (depends on Step 1)
 ###############################################################################
 
 echo "Submitting alignment array..."
