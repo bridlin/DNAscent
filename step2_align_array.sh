@@ -23,12 +23,20 @@ demux_list="analyses/DNAscent_${analysis_name}/demux_list.txt"
 bam=$(sed -n "${SLURM_ARRAY_TASK_ID}p" "$demux_list")
 bname=$(basename "$bam" .bam)
 
-aligned="$output_dir/aligned/${bname}.bam"
-sorted="$output_dir/aligned/${bname}.sorted.bam"
+trimmed="$output_dir/aligned/${bname}.trimmed.bam"
+aligned="$output_dir/aligned/${bname}.trimmed.aligned.bam"
+sorted="$output_dir/aligned/${bname}.trimmed.aligned.sorted.bam"
+
 mkdir -p "$output_dir/aligned"
 
 echo "Aligning ${bname} ..."
-dorado aligner "$reference" "$bam" > "$aligned" 2>> "$output_dir/logs/${bname}_align.log"
+
+dorado trim "$bam" \
+  --kit-name "$kit_name" \
+  > "$trimmed"
+
+
+dorado aligner "$reference" "$trimmed" > "$aligned" 2>> "$output_dir/logs/${bname}_align.log"
 
 samtools sort -@ "$SLURM_CPUS_PER_TASK" -o "$sorted" "$aligned"
 samtools index -@ "$SLURM_CPUS_PER_TASK" "$sorted"
