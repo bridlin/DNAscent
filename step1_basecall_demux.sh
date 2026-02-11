@@ -60,7 +60,19 @@ bash "scripts/DNAscent/helper/make_manifest_demux-bams.sh"
 echo "Manifest generation completed."
 
 
+###############################################################################
+# STEP 2 — submitting Alignment array (depends on Step 1)
+###############################################################################
 
+echo "Submitting alignment array..."
+N_ALIGN=$(wc -l < demux_list.txt)
+ALIGN_JOBID=$(sbatch \
+  --array=1-"$N_ALIGN"%20 \
+  --parsable \
+  --dependency=afterok:${SLURM_JOB_ID} \
+  "scripts/DNAscent/step2_align_array.sh")
+
+echo "   Alignment array job id: $ALIGN_JOBID"
 
 
 

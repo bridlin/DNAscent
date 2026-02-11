@@ -52,5 +52,18 @@ echo "Manifest generation completed."
 
 
 
+##############################################################################
+# starting STEP 3 — DNAscent array (depends on Step 2)
+###############################################################################
 
+echo "Submitting DNAscent array (after alignment)..."
+N_BAM=$(wc -l < bam_list.txt)
+DNASCENT_JOBID=$(sbatch \
+  --array=1-"$N_BAM"%20 \
+  --parsable \
+  --dependency=afterok:${SLURM_JOB_ID} \
+  "scripts/DNAscent/step3_dnascent_array.sh")
+echo "   DNAscent array job id: $DNASCENT_JOBID"
+
+echo "Submitted!  DNAscent → $DNASCENT_JOBID"
 
