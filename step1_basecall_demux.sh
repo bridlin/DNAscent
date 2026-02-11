@@ -45,13 +45,13 @@ basecall_bam="$output_dir/basecall/${analysis_name}.bam"
 #     > "$basecall_bam" \
 #     2> "$output_dir/logs/basecaller.log"
 
-echo " Demultiplexing (split per barcode, no re-classification)..."
-dorado demux \
-  --output-dir "$output_dir/demux" \
-  --no-classify \
-  --emit-summary \
-  "$basecall_bam" \
-  2> "$output_dir/logs/demux.log"
+# echo " Demultiplexing (split per barcode, no re-classification)..."
+# dorado demux \
+#   --output-dir "$output_dir/demux" \
+#   --no-classify \
+#   --emit-summary \
+#   "$basecall_bam" \
+#   2> "$output_dir/logs/demux.log"
 
 
 # Prepare manifests for alignment
