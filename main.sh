@@ -40,12 +40,62 @@ fi
 
 echo "Step 1: Basecall + demux"
 echo "Submitting Step 1: Basecall + demux..."
+
 BASECALL_JOBID=$(sbatch \
   --parsable "scripts/DNAscent/step1_basecall_demux.sh")
+
 echo "   basecalling and demux job id: $BASECALL_JOBID"
 
+################ Prepare manifests for alignment ################
+echo "Building manifest files for alignment..."
+
+MAN1=$(sbatch \
+  --parsable \
+  --dependency=afterok:${BASECALL_JOBID} \
+  "scripts/DNAscent/helper/make_manifest_demux-bams.sh")
+
+echo "Manifest generation completed."
 
 
+###############################################################################
+# STEP 2 — submitting Alignment array (depends on Step 1)
+###############################################################################
 
+echo "Submitting alignment array..."
+N_ALIGN=$(wc -l < $output_dir/demux_list.txt)
+ALIGN_JOBID=$(sbatch \
+  --array=1-"$N_ALIGN"%20 \
+  --parsable \
+  --dependency=afterok:${MAN1} \
+  "scripts/DNAscent/step2_align_array.sh")
+
+echo "   Alignment array job id: $ALIGN_JOBID depends on $MAN1"
+
+
+################ Prepare manifests for DNAscent ################
+echo "Building manifest files for DNAscent..."
+
+MAN2=$(sbatch \
+  --parsable \
+  --dependency=afterok:${ALIGN_JOBID} \
+  "scripts/DNAscent/helper/make_manifest_aligned_reads.sh")
+
+echo "Manifest generation completed."
+
+
+##############################################################################
+# starting STEP 3 — DNAscent array (depends on Step 2)
+###############################################################################
+
+echo "Submitting DNAscent array (after alignment)..."
+N_BAM=$(wc -l < $output_dir/bam_list.txt)
+DNASCENT_JOBID=$(sbatch \
+  --array=1-"$N_BAM"%20 \
+  --parsable \
+  --dependency=afterok:${MAN2} \
+  "scripts/DNAscent/step3_dnascent_array.sh")
+echo "   DNAscent array job id: $DNASCENT_JOBID"
+
+echo "Submitted!  DNAscent → $DNASCENT_JOBID  depends on $MAN2"
 
 

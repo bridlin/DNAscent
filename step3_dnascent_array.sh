@@ -12,7 +12,7 @@ module load apptainer/1.3.6
 set -euo pipefail
 
 #source "$(dirname "$0")/config.txt"
-bam_list="analyses/DNAscent_${analysis_name}/bam_list.txt"
+bam_list="$output_dir/bam_list.txt"
 
 dnascent_index_dir=$output_dir/dnascent/index
 
