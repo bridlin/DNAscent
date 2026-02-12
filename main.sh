@@ -93,6 +93,7 @@ DNASCENT_JOBID=$(sbatch \
   --array=1-24%20 \
   --parsable \
   --dependency=afterok:${MAN2} \
+  --export=ALL \
   "scripts/DNAscent/step3_dnascent_array.sh")
 echo "   DNAscent array job id: $DNASCENT_JOBID"
 
