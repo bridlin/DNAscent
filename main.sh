@@ -64,7 +64,7 @@ echo "Manifest generation submitted."
 echo "Submitting alignment array..."
 
 ALIGN_JOBID=$(sbatch \
-  --array=1-5000%20 \
+  --array=1-50%20 \
   --parsable \
   --dependency=afterok:${MAN1} \
   "scripts/DNAscent/step2_align_array.sh")
@@ -90,7 +90,7 @@ echo "Manifest generation submitted."
 echo "Submitting DNAscent array (after alignment)..."
 
 DNASCENT_JOBID=$(sbatch \
-  --array=1-5000%20 \
+  --array=1-50%20 \
   --parsable \
   --dependency=afterok:${MAN2} \
   "scripts/DNAscent/step3_dnascent_array.sh")
