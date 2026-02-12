@@ -40,6 +40,16 @@ if [[ ! -f "$dnascent_index_dir/.built.ok" ]]; then
   if [[ "${SLURM_ARRAY_TASK_ID}" == "1" ]]; then
     echo "Building DNAscent POD5 index ..."
     
+    
+    apptainer exec \
+      -B "$pod5_dir":/pod5 \
+      -B "$dnascent_index_dir":/index \
+      "$container_sif" \
+      bash -lc 'id; ls -ld /index; touch /index/apti.write.test && echo "touch ok" && ls -l /index/apti.write.test'
+    
+    apptainer exec "$container_sif" DNAscent --version
+    apptainer exec "$container_sif" DNAscent index --help | head -n 50
+
     apptainer exec \
       -B "$pod5_dir":/pod5 \
       -B "$dnascent_index_dir":/index \
