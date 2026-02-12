@@ -27,6 +27,8 @@ if [[ -z "${LINE:-}" ]]; then
     exit 0
 fi
 
+echo $pod5_dir
+echo $dnascent_index_dir
 
 bam=$(sed -n "${SLURM_ARRAY_TASK_ID}p" "$bam_list")
 sample=$(basename "$bam" .sorted.bam)
