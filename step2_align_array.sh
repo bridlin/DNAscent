@@ -30,20 +30,38 @@ sorted="$output_dir/aligned/${bname}.trimmed.aligned.sorted.bam"
 
 mkdir -p "$output_dir/aligned"
 
-echo "Aligning ${bname} ..."
+echo "trimming and aligning ${bname} ..."
+echo $trimmed
+echo $aligned
+echo $sorted
 
+# 1) TRIM
 dorado trim "$bam" \
   --sequencing-kit "$kit_name" \
   > "$trimmed"
 
+# 2) ALIGN
+dorado aligner \
+  --threads "$SLURM_CPUS_PER_TASK" \
+  "$reference"\
+  "$trimmed" \
+  > "$aligned" \
+  2>> "$output_dir/logs/${bname}_align.log"
 
-dorado aligner "$reference" "$trimmed" > "$aligned" 2>> "$output_dir/logs/${bname}_align.log"
+samtools \
+  sort \
+  -@ "$SLURM_CPUS_PER_TASK" \
+  -o "$sorted" \
+  "$aligned"
 
-samtools sort -@ "$SLURM_CPUS_PER_TASK" -o "$sorted" "$aligned"
-samtools index -@ "$SLURM_CPUS_PER_TASK" "$sorted"
-rm -f "$aligned"
+samtools \
+  index \
+  -@ "$SLURM_CPUS_PER_TASK" \
+  "$sorted"
 
-echo "Aligned: ${bname}"
+# rm -f "$aligned"
+
+echo "trimmed and aligned: ${bname}"
 
 # Prepare manifests for alignment
 echo "Building manifest files for DNAscent..."
