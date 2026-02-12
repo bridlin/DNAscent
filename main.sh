@@ -54,7 +54,7 @@ MAN1=$(sbatch \
   --dependency=afterok:${BASECALL_JOBID} \
   "scripts/DNAscent/helper/make_manifest_demux-bams.sh")
 
-echo "Manifest generation completed."
+echo "Manifest generation submitted."
 
 
 ###############################################################################
@@ -80,7 +80,7 @@ MAN2=$(sbatch \
   --dependency=afterok:${ALIGN_JOBID} \
   "scripts/DNAscent/helper/make_manifest_aligned_reads.sh")
 
-echo "Manifest generation completed."
+echo "Manifest generation submitted."
 
 
 ##############################################################################
