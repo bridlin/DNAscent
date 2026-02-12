@@ -16,6 +16,18 @@ bam_list="$output_dir/bam_list.txt"
 
 dnascent_index_dir=$output_dir/dnascent/index
 
+IDX=${SLURM_ARRAY_TASK_ID}
+
+# Read the line for this index
+LINE=$(sed -n "${IDX}p" "$output_dir/bam_list.txt" || true)
+
+# If empty → no sample for this index → exit safely
+if [[ -z "${LINE:-}" ]]; then
+    echo "Index ${IDX}: no entry found in bam_list.txt → skipping."
+    exit 0
+fi
+
+
 bam=$(sed -n "${SLURM_ARRAY_TASK_ID}p" "$bam_list")
 sample=$(basename "$bam" .sorted.bam)
 

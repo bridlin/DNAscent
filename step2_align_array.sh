@@ -19,10 +19,24 @@ module load samtools/1.21
 set -euo pipefail
 
  # for array context
-demux_list="DNAscent_${analysis_name}/demux_list.txt"
+demux_list="$output_dir/demux_list.txt"
 
 bam=$(sed -n "${SLURM_ARRAY_TASK_ID}p" "$demux_list")
 bname=$(basename "$bam" .bam)
+
+IDX=${SLURM_ARRAY_TASK_ID}
+
+# Read the line for this index
+LINE=$(sed -n "${IDX}p" "$output_dir/demux_list.txt" || true)
+
+# If empty → no sample for this index → exit safely
+if [[ -z "${LINE:-}" ]]; then
+    echo "Index ${IDX}: no entry found in demux_list.txt → skipping."
+    exit 0
+fi
+
+
+
 
 trimmed="$output_dir/aligned/${bname}.trimmed.bam"
 aligned="$output_dir/aligned/${bname}.trimmed.aligned.bam"
