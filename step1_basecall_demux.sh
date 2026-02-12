@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 #SBATCH -o basecall.%N.%j.out
-#SBATCH -e basecall%N.%j.err
+#SBATCH -e basecall.%N.%j.err
 #SBATCH --mail-type END
 #SBATCH --mail-user b-barckmann@chu-montpellier.fr
 #SBATCH --partition=gpu

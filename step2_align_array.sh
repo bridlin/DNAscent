@@ -3,8 +3,8 @@
 #SBATCH --partition=fast
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
-#SBATCH -o $output_dir/logs/align_%A_%a.out
-#SBATCH -e $output_dir/logs/align_%A_%a.err
+#SBATCH -o align_%A_%a.out
+#SBATCH -e align_%A_%a.err
 
 
 
