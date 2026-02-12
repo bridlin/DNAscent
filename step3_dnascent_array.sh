@@ -43,7 +43,7 @@ if [[ ! -f "$dnascent_index_dir/.built.ok" ]]; then
       "$container_sif" \
       DNAscent index  \
         --files /pod5  \
-        # --output /index
+        --output /index/pod5.index
     touch "$dnascent_index_dir/.built.ok"
   else
     echo "Waiting for DNAscent index ..."
