@@ -4,8 +4,9 @@ set -euo pipefail
 # Inputs
 
 aligned_dir="$output_dir/aligned"
-
+echo "aligned_dir = $aligned_dir"
 
 
 # For DNAscent array (aligned outputs)
 ls "$aligned_dir"/*.sorted.bam > "$output_dir/bam_list.txt"
+
