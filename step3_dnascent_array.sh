@@ -40,20 +40,13 @@ if [[ ! -f "$dnascent_index_dir/.built.ok" ]]; then
   if [[ "${SLURM_ARRAY_TASK_ID}" == "1" ]]; then
     echo "Building DNAscent POD5 index ..."
     
-    echo "[host] pod5_dir=$pod5_dir"
-    echo "[host] dnascent_index_dir=$dnascent_index_dir"
-    ls -ld "$pod5_dir" "$dnascent_index_dir" || true
-    ls "$pod5_dir" | head || true
-
-
     apptainer exec \
       -B "$pod5_dir":/pod5 \
       -B "$dnascent_index_dir":/index \
       "$container_sif" \
-      bash -lc 'echo "[ctr] mounts:"; ls -ld /pod5 /index; echo "[ctr] /pod5 listing:"; ls /pod5 | head'
       DNAscent index  \
         --files /pod5  \
-        --output /index/pod5.index
+        --output pod5.index
     touch "$dnascent_index_dir/.built.ok"
   else
     echo "Waiting for DNAscent index ..."
