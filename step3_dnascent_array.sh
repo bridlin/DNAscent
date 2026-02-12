@@ -4,8 +4,8 @@
 #SBATCH --cpus-per-task=6
 #SBATCH --mem=16G
 #SBATCH --partition=${partition}
-#SBATCH -o $output_dir/logs/dnascent_%A_%a.out
-#SBATCH -e $output_dir/logs/dnascent_%A_%a.err
+#SBATCH -o dnascent_%A_%a.out
+#SBATCH -e dnascent_%A_%a.err
 
 module load apptainer/1.3.6
 
