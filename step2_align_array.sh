@@ -35,31 +35,31 @@ echo $trimmed
 echo $aligned
 echo $sorted
 
-# 1) TRIM
-dorado trim "$bam" \
-  --sequencing-kit "$kit_name" \
-  > "$trimmed"
+# # 1) TRIM
+# dorado trim "$bam" \
+#   --sequencing-kit "$kit_name" \
+#   > "$trimmed"
 
-# 2) ALIGN
-dorado aligner \
-  --threads "$SLURM_CPUS_PER_TASK" \
-  "$reference"\
-  "$trimmed" \
-  > "$aligned" \
-  2>> "$output_dir/logs/${bname}_align.log"
+# # 2) ALIGN
+# dorado aligner \
+#   --threads "$SLURM_CPUS_PER_TASK" \
+#   "$reference"\
+#   "$trimmed" \
+#   > "$aligned" \
+#   2>> "$output_dir/logs/${bname}_align.log"
 
-samtools \
-  sort \
-  -@ "$SLURM_CPUS_PER_TASK" \
-  -o "$sorted" \
-  "$aligned"
+# samtools \
+#   sort \
+#   -@ "$SLURM_CPUS_PER_TASK" \
+#   -o "$sorted" \
+#   "$aligned"
 
-samtools \
-  index \
-  -@ "$SLURM_CPUS_PER_TASK" \
-  "$sorted"
+# samtools \
+#   index \
+#   -@ "$SLURM_CPUS_PER_TASK" \
+#   "$sorted"
 
-# rm -f "$aligned"
+# # rm -f "$aligned"
 
 echo "trimmed and aligned: ${bname}"
 
@@ -75,7 +75,7 @@ echo "Manifest generation completed."
 ###############################################################################
 
 echo "Submitting DNAscent array (after alignment)..."
-N_BAM=$(wc -l < bam_list.txt)
+N_BAM=$(wc -l < $output_dir/bam_list.txt)
 DNASCENT_JOBID=$(sbatch \
   --array=1-"$N_BAM"%20 \
   --parsable \

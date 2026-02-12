@@ -65,7 +65,7 @@ echo "Manifest generation completed."
 ###############################################################################
 
 echo "Submitting alignment array..."
-N_ALIGN=$(wc -l < demux_list.txt)
+N_ALIGN=$(wc -l < $output_dir/demux_list.txt)
 ALIGN_JOBID=$(sbatch \
   --array=1-"$N_ALIGN"%20 \
   --parsable \
