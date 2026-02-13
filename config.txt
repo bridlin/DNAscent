@@ -10,7 +10,7 @@ device="auto"                              # dorado -x: auto|cpu|cuda:all|cuda:0
 output_dir=DNAscent_$analysis_name
 
 # ---- DNAscent / container ----
-container_sif="containers/dnascent_2.0.sif"
+container_sif="containers/dnascent_4.1.1.sif"
 
 
 # ---- Resources ----

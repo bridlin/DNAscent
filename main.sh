@@ -54,7 +54,7 @@ MAN1=$(sbatch \
   --dependency=afterok:${BASECALL_JOBID} \
   "scripts/DNAscent/helper/make_manifest_demux-bams.sh")
 
-echo "Manifest generation submitted."
+echo "Manifest generation submitted. job id: $MAN1"
 
 
 ###############################################################################
@@ -80,11 +80,27 @@ MAN2=$(sbatch \
   --dependency=afterok:${ALIGN_JOBID} \
   "scripts/DNAscent/helper/make_manifest_aligned_reads.sh")
 
-echo "Manifest generation submitted."
+echo "Manifest generation submitted. job id: $MAN2"
+
+
+###############################################################################
+# STEP 3 — DNAscent index build
+###############################################################################
+
+echo "Step 3: DNAscent index"
+echo "Submitting Step 1:DNAscent index..."
+
+DNAscent_index_JOBID=$(sbatch \
+  --parsable "scripts/DNAscent/step3_DNAscent_index.sh") \
+  --dependency=afterok:${MAN2} \
+echo "   basecalling and demux job id: $DNAscent_index_JOBID"
+
+
+echo "DNAscent index generation submitted. job id: $DNAscent_index_JOBID"
 
 
 ##############################################################################
-# starting STEP 3 — DNAscent array (depends on Step 2)
+# starting STEP 4 — DNAscent array (depends on Step 2)
 ###############################################################################
 
 echo "Submitting DNAscent array (after alignment)..."
@@ -92,11 +108,11 @@ echo "Submitting DNAscent array (after alignment)..."
 DNASCENT_JOBID=$(sbatch \
   --array=1-24%20 \
   --parsable \
-  --dependency=afterok:${MAN2} \
+  --dependency=afterok:${DNAscent_index_JOBID} \
   --export=ALL \
-  "scripts/DNAscent/step3_dnascent_array.sh")
+  "scripts/DNAscent/step4_dnascent_array.sh")
 echo "   DNAscent array job id: $DNASCENT_JOBID"
 
-echo "Submitted!  DNAscent → $DNASCENT_JOBID  depends on $MAN2"
+echo "Submitted!  DNAscent → $DNASCENT_JOBID  depends on $DNAscent_index_JOBID"
 
 

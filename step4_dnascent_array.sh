@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=dnascent_array
-#SBATCH --partition=fast
+#SBATCH --partition=gpu
+#SBATCH --gres=gpu:l40s:2
 #SBATCH --cpus-per-task=6
 #SBATCH --mem=16G
 #SBATCH -o dnascent_%A_%a.out
 #SBATCH -e dnascent_%A_%a.err
 
 
+module purge
+module load cuda-toolkit/12.9.1
 module load apptainer/1.3.6
 
 set -euo pipefail
@@ -14,11 +17,11 @@ set -euo pipefail
 #source "$(dirname "$0")/config.txt"
 bam_list="$output_dir/bam_list.txt"
 
-dnascent_index_dir=$output_dir/dnascent/index
+
 
 IDX=${SLURM_ARRAY_TASK_ID}
 
-# Read the line for this index
+# Read the line for this array index
 LINE=$(sed -n "${IDX}p" "$output_dir/bam_list.txt" || true)
 
 # If empty → no sample for this index → exit safely
