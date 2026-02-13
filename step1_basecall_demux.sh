@@ -42,11 +42,10 @@ dorado basecaller "$model" "$pod5_dir" \
     --no-trim \
     > "$basecall_bam" \
     2> "$output_dir/logs/basecaller.log"
-    #--kit-name "$kit_name" \
+    
 echo " Demultiplexing (split per barcode, no re-classification)..."
 dorado demux \
   --output-dir "$output_dir/demux" \
-  #--no-classify \
   --kit-name "$kit_name" \
   --emit-summary \
   "$basecall_bam" \
