@@ -51,9 +51,10 @@ apptainer exec \
   "$container_sif" \
   /app/DNAscent/bin/DNAscent detect \
     --bam /aligned/${sample}.sorted.bam \
-    --ref /ref/reference.fa \
+    --reference /ref/reference.fa \
     --index /index \
-    --out /out/${sample} \
-    --threads "$SLURM_CPUS_PER_TASK"
+    --output /out/${sample} \
+    --threads "$SLURM_CPUS_PER_TASK" \
+    --GPU 
 
 echo "DNAscent done: ${sample}"
