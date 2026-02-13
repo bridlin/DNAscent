@@ -24,51 +24,21 @@ IDX=${SLURM_ARRAY_TASK_ID}
 # Read the line for this array index
 LINE=$(sed -n "${IDX}p" "$output_dir/bam_list.txt" || true)
 
-# If empty → no sample for this index → exit safely
+# If empty → no sample for this array index → exit safely
 if [[ -z "${LINE:-}" ]]; then
     echo "Index ${IDX}: no entry found in bam_list.txt → skipping."
     exit 0
 fi
 
-echo $pod5_dir
+
 echo $dnascent_index_dir
+echo $reference
+echo $container_sif
 
 bam=$(sed -n "${SLURM_ARRAY_TASK_ID}p" "$bam_list")
 sample=$(basename "$bam" .sorted.bam)
 
-# Build DNAscent pod5-based index once (safe to call every task; use a guard file)
-mkdir -p "$dnascent_index_dir"
-if [[ ! -f "$dnascent_index_dir/.built.ok" ]]; then
-  # Only task 1 attempts index; others wait with a simple spin (or skip)
-  if [[ "${SLURM_ARRAY_TASK_ID}" == "1" ]]; then
-    echo "Building DNAscent POD5 index ..."
-    
-    
-    apptainer exec \
-      -B "$pod5_dir":/pod5 \
-      -B "$dnascent_index_dir":/index \
-      "$container_sif" \
-      bash -lc 'id; ls -ld /index; touch /index/apti.write.test && echo "touch ok" && ls -l /index/apti.write.test'
-    
-    apptainer exec "$container_sif" DNAscent --version
-    apptainer exec "$container_sif" DNAscent index --help | head -n 50
 
-    apptainer exec \
-      -B "$pod5_dir":/pod5 \
-      -B "$dnascent_index_dir":/index \
-      "$container_sif" \
-      DNAscent index  \
-        --files /pod5  \
-        --output pod.index
-    touch "$dnascent_index_dir/.built.ok"
-  else
-    echo "Waiting for DNAscent index ..."
-    for i in {1..120}; do
-      [[ -f "$dnascent_index_dir/.built.ok" ]] && break
-      sleep 30
-    done
-  fi
-fi
 
 mkdir -p "$output_dir/dnascent"
 
@@ -79,7 +49,7 @@ apptainer exec \
   -B "$dnascent_index_dir":/index \
   -B "$output_dir/dnascent":/out \
   "$container_sif" \
-  DNAscent detect \
+  /app/DNAscent/bin/DNAscent detect \
     --bam /aligned/${sample}.sorted.bam \
     --ref /ref/reference.fa \
     --index /index \
