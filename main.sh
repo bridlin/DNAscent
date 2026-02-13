@@ -91,8 +91,10 @@ echo "Step 3: DNAscent index"
 echo "Submitting Step 1:DNAscent index..."
 
 DNAscent_index_JOBID=$(sbatch \
-  --parsable "scripts/DNAscent/step3_DNAscent_index.sh") \
+  --parsable \
   --dependency=afterok:${MAN2} \
+  "scripts/DNAscent/step3_DNAscent_index.sh") \
+  
 echo "   basecalling and demux job id: $DNAscent_index_JOBID"
 
 
