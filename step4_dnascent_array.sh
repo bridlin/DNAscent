@@ -54,7 +54,7 @@ apptainer exec \
     --reference /ref/reference.fa \
     --index /index \
     --output /out/${sample}.bam \
-    --threads "$SLURM_CPUS_PER_TASK" \
-    --GPU 
+    --threads "$SLURM_CPUS_PER_TASK" 
+
 
 echo "DNAscent done: ${sample}"
