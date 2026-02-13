@@ -53,7 +53,7 @@ apptainer exec \
     --bam /aligned/${sample}.sorted.bam \
     --reference /ref/reference.fa \
     --index /index \
-    --output /out/${sample} \
+    --output /out/${sample}.bam \
     --threads "$SLURM_CPUS_PER_TASK" \
     --GPU 
 
