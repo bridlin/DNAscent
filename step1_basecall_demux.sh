@@ -37,20 +37,21 @@ echo "kit-name" = $kit_name
 # Ref: Inline classification and --no-classify during demux. [2](https://software-docs.nanoporetech.com/dorado/latest/barcoding/barcoding/)
 echo "Basecalling with inline barcoding..."
 basecall_bam="$output_dir/basecall/${analysis_name}.bam"
-# dorado basecaller "$model" "$pod5_dir" \
-#     -x "$device" \
-#     --kit-name "$kit_name" \
-#     --no-trim \
-#     > "$basecall_bam" \
-#     2> "$output_dir/logs/basecaller.log"
+dorado basecaller "$model" "$pod5_dir" \
+    -x "$device" \
+    #--kit-name "$kit_name" \
+    --no-trim \
+    > "$basecall_bam" \
+    2> "$output_dir/logs/basecaller.log"
 
-# echo " Demultiplexing (split per barcode, no re-classification)..."
-# dorado demux \
-#   --output-dir "$output_dir/demux" \
-#   --no-classify \
-#   --emit-summary \
-#   "$basecall_bam" \
-#   2> "$output_dir/logs/demux.log"
+echo " Demultiplexing (split per barcode, no re-classification)..."
+dorado demux \
+  --output-dir "$output_dir/demux" \
+  #--no-classify \
+  --kit-name "$kit_name" \
+  --emit-summary \
+  "$basecall_bam" \
+  2> "$output_dir/logs/demux.log"
 
 
 
