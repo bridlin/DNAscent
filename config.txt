@@ -8,6 +8,7 @@ device="auto"                              # dorado -x: auto|cpu|cuda:all|cuda:0
 
 # ---- Derived output root ----
 output_dir=DNAscent_$analysis_name
+dnascent_index_dir="${output_dir}/dnascent/index_${analysis_name}"
 
 # ---- DNAscent / container ----
 container_sif="containers/dnascent_4.1.1.sif"

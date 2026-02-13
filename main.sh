@@ -17,7 +17,7 @@ source scripts/DNAscent/config.txt
 # Export so child sbatch jobs can reuse variables
 export analysis_name pod5_dir reference kit_name model device \
        container_sif dnascent_index_dir threads_align threads_detect \
-       partition mem_align mem_detect output_dir
+       partition mem_align mem_detect output_dir dnascent_index_dir
 
 
 # check tools
