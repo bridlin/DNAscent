@@ -27,7 +27,7 @@ if [[ ! -f "${dnascent_index_dir}/.built.ok" ]]; then
     echo "Building DNAscent index..."
 
     # Optional: check DNAscent availability
-    apptainer exec "${container_sif}" DNAscent --version
+    apptainer exec "${container_sif}" /app/DNAscent/bin/DNAscent --version
 
     # Build index
     apptainer exec \
