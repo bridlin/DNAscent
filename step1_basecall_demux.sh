@@ -40,7 +40,7 @@ basecall_bam="$output_dir/basecall/${analysis_name}.bam"
 dorado basecaller "$model" "$pod5_dir" \
     -x "$device" \
     --no-trim \
-    --output-dir "$basecall_bam" \
+    > "$basecall_bam" \
     2> "$output_dir/logs/basecaller.log"
     #--kit-name "$kit_name" \
 echo " Demultiplexing (split per barcode, no re-classification)..."
