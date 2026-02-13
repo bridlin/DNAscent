@@ -88,14 +88,14 @@ echo "Manifest generation submitted. job id: $MAN2"
 ###############################################################################
 
 echo "Step 3: DNAscent index"
-echo "Submitting Step 1:DNAscent index..."
+echo "Submitting Step 3:DNAscent index..."
 
 DNAscent_index_JOBID=$(sbatch \
   --parsable \
   --dependency=afterok:${MAN2} \
   "scripts/DNAscent/step3_DNAscent_index.sh") \
   
-echo "   basecalling and demux job id: $DNAscent_index_JOBID"
+echo "   DNAscent index id: $DNAscent_index_JOBID"
 
 
 echo "DNAscent index generation submitted. job id: $DNAscent_index_JOBID"

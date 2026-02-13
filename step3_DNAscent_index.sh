@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH -o basecall.%N.%j.out
-#SBATCH -e basecall.%N.%j.err
+#SBATCH -o index.%N.%j.out
+#SBATCH -e index.%N.%j.err
 #SBATCH --mail-type=END
 #SBATCH --mail-user=b-barckmann@chu-montpellier.fr
 #SBATCH --partition=gpu
@@ -34,7 +34,7 @@ if [[ ! -f "${dnascent_index_dir}/.built.ok" ]]; then
         -B "${pod5_dir}:/pod5" \
         -B "${dnascent_index_dir}:/index" \
         "${container_sif}" \
-        DNAscent index \
+        /app/DNAscent/bin/DNAscent index \
             --files /pod5 \
             --output /index/pod.index
 
