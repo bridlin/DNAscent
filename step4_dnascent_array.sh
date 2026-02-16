@@ -52,7 +52,7 @@ apptainer exec \
   /app/DNAscent/bin/DNAscent detect \
     --bam /aligned/${sample}.sorted.bam \
     --reference /ref/reference.fa \
-    --index /index \
+    --index /index/pod.index \
     --output /out/${sample}.bam \
     --threads "$SLURM_CPUS_PER_TASK" 
 
