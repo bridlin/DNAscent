@@ -84,7 +84,7 @@ echo "Manifest generation submitted. job id: $MAN2"
 
 
 ###############################################################################
-# STEP 3 — DNAscent index build
+# STEP 3 — DNAscent index build (depends on Step 2)
 ###############################################################################
 
 echo "Step 3: DNAscent index"
@@ -102,7 +102,7 @@ echo "DNAscent index generation submitted. job id: $DNAscent_index_JOBID"
 
 
 ##############################################################################
-# starting STEP 4 — DNAscent array (depends on Step 2)
+# starting STEP 4 — DNAscent array (depends on Step 3)
 ###############################################################################
 
 echo "Submitting DNAscent array (after alignment)..."
