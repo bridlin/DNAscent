@@ -48,6 +48,7 @@ apptainer exec \
   -B "$reference":/ref/reference.fa \
   -B "$dnascent_index_dir":/index \
   -B "$output_dir/dnascent":/out \
+  -B "$pod5_dir":/pod5 \
   "$container_sif" \
   /app/DNAscent/bin/DNAscent detect \
     --bam /aligned/${sample}.sorted.bam \
