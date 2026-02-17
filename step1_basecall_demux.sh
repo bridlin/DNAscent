@@ -39,6 +39,7 @@ echo "Basecalling with inline barcoding..."
 # basecall_bam="$output_dir/basecall/${analysis_name}.bam"
 # dorado basecaller "$model" "$pod5_dir" \
 #     -x "$device" \
+#     --kit-name "$kit_name" \
 #     --no-trim \
 #     > "$basecall_bam" \
 #     2> "$output_dir/logs/basecaller.log"
@@ -46,8 +47,8 @@ echo "Basecalling with inline barcoding..."
 # echo " Demultiplexing (split per barcode, no re-classification)..."
 # dorado demux \
 #   --output-dir "$output_dir/demux" \
-#   --kit-name "$kit_name" \
 #   --emit-summary \
+#   --no-classify \
 #   "$basecall_bam" \
 #   2> "$output_dir/logs/demux.log"
 

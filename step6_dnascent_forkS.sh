@@ -30,35 +30,34 @@ if [[ -z "${LINE:-}" ]]; then
     exit 0
 fi
 
+detect_dir="$output_dir/dnascent/detect"
 
-echo $dnascent_index_dir
-echo $reference
 echo $container_sif
+echo $detect_dir
+
+
+
 
 bam=$(sed -n "${SLURM_ARRAY_TASK_ID}p" "$bam_list")
 sample=$(basename "$bam" .sorted.bam)
 
 
 
-mkdir -p "$output_dir/dnascent/detect"
+mkdir -p "$output_dir/dnascent/forksense"
 
-echo "DNAscent detect for ${sample} ..."
-# apptainer exec \
-#   -B "$output_dir/aligned":/aligned \
-#   -B "$reference":/ref/reference.fa \
-#   -B "$dnascent_index_dir":/index \
-#   -B "$output_dir/dnascent/detect":/out \
-#   -B "$pod5_dir":/pod5 \
-#   "$container_sif" \
-#   /app/DNAscent/bin/DNAscent detect \
-#     --bam /aligned/${sample}.sorted.bam \
-#     --reference /ref/reference.fa \
-#     --index /index/pod.index \
-#     --output /out/${sample}.bam \
-#     --threads "$SLURM_CPUS_PER_TASK" 
+echo "DNAscent forkSense for ${sample} ..."
+apptainer exec \
+    -B "$output_dir/dnascent/forksense":/out \
+    -B "$detect_dir":/detect \
+  "$container_sif" \
+  /app/DNAscent/bin/DNAscent forkSense \
+    --detect /detect \
+    --output /out/${sample}.bam \
+    --order BrdU,EdU\
+    --threads "$SLURM_CPUS_PER_TASK" 
 
 
-echo "DNAscent done: ${sample}"
+echo "DNAscent forkSense done: ${sample}"
 
 
 
