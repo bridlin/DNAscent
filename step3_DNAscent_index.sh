@@ -5,7 +5,7 @@
 #SBATCH --gres=gpu:l40s:2
 #SBATCH --cpus-per-task=6
 #SBATCH --mem=16G
-#SBATCH --job-name=index_${USER}
+#SBATCH --job-name=index_
 #SBATCH --output=slurm_log/%x_%A_%a.out
 #SBATCH --error=slurm_log/%x_%A_%a.err
 
