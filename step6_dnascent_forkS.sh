@@ -52,9 +52,9 @@ apptainer exec \
     -B "$detect_dir":/detect \
   "$container_sif" \
   /app/DNAscent/bin/DNAscent forkSense \
-    --detect /detect \
-    --output /out/${sample}.bam \
-    --order BrdU,EdU\
+    --detect /detect/${sample}.bam \
+    --output /out/${sample} \
+    --order BrdU,EdU \
     --threads "$SLURM_CPUS_PER_TASK" 
 
 
