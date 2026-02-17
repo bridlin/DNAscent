@@ -55,6 +55,10 @@ apptainer exec \
     --detect /detect/${sample}.bam \
     --output /out/${sample} \
     --order BrdU,EdU \
+    --markAnalogues \
+    --markOrigins \
+    --markTerminations \
+    --markForks \
     --threads "$SLURM_CPUS_PER_TASK" 
 
 
