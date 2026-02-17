@@ -3,9 +3,9 @@
 #SBATCH --partition=fast
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
-#SBATCH -o sort_%A_%a.out
-#SBATCH -e sort_%A_%a.err
-
+#SBATCH --job-name=sort_${USER}
+#SBATCH --output=slurm_log/%x_%A_%a.out
+#SBATCH --error=slurm_log/%x_%A_%a.err
 
 module purge
 module load samtools/1.21

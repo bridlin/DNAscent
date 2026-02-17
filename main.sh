@@ -8,6 +8,7 @@
 #SBATCH --mail-type=END
 #SBATCH --mail-user=bridlin.barckmann@umontpellier.fr
 
+mkdir -p slurm_log
 
 set -euo pipefail
 
@@ -147,7 +148,7 @@ DNASCENT_forkS_JOBID=$(sbatch \
   --parsable \
   --dependency=afterok:${DNASCENT_JOBID} \
   --export=ALL \
-  "scripts/DNAscent/step4_dnascent_array.sh")
+  "scripts/DNAscent/step6_dnascent_forkS.sh")
 echo "   DNAscent forkSense job id: $DNASCENT_forkS_JOBID"
 
 echo "Submitted!  DNAscent → $DNASCENT_forkS_JOBID  depends on $DNASCENT_JOBID"

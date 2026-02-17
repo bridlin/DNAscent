@@ -4,8 +4,9 @@
 #SBATCH --gres=gpu:l40s:2
 #SBATCH --cpus-per-task=6
 #SBATCH --mem=16G
-#SBATCH -o forksense_%A_%a.out
-#SBATCH -e forksense_%A_%a.err
+#SBATCH --job-name=forksense_${USER}
+#SBATCH --output=slurm_log/%x_%A_%a.out
+#SBATCH --error=slurm_log/%x_%A_%a.err
 
 
 module purge

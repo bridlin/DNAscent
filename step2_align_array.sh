@@ -3,8 +3,9 @@
 #SBATCH --partition=fast
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
-#SBATCH -o align_%A_%a.out
-#SBATCH -e align_%A_%a.err
+#SBATCH --job-name=align_${USER}
+#SBATCH --output=slurm_log/%x_%A_%a.out
+#SBATCH --error=slurm_log/%x_%A_%a.err
 
 
 

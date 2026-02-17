@@ -1,12 +1,17 @@
 #!/bin/bash
-#SBATCH -o basecall.%N.%j.out
-#SBATCH -e basecall.%N.%j.err
 #SBATCH --mail-type END
 #SBATCH --mail-user b-barckmann@chu-montpellier.fr
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:l40s:2
 #SBATCH --cpus-per-task=6
 #SBATCH --mem=16G
+#SBATCH --job-name=basecall_${USER}
+#SBATCH --output=slurm_log/%x_%A_%a.out
+#SBATCH --error=slurm_log/%x_%A_%a.err
+
+
+
+
 
 module purge
 module load singularity
