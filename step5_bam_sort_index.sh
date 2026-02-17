@@ -3,8 +3,8 @@
 #SBATCH --partition=fast
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
-#SBATCH -o align_%A_%a.out
-#SBATCH -e align_%A_%a.err
+#SBATCH -o sort_%A_%a.out
+#SBATCH -e sort_%A_%a.err
 
 
 module purge

@@ -128,7 +128,7 @@ BAM_SORT_JOBID=$(sbatch \
   --array=1-24%20 \
   --parsable \
   --dependency=afterok:${DNASCENT_JOBID} \
-  "scripts/DNAscent/step5_BAM_sort_index.sh") 
+  "scripts/DNAscent/step5_bam_sort_index.sh") 
 echo "   BAM sorting and indexing job id: $DNASCENT_JOBID"
 echo "   Submitted! BAM sorting and indexing →  $BAM_SORT_JOBID depends on $DNASCENT_JOBID"
 
