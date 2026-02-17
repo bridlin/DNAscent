@@ -47,7 +47,7 @@ samtools \
   sort \
   -@ "$SLURM_CPUS_PER_TASK" \
   -o "$sorted" \
-  "$aligned"
+  "$detect"
 
 samtools \
   index \
