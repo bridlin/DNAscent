@@ -43,12 +43,14 @@ bam=$(sed -n "${SLURM_ARRAY_TASK_ID}p" "$bam_list")
 sample=$(basename "$bam" .sorted.bam)
 
 
+# Before apptainer exec, create a per-sample outdir
+sample_out="$output_dir/dnascent/forksense/${sample}"
+mkdir -p "$sample_out"
 
-mkdir -p "$output_dir/dnascent/forksense"
 
 echo "DNAscent forkSense for ${sample} ..."
 apptainer exec \
-    -B "$output_dir/dnascent/forksense":/out \
+    -B "$sample_out/dnascent/forksense":/out \
     -B "$detect_dir":/detect \
   "$container_sif" \
   /app/DNAscent/bin/DNAscent forkSense \
@@ -63,6 +65,8 @@ apptainer exec \
 
 
 echo "DNAscent forkSense done: ${sample}"
+
+
 
 
 

@@ -42,20 +42,21 @@ sample=$(basename "$bam" .sorted.bam)
 
 mkdir -p "$output_dir/dnascent/detect"
 
+# use  --output /out/${sample}.detect for the tablew form output or  --output /out/${sample}.bam for the modbam output
 echo "DNAscent detect for ${sample} ..."
-# apptainer exec \
-#   -B "$output_dir/aligned":/aligned \
-#   -B "$reference":/ref/reference.fa \
-#   -B "$dnascent_index_dir":/index \
-#   -B "$output_dir/dnascent/detect":/out \
-#   -B "$pod5_dir":/pod5 \
-#   "$container_sif" \
-#   /app/DNAscent/bin/DNAscent detect \
-#     --bam /aligned/${sample}.sorted.bam \
-#     --reference /ref/reference.fa \
-#     --index /index/pod.index \
-#     --output /out/${sample}.bam \
-#     --threads "$SLURM_CPUS_PER_TASK" 
+apptainer exec \
+  -B "$output_dir/aligned":/aligned \
+  -B "$reference":/ref/reference.fa \
+  -B "$dnascent_index_dir":/index \
+  -B "$output_dir/dnascent/detect":/out \
+  -B "$pod5_dir":/pod5 \
+  "$container_sif" \
+  /app/DNAscent/bin/DNAscent detect \
+    --bam /aligned/${sample}.sorted.bam \
+    --reference /ref/reference.fa \
+    --index /index/pod.index \
+    --output /out/${sample}.detect \
+    --threads "$SLURM_CPUS_PER_TASK" 
 
 
 echo "DNAscent done: ${sample}"
