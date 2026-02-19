@@ -82,7 +82,7 @@ MAN2=$(sbatch \
   --dependency=afterok:${ALIGN_JOBID} \
   "scripts/DNAscent/helper/make_manifest_aligned_reads.sh")
 
-echo "Manifest generation submitted. job id: $MAN2"
+echo "   Manifest generation submitted. job id: $MAN2"
 
 
 ###############################################################################
