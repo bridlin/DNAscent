@@ -45,17 +45,18 @@ sample=$(basename "$bam" .sorted.bam)
 
 # Before apptainer exec, create a per-sample outdir
 sample_out="$output_dir/dnascent/forksense/${sample}"
-mkdir -p "$sample_out"
-
+mkdir -p "$sample_out" 2>/dev/null || true
 
 echo "DNAscent forkSense for ${sample} ..."
+
+# Optional pre-run debug: list current contents of sample_out
+echo "[DEBUG pre] Contents of ${sample_out}:"
+ls -l "$sample_out" || true
+
 apptainer exec \
-    # List what forkSense created for this sample
-    echo "[DEBUG] Contents of ${sample_out}:" \
-    ls -l "$sample_out" || true \
-    --pwd /out \
-    -B "$sample_out":/out \
-    -B "$detect_dir":/detect \
+  --pwd /out \
+  -B "$sample_out":/out \
+  -B "$detect_dir":/detect \
   "$container_sif" \
   /app/DNAscent/bin/DNAscent forkSense \
     --detect /detect/${sample}.bam \
@@ -65,7 +66,11 @@ apptainer exec \
     --markOrigins \
     --markTerminations \
     --markForks \
-    --threads "$SLURM_CPUS_PER_TASK" 
+    --threads "$SLURM_CPUS_PER_TASK"
 
+# Optional post-run debug: verify outputs landed in the per-sample dir
+echo "[DEBUG post] Contents of ${sample_out}:"
+ls -l "$sample_out" || true
 
-echo "DNAscent forkSense done: ${sample}"
+echo "DNAscent forkSense done: ${sample} → ${sample_out}"
+
