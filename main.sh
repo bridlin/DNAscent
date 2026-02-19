@@ -55,14 +55,15 @@ MAN1=$(sbatch \
   --dependency=afterok:${BASECALL_JOBID} \
   "scripts/DNAscent/helper/make_manifest_demux-bams.sh")
 
-echo "Manifest generation submitted. job id: $MAN1"
+echo "   Manifest generation submitted. job id: $MAN1"
 
 
 ###############################################################################
 # STEP 2 — submitting Alignment array (depends on Step 1)
 ###############################################################################
 
-echo "Submitting alignment array..."
+echo "Step 2: Alignment"
+echo "Submitting Step 2 alignment array..."
 
 ALIGN_JOBID=$(sbatch \
   --array=1-${array_size}%20 \
@@ -96,17 +97,18 @@ DNAscent_index_JOBID=$(sbatch \
   --dependency=afterok:${MAN2} \
   "scripts/DNAscent/step3_DNAscent_index.sh") \
   
-echo "   DNAscent index id: $DNAscent_index_JOBID"
+echo "   DNAscent index id: $DNAscent_index_JOBID depends on $MAN2"
 
 
-echo "DNAscent index generation submitted. job id: $DNAscent_index_JOBID"
+
 
 
 ##############################################################################
 # starting STEP 4 — DNAscent array (depends on Step 3)
 ###############################################################################
 
-echo "Submitting DNAscent array (after alignment)..."
+echo "Step 4: DNAscent detect array"
+echo "Submitting Step 4 DNAscent index..."
 
 DNASCENT_JOBID=$(sbatch \
   --array=1-${array_size}%20 \
@@ -114,9 +116,9 @@ DNASCENT_JOBID=$(sbatch \
   --dependency=afterok:${DNAscent_index_JOBID} \
   --export=ALL \
   "scripts/DNAscent/step4_dnascent_array.sh")
-echo "   DNAscent array job id: $DNASCENT_JOBID"
+echo "   DNAscent array job id: $DNASCENT_JOBID depends on $DNAscent_index_JOBID"
 
-echo "Submitted!  DNAscent → $DNASCENT_JOBID  depends on $DNAscent_index_JOBID"
+
 
 ###############################################################################
 # STEP 5 — sorting and indexing the output BAMs
@@ -130,8 +132,7 @@ BAM_SORT_JOBID=$(sbatch \
   --parsable \
   --dependency=afterok:${DNASCENT_JOBID} \
   "scripts/DNAscent/step5_bam_sort_index.sh") 
-echo "   BAM sorting and indexing job id: $DNASCENT_JOBID"
-echo "   Submitted! BAM sorting and indexing →  $BAM_SORT_JOBID depends on $DNASCENT_JOBID"
+echo "   BAM sorting and indexing job id: $DNASCENT_JOBID depends on $DNASCENT_JOBID"
 
 
 
@@ -141,7 +142,8 @@ echo "   Submitted! BAM sorting and indexing →  $BAM_SORT_JOBID depends on $DN
 # starting STEP 6 — DNAscent forkSense (depends on Step 4)
 ###############################################################################
 
-echo "Submitting DNAscent array (after alignment)..."
+echo "Step 6: DNAscent forksense"
+echo "Submitting Step 6 DNAscent array (after alignment)..."
 
 DNASCENT_forkS_JOBID=$(sbatch \
   --array=1-${array_size}%20 \
@@ -149,6 +151,6 @@ DNASCENT_forkS_JOBID=$(sbatch \
   --dependency=afterok:${DNASCENT_JOBID} \
   --export=ALL \
   "scripts/DNAscent/step6_dnascent_forkS.sh")
-echo "   DNAscent forkSense job id: $DNASCENT_forkS_JOBID"
+echo "   DNAscent forkSense job id: $DNASCENT_forkS_JOBID depends on $DNASCENT_JOBID"
 
-echo "Submitted!  DNAscent → $DNASCENT_forkS_JOBID  depends on $DNASCENT_JOBID"
+
