@@ -143,7 +143,7 @@ echo "   BAM sorting and indexing job id: $DNASCENT_JOBID depends on $DNASCENT_J
 ###############################################################################
 
 echo "Step 6: DNAscent forksense"
-echo "Submitting Step 6 DNAscent array (after alignment)..."
+echo "Submitting Step 6 DNAscent array ..."
 
 DNASCENT_forkS_JOBID=$(sbatch \
   --array=1-${array_size}%20 \
