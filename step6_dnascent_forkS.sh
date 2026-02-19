@@ -50,6 +50,10 @@ mkdir -p "$sample_out"
 
 echo "DNAscent forkSense for ${sample} ..."
 apptainer exec \
+    # List what forkSense created for this sample
+    echo "[DEBUG] Contents of ${sample_out}:" \
+    ls -l "$sample_out" || true \
+    --pwd /out \
     -B "$sample_out":/out \
     -B "$detect_dir":/detect \
   "$container_sif" \
@@ -65,8 +69,3 @@ apptainer exec \
 
 
 echo "DNAscent forkSense done: ${sample}"
-
-
-
-
-
