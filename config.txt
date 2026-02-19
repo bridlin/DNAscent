@@ -6,7 +6,7 @@ kit_name="SQK-NBD114-24"                   # your barcode kit
 model="hac"                                # dorado model: fast|hac|sup or full model string
 device="auto"   
 
-array_size=13                           # dorado -x: auto|cpu|cuda:all|cuda:0,1
+array_size=17                           # dorado -x: auto|cpu|cuda:all|cuda:0,1
 
 # ---- Derived output root ----
 output_dir=DNAscent_$analysis_name
