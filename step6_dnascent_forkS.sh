@@ -50,7 +50,7 @@ mkdir -p "$sample_out"
 
 echo "DNAscent forkSense for ${sample} ..."
 apptainer exec \
-    -B "$sample_out/dnascent/forksense":/out \
+    -B "$sample_out":/out \
     -B "$detect_dir":/detect \
   "$container_sif" \
   /app/DNAscent/bin/DNAscent forkSense \
