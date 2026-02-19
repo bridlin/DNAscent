@@ -65,7 +65,7 @@ echo "Manifest generation submitted. job id: $MAN1"
 echo "Submitting alignment array..."
 
 ALIGN_JOBID=$(sbatch \
-  --array=1-24%20 \
+  --array=1-${array_size}%20 \
   --parsable \
   --dependency=afterok:${MAN1} \
   "scripts/DNAscent/step2_align_array.sh")
@@ -109,7 +109,7 @@ echo "DNAscent index generation submitted. job id: $DNAscent_index_JOBID"
 echo "Submitting DNAscent array (after alignment)..."
 
 DNASCENT_JOBID=$(sbatch \
-  --array=1-24%20 \
+  --array=1-${array_size}%20 \
   --parsable \
   --dependency=afterok:${DNAscent_index_JOBID} \
   --export=ALL \
@@ -126,7 +126,7 @@ echo "Step 5: sorting and indexing the output BAMs"
 echo "Submitting Step 5: sorting and indexing the output BAMs..."
 
 BAM_SORT_JOBID=$(sbatch \
-  --array=1-24%20 \
+  --array=1-${array_size}%20 \
   --parsable \
   --dependency=afterok:${DNASCENT_JOBID} \
   "scripts/DNAscent/step5_bam_sort_index.sh") 
@@ -144,7 +144,7 @@ echo "   Submitted! BAM sorting and indexing →  $BAM_SORT_JOBID depends on $DN
 echo "Submitting DNAscent array (after alignment)..."
 
 DNASCENT_forkS_JOBID=$(sbatch \
-  --array=1-24%20 \
+  --array=1-${array_size}%20 \
   --parsable \
   --dependency=afterok:${DNASCENT_JOBID} \
   --export=ALL \
