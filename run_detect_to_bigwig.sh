@@ -51,11 +51,16 @@ echo "Submitting detect to bigwig array...Task ID: ${SLURM_ARRAY_TASK_ID}"
 
 # ---- Step 1: DNAscent detect -> bedGraph (call your Python) ----
 if [[ ! -s "$RAW_BDG" ]]; then
-  echo "Generating bedGraph from DNAscent detect: $DETECT_INPUT -> $RAW_BDG"
+  echo "Generating bedGraph from DNAscent detect: $DETECT_INPUT -> ${DETECT_DIR}/${SAMPLE}.strict.bdg"
   python  scripts/DNAscent/detect_to_bdg.py "$DETECT_INPUT" \   
 else
   echo "RAW_BDG exists, skipping generation: $RAW_BDG"
 fi
+
+mv "${DETECT_DIR}/${SAMPLE}.strict.bdg" "$BDG_DIR"
+mv "${DETECT_DIR}/${SAMPLE}.bdg" "$BDG_DIR"
+
+
 
 # ---- Step 2: Ensure bedGraph is sorted and valid ----
 # Sort by chrom and start; force LC_ALL=C for speed and consistent collation.
