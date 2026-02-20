@@ -3,10 +3,13 @@
 import sys
 
 input_file = sys.argv[1]
+#outputfile = sys.argv[2]
 prefix = input_file.rsplit(".", 1)[0]
 
 out_brdU = open(prefix + ".BrdU.bedgraph", "w")
 out_edU  = open(prefix + ".EdU.bedgraph",  "w")
+out_brdU_strict = open(prefix + ".BrdU.strict.bedgraph", "w")
+out_edU_strict  = open(prefix + ".EdU.strict.bedgraph",  "w")
 
 chromosome = None
 
@@ -38,11 +41,17 @@ with open(input_file, "r") as f:
         # bedGraph: chrom, start, end, value
         out_brdU.write(f"{chromosome}\t{posOnRef}\t{posOnRef+1}\t{probBrdU:.6f}\t{strand}\t{readID}\n")
         out_edU.write(f"{chromosome}\t{posOnRef}\t{posOnRef+1}\t{probEdU:.6f}\t{strand}\t{readID}\n")
+        out_brdU_strict.write(f"{chromosome}\t{posOnRef}\t{posOnRef+1}\t{probBrdU:.6f}\n")
+        out_edU_strict.write(f"{chromosome}\t{posOnRef}\t{posOnRef+1}\t{probEdU:.6f}\n")
 
 out_brdU.close()
 out_edU.close()
+out_brdU_strict.close()
+out_edU_strict.close()
+
 
 print("Created:")
 print("  ", prefix + ".BrdU.bedgraph")
 print("  ", prefix + ".EdU.bedgraph")
-
+print("  ", prefix + ".BrdU.strict.bedgraph")
+print("  ", prefix + ".EdU.strict.bedgraph")
