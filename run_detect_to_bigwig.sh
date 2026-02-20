@@ -65,11 +65,11 @@ echo "Transforming DNAscent detect to bigwig files"
 echo "Submitting detect to bigwig array...Task ID: ${SLURM_ARRAY_TASK_ID}"
 
 # ---- Step 1: DNAscent detect -> bedGraph (call your Python) ----
-if [[ ! -s "$RAW_BDG" ]]; then
+if [[ ! -s "$RAW_BDG_BRDU" ]]; then
   echo "Generating bedGraph from DNAscent detect: $DETECT_INPUT -> $BRDU , $EDU, $BRDU_STRICT and $EDU_STRICT"
   python  scripts/DNAscent/detect_to_bdg.py "$DETECT_INPUT" \   
 else
-  echo "RAW_BDG exists, skipping generation: $RAW_BDG"
+  echo "RAW_BDG exists, skipping generation: $RAW_BDG_BRDU"
 fi
 
 
