@@ -57,8 +57,12 @@ SORTED_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.bdg"
 CLIPPED_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.clipped.bdg"
 CLIPPED_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.clipped.bdg"
 
+BDG_FOR_BW_EDU="${BDG_DIR}/${SAMPLE}.EdU.merged.bdg"
+BDG_FOR_BW_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.merged.bdg"
+
 BW_OUT_EDU="${BW_DIR}/${SAMPLE}.EdU.bw"
 BW_OUT_BRDU="${BW_DIR}/${SAMPLE}.BrdU.bw"
+
 
 mkdir -p logs "$BDG_DIR" "$BW_DIR" tmp
 
