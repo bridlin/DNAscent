@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=main_${USER}
-#SBATCH --array=0-17
+#SBATCH --array=1-17
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=16G
 #SBATCH --partition=fast
@@ -18,8 +18,8 @@ set -euo pipefail
 # ---- Config ----
 SAMPLES_FILE="DNAscent_NanoPore-run1/bam_list.txt"            # one sample ID per line
 DETECT_DIR="DNAscent_NanoPore-run1/dnascent/detect/"               # where DNAscent detect outputs are
-BDG_DIR="bdg"
-BW_DIR="bigwig"
+BDG_DIR="${DETECT_DIR}/bdg"
+BW_DIR="${DETECT_DIR}/bigwig"
 CHROM_SIZES="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_TbruceiLister427_2018.chrom.sizes"      # precomputed chrom sizes for your reference
 
 
@@ -36,18 +36,15 @@ SAMPLE=$(basename "$BAM_PATH" | cut -d '.' -f 1,2,3 )
 
 # ---- Paths ----
 DETECT_INPUT="${DETECT_DIR}/${SAMPLE}.detect"   # adapt extension to your DNAscent output
-RAW_BDG="${BDG_DIR}/${SAMPLE}.raw.bdg"
+RAW_BDG="${BDG_DIR}/${SAMPLE}.strict.bdg"
 SORTED_BDG="${BDG_DIR}/${SAMPLE}.sorted.bdg"
 CLIPPED_BDG="${BDG_DIR}/${SAMPLE}.clipped.bdg"
 BW_OUT="${BW_DIR}/${SAMPLE}.bw"
 
 mkdir -p logs "$BDG_DIR" "$BW_DIR" tmp
 
-
 echo "Transforming DNAscent detect to bigwig files"
 echo "Submitting detect to bigwig array...Task ID: ${SLURM_ARRAY_TASK_ID}"
-
-
 
 # ---- Step 1: DNAscent detect -> bedGraph (call your Python) ----
 if [[ ! -s "$RAW_BDG" ]]; then
