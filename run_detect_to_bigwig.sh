@@ -89,7 +89,7 @@ if [[ ! -s "$SORTED_BDG_EDU" ]]; then
   LC_ALL=C sort -k1,1 -k2,2n "$RAW_BDG_EDU" > "$SORTED_BDG_EDU"
 fi
 # BrdU
-if [[ ! -s "$SORTED_BDG_EDU" ]]; then
+if [[ ! -s "$SORTED_BDG_BRDU" ]]; then
   echo "Sorting bedGraph..."
   LC_ALL=C sort -k1,1 -k2,2n "$RAW_BDG_BRDU" > "$SORTED_BDG_BRDU"
 fi
