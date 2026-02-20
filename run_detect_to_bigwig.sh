@@ -29,10 +29,10 @@ CHROM_SIZES="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_Tbruc
 BAM_PATH=$(sed -n "$((SLURM_ARRAY_TASK_ID+1))p" $SAMPLES_FILE)
 
 # Strip the directory
-BAM_FILE=$(basename "$BAM_PATH")
+SAMPLE=$(basename "$BAM_PATH" | cut -d '.' -f 1,2,3 )
 
 # Strip the extension
-SAMPLE=$(cut -d '.' -f 1,2,3 ${BAM_FILE})
+#SAMPLE=$(cut -d '.' -f 1,2,3 ${BAM_FILE})
 
 # ---- Paths ----
 DETECT_INPUT="${DETECT_DIR}/${SAMPLE}.detect"   # adapt extension to your DNAscent output
