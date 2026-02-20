@@ -81,18 +81,18 @@ echo "Submitting detect to bigwig array...Task ID: ${SLURM_ARRAY_TASK_ID}"
 
 
 
-# # ---- Step 2: Ensure bedGraph is sorted and valid ----
-# # Sort by chrom and start; force LC_ALL=C for speed and consistent collation.
-# # EdU
-# if [[ ! -s "$SORTED_BDG_EDU" ]]; then
-#   echo "Sorting bedGraph..."
-#   LC_ALL=C sort -k1,1 -k2,2n "$RAW_BDG_EDU" > "$SORTED_BDG_EDU"
-# fi
-# # BrdU
-# if [[ ! -s "$SORTED_BDG_EDU" ]]; then
-#   echo "Sorting bedGraph..."
-#   LC_ALL=C sort -k1,1 -k2,2n "$RAW_BDG_BRDU" > "$SORTED_BDG_EDU"
-# fi
+# ---- Step 2: Ensure bedGraph is sorted and valid ----
+# Sort by chrom and start; force LC_ALL=C for speed and consistent collation.
+# EdU
+if [[ ! -s "$SORTED_BDG_EDU" ]]; then
+  echo "Sorting bedGraph..."
+  LC_ALL=C sort -k1,1 -k2,2n "$RAW_BDG_EDU" > "$SORTED_BDG_EDU"
+fi
+# BrdU
+if [[ ! -s "$SORTED_BDG_EDU" ]]; then
+  echo "Sorting bedGraph..."
+  LC_ALL=C sort -k1,1 -k2,2n "$RAW_BDG_BRDU" > "$SORTED_BDG_BRDU"
+fi
 
 
 
