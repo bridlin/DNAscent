@@ -6,10 +6,10 @@ input_file = sys.argv[1]
 #outputfile = sys.argv[2]
 prefix = input_file.rsplit(".", 1)[0]
 
-out_brdU = open(prefix + ".BrdU.bedgraph", "w")
-out_edU  = open(prefix + ".EdU.bedgraph",  "w")
-out_brdU_strict = open(prefix + ".BrdU.strict.bedgraph", "w")
-out_edU_strict  = open(prefix + ".EdU.strict.bedgraph",  "w")
+out_brdU = open(prefix + ".BrdU.bdg", "w")
+out_edU  = open(prefix + ".EdU.bdg",  "w")
+out_brdU_strict = open(prefix + ".BrdU.strict.bdg", "w")
+out_edU_strict  = open(prefix + ".EdU.strict.bdg",  "w")
 
 chromosome = None
 
@@ -51,7 +51,7 @@ out_edU_strict.close()
 
 
 print("Created:")
-print("  ", prefix + ".BrdU.bedgraph")
-print("  ", prefix + ".EdU.bedgraph")
-print("  ", prefix + ".BrdU.strict.bedgraph")
-print("  ", prefix + ".EdU.strict.bedgraph")
+print("  ", prefix + ".BrdU.bdg")
+print("  ", prefix + ".EdU.bdg")
+print("  ", prefix + ".BrdU.strict.bdg")
+print("  ", prefix + ".EdU.strict.bdg")
