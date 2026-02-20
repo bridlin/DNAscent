@@ -104,27 +104,27 @@ echo "Submitting detect to bigwig array...Task ID: ${SLURM_ARRAY_TASK_ID}"
 # Optional but recommended: Clip intervals to chrom sizes to avoid out-of-range errors.
 # Requires 'bedClip' (UCSC). If not available, skip; but ensure your python script doesn't produce out-of-bound intervals.
 # EdU
-# if command -v bedClip >/dev/null 2>&1; then
-#   if [[ ! -s "$CLIPPED_BDG_EDU" ]]; then
-#     echo "Clipping bedGraph to chromosome sizes..."
-#     bedClip "$SORTED_BDG_EDU" "$CHROM_SIZES" "$CLIPPED_BDG_EDU"
-#   fi
-#   BDG_FOR_merge_EDU="$CLIPPED_BDG_EDU"
-# else
-#   echo "bedClip not found; proceeding without clipping."
-#   BDG_FOR_merge_EDU="$SORTED_BDG_EDU"
-# fi
-# # BrdU
-# if command -v bedClip >/dev/null 2>&1; then
-#   if [[ ! -s "$CLIPPED_BDG_BRDU" ]]; then
-#     echo "Clipping bedGraph to chromosome sizes..."
-#     bedClip "$SORTED_BDG_BRDU" "$CHROM_SIZES" "$CLIPPED_BDG_BRDU"
-#   fi
-#   BDG_FOR_merge_BRDU="$CLIPPED_BDG_BRDU"
-# else
-#   echo "bedClip not found; proceeding without clipping."
-#   BDG_FOR_merge_BRDU="$SORTED_BDG_BRDU"
-# fi
+if command -v bedClip >/dev/null 2>&1; then
+  if [[ ! -s "$CLIPPED_BDG_EDU" ]]; then
+    echo "Clipping bedGraph to chromosome sizes..."
+    bedClip "$SORTED_BDG_EDU" "$CHROM_SIZES" "$CLIPPED_BDG_EDU"
+  fi
+  BDG_FOR_merge_EDU="$CLIPPED_BDG_EDU"
+else
+  echo "bedClip not found; proceeding without clipping."
+  BDG_FOR_merge_EDU="$SORTED_BDG_EDU"
+fi
+# BrdU
+if command -v bedClip >/dev/null 2>&1; then
+  if [[ ! -s "$CLIPPED_BDG_BRDU" ]]; then
+    echo "Clipping bedGraph to chromosome sizes..."
+    bedClip "$SORTED_BDG_BRDU" "$CHROM_SIZES" "$CLIPPED_BDG_BRDU"
+  fi
+  BDG_FOR_merge_BRDU="$CLIPPED_BDG_BRDU"
+else
+  echo "bedClip not found; proceeding without clipping."
+  BDG_FOR_merge_BRDU="$SORTED_BDG_BRDU"
+fi
 
 
 
