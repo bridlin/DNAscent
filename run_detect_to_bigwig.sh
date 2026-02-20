@@ -43,9 +43,6 @@ BW_OUT="${BW_DIR}/${SAMPLE}.bw"
 
 mkdir -p logs "$BDG_DIR" "$BW_DIR" tmp
 
-mv "${DETECT_DIR}/${SAMPLE}.strict.bdg" "$BDG_DIR"
-mv "${DETECT_DIR}/${SAMPLE}.bdg" "$BDG_DIR"
-
 echo "Transforming DNAscent detect to bigwig files"
 echo "Submitting detect to bigwig array...Task ID: ${SLURM_ARRAY_TASK_ID}"
 
