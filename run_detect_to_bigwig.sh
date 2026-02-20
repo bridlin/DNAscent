@@ -130,24 +130,24 @@ echo "Submitting detect to bigwig array...Task ID: ${SLURM_ARRAY_TASK_ID}"
 
 
 # # ---- Step 3: bedGraph merge  ----
-# # EdU
-# if [[ ! -s "$BDG_FOR_BW_EDU" ]]; then
-#   echo "merging: $BDG_FOR_merge_EDU -> $BDG_FOR_BW_EDU"
-#   bedtools merge -i "$BDG_FOR_merge_EDU" -c 4 -o mean >  "$BDG_FOR_BW_EDU"
-# else
-#   echo "merge exists, skipping: $BDG_FOR_BW_EDU"
-# fi
+# EdU
+if [[ ! -s "$BDG_FOR_BW_EDU" ]]; then
+  echo "merging: $BDG_FOR_merge_EDU -> $BDG_FOR_BW_EDU"
+  bedtools merge -d -1 -i "$BDG_FOR_merge_EDU" -c 4 -o mean >  "$BDG_FOR_BW_EDU"
+else
+  echo "merge exists, skipping: $BDG_FOR_BW_EDU"
+fi
 
 
 
 
-# # BrdU
-# if [[ ! -s "$BDG_FOR_BW_BRDU" ]]; then
-#   echo "merging: $BDG_FOR_merge_BRDU -> $BDG_FOR_BW_BRDU"
-#   bedtools merge -i "$BDG_FOR_merge_BRDU" -c 4 -o mean >  "$BDG_FOR_BW_BRDU"
-# else
-#   echo "merge exists, skipping: $BDG_FOR_BW_BRDU"
-# fi
+# BrdU
+if [[ ! -s "$BDG_FOR_BW_BRDU" ]]; then
+  echo "merging: $BDG_FOR_merge_BRDU -> $BDG_FOR_BW_BRDU"
+  bedtools merge -d -1 -i "$BDG_FOR_merge_BRDU" -c 4 -o mean >  "$BDG_FOR_BW_BRDU"
+else
+  echo "merge exists, skipping: $BDG_FOR_BW_BRDU"
+fi
 
 
 
