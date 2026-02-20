@@ -129,4 +129,70 @@ fi
 # EdU
 if [[ ! -s "$BDG_FOR_BW_EDU" ]]; then
   echo "merging: $BDG_FOR_merge_EDU -> $BDG_FOR_BW_EDU"
-  be
+  bedtools merge -i "$BDG_FOR_merge_EDU" -c 4 -o mean >  "$BDG_FOR_BW_EDU"
+else
+  echo "merge exists, skipping: $BDG_FOR_BW_EDU"
+fi
+
+
+
+
+# BrdU
+if [[ ! -s "$BDG_FOR_BW_BRDU" ]]; then
+  echo "merging: $BDG_FOR_merge_BRDU -> $BDG_FOR_BW_BRDU"
+  bedtools merge -i "$BDG_FOR_merge_BRDU" -c 4 -o mean >  "$BDG_FOR_BW_BRDU"
+else
+  echo "merge exists, skipping: $BDG_FOR_BW_BRDU"
+fi
+
+
+
+
+
+
+# ---- Step 4: bedGraph -> bigWig ----
+# EdU
+if [[ ! -s "$BW_OUT_EDU" ]]; then
+  echo "Converting to bigWig: $BDG_FOR_BW_EDU -> $BW_OUT_EDU"
+  bedGraphToBigWig "$BDG_FOR_BW_EDU" "$CHROM_SIZES" "$BW_OUT_EDU"
+else
+  echo "BigWig exists, skipping: $BW_OUT_EDU"
+fi
+
+echo "[$(date)] DONE EDU sample=$SAMPLE"
+
+
+
+
+# BrdU
+if [[ ! -s "$BW_OUT_BRDU" ]]; then
+  echo "Converting to bigWig: $BDG_FOR_BW_BRDU -> $BW_OUT_BRDU"
+  bedGraphToBigWig "$BDG_FOR_BW_BRDU" "$CHROM_SIZES" "$BW_OUT_BRDU"
+else
+  echo "BigWig exists, skipping: $BW_OUT_BRDU"
+fi
+
+echo "[$(date)] DONE BRDU sample=$SAMPLE"
+``
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
