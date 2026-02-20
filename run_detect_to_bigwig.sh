@@ -17,7 +17,7 @@ set -euo pipefail
 
 # ---- Config ----
 SAMPLES_FILE="DNAscent_NanoPore-run1/bam_list.txt"            # one sample ID per line
-DETECT_DIR="DNAscent_NanoPore-run1/dnascent/detect/"               # where DNAscent detect outputs are
+DETECT_DIR="DNAscent_NanoPore-run1/dnascent/detect"               # where DNAscent detect outputs are
 BDG_DIR="${DETECT_DIR}/bdg"
 BW_DIR="${DETECT_DIR}/bigwig"
 CHROM_SIZES="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_TbruceiLister427_2018.chrom.sizes"      # precomputed chrom sizes for your reference
@@ -36,10 +36,28 @@ SAMPLE=$(basename "$BAM_PATH" | cut -d '.' -f 1,2,3 )
 
 # ---- Paths ----
 DETECT_INPUT="${DETECT_DIR}/${SAMPLE}.detect"   # adapt extension to your DNAscent output
-RAW_BDG="${BDG_DIR}/${SAMPLE}.strict.bdg"
-SORTED_BDG="${BDG_DIR}/${SAMPLE}.sorted.bdg"
-CLIPPED_BDG="${BDG_DIR}/${SAMPLE}.clipped.bdg"
-BW_OUT="${BW_DIR}/${SAMPLE}.bw"
+
+
+
+# Expected python output files:
+BRDU="${DETECT_DIR}/${SAMPLE}.BrdU.bdg"
+EDU="${DETECT_DIR}/${SAMPLE}.EdU.bdg"
+BRDU_STRICT="${DETECT_DIR}/${SAMPLE}.BrdU.strict.bdg"
+EDU_STRICT="${DETECT_DIR}/${SAMPLE}.EdU.strict.bdg"
+
+echo "[Task $SLURM_ARRAY_TASK_ID] Processing sample $SAMPLE"
+
+RAW_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.strict.bdg"
+RAW_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.bdg"
+
+SORTED_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.sorted.bdg"
+SORTED_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.bdg"
+
+CLIPPED_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.clipped.bdg"
+CLIPPED_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.clipped.bdg"
+
+BW_OUT_EDU="${BW_DIR}/${SAMPLE}.EdU.bw"
+BW_OUT_BRDU="${BW_DIR}/${SAMPLE}.BrdU.bw"
 
 mkdir -p logs "$BDG_DIR" "$BW_DIR" tmp
 
@@ -48,46 +66,89 @@ echo "Submitting detect to bigwig array...Task ID: ${SLURM_ARRAY_TASK_ID}"
 
 # ---- Step 1: DNAscent detect -> bedGraph (call your Python) ----
 if [[ ! -s "$RAW_BDG" ]]; then
-  echo "Generating bedGraph from DNAscent detect: $DETECT_INPUT -> ${DETECT_DIR}/${SAMPLE}.strict.bdg"
+  echo "Generating bedGraph from DNAscent detect: $DETECT_INPUT -> $BRDU , $EDU, $BRDU_STRICT and $EDU_STRICT"
   python  scripts/DNAscent/detect_to_bdg.py "$DETECT_INPUT" \   
 else
   echo "RAW_BDG exists, skipping generation: $RAW_BDG"
 fi
 
-mv "${DETECT_DIR}/${SAMPLE}.strict.bdg" "$BDG_DIR"
-mv "${DETECT_DIR}/${SAMPLE}.bdg" "$BDG_DIR"
+
+# Move all 4 files into BDG_DIR
+mv "$BRDU" "$BDG_DIR/"
+mv "$EDU" "$BDG_DIR/"
+mv "$BRDU_STRICT" "$BDG_DIR/"
+mv "$EDU_STRICT" "$BDG_DIR/"
 
 
 
 # ---- Step 2: Ensure bedGraph is sorted and valid ----
 # Sort by chrom and start; force LC_ALL=C for speed and consistent collation.
-if [[ ! -s "$SORTED_BDG" ]]; then
+# EdU
+if [[ ! -s "$SORTED_BDG_EDU" ]]; then
   echo "Sorting bedGraph..."
-  LC_ALL=C sort -k1,1 -k2,2n "$RAW_BDG" > "$SORTED_BDG"
+  LC_ALL=C sort -k1,1 -k2,2n "$RAW_BDG_EDU" > "$SORTED_BDG_EDU"
 fi
+# BrdU
+if [[ ! -s "$SORTED_BDG_EDU" ]]; then
+  echo "Sorting bedGraph..."
+  LC_ALL=C sort -k1,1 -k2,2n "$RAW_BDG_BRDU" > "$SORTED_BDG_EDU"
+fi
+
+
 
 # Optional but recommended: Clip intervals to chrom sizes to avoid out-of-range errors.
 # Requires 'bedClip' (UCSC). If not available, skip; but ensure your python script doesn't produce out-of-bound intervals.
+# EdU
 if command -v bedClip >/dev/null 2>&1; then
-  if [[ ! -s "$CLIPPED_BDG" ]]; then
+  if [[ ! -s "$CLIPPED_BDG_EDU" ]]; then
     echo "Clipping bedGraph to chromosome sizes..."
-    bedClip "$SORTED_BDG" "$CHROM_SIZES" "$CLIPPED_BDG"
+    bedClip "$SORTED_BDG_EDU" "$CHROM_SIZES" "$CLIPPED_BDG_EDU"
   fi
-  BDG_FOR_BW="$CLIPPED_BDG"
+  BDG_FOR_BW_EDU="$CLIPPED_BDG_EDU"
 else
   echo "bedClip not found; proceeding without clipping."
-  BDG_FOR_BW="$SORTED_BDG"
+  BDG_FOR_BW_EDU="$SORTED_BDG_EDU"
 fi
+# BrdU
+if command -v bedClip >/dev/null 2>&1; then
+  if [[ ! -s "$CLIPPED_BDG_BRDU" ]]; then
+    echo "Clipping bedGraph to chromosome sizes..."
+    bedClip "$SORTED_BDG_BRDU" "$CHROM_SIZES" "$CLIPPED_BDG_BRDU"
+  fi
+  BDG_FOR_BW_BRDU="$CLIPPED_BDG_BRDU"
+else
+  echo "bedClip not found; proceeding without clipping."
+  BDG_FOR_BW_BRDU="$SORTED_BDG_BRDU"
+fi
+
+
+
+
+
 
 # ---- Step 3: bedGraph -> bigWig ----
-if [[ ! -s "$BW_OUT" ]]; then
-  echo "Converting to bigWig: $BDG_FOR_BW -> $BW_OUT"
-  bedGraphToBigWig "$BDG_FOR_BW" "$CHROM_SIZES" "$BW_OUT"
+# EdU
+if [[ ! -s "$BW_OUT_EDU" ]]; then
+  echo "Converting to bigWig: $BDG_FOR_BW_EDU -> $BW_OUT_EDU"
+  bedGraphToBigWig "$BDG_FOR_BW_EDU" "$CHROM_SIZES" "$BW_OUT_EDU"
 else
-  echo "BigWig exists, skipping: $BW_OUT"
+  echo "BigWig exists, skipping: $BW_OUT_EDU"
 fi
 
-echo "[$(date)] DONE sample=$SAMPLE"
+echo "[$(date)] DONE EDU sample=$SAMPLE"
+
+
+
+
+# BrdU
+if [[ ! -s "$BW_OUT_BRDU" ]]; then
+  echo "Converting to bigWig: $BDG_FOR_BW_EDU -> $BW_OUT_BRDU"
+  bedGraphToBigWig "$BDG_FOR_BW_EDU" "$CHROM_SIZES" "$BW_OUT_BRDU"
+else
+  echo "BigWig exists, skipping: $BW_OUT_BRDU"
+fi
+
+echo "[$(date)] DONE BRDU sample=$SAMPLE"
 ``
 
 
@@ -111,20 +172,3 @@ echo "[$(date)] DONE sample=$SAMPLE"
 
 
 
-# Pass the array index to Python
-
-python scrits/DNAscent/detect_to_bdg.py --task-id "${SLURM_ARRAY_TASK_ID}"
-
-
-echo "Task $SLURM_ARRAY_TASK_ID running on sample: $SAMPLE"
-echo "Full BAM path: $BAM_FILE"
-
-# 3) Use SAMPLE everywhere else
-python dnascent_detect_to_bdg.py \
-    --input "$SAMPLE.detect.tsv" \
-    --output "bdg/${SAMPLE}.bdg"
-
-bedGraphToBigWig \
-    "bdg/${SAMPLE}.bdg" \
-    genome.chrom.sizes \
-    "bigwig/${SAMPLE}.bw"
