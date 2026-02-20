@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=main_${USER}
-#SBATCH --array=0-$(($(wc -l < bam_list.txt)-1))
+#SBATCH --array=0-17
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=16G
 #SBATCH --partition=fast
