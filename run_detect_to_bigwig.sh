@@ -12,6 +12,7 @@
 module purge
 module load python
 module load ucsc-bedgraphtobigwig/377
+module load bedtools/2.31.1
 
 set -euo pipefail
 
@@ -83,16 +84,16 @@ echo "Submitting detect to bigwig array...Task ID: ${SLURM_ARRAY_TASK_ID}"
 
 # ---- Step 2: Ensure bedGraph is sorted and valid ----
 # Sort by chrom and start; force LC_ALL=C for speed and consistent collation.
-# EdU
-if [[ ! -s "$SORTED_BDG_EDU" ]]; then
-  echo "Sorting bedGraph..."
-  LC_ALL=C sort -k1,1 -k2,2n "$RAW_BDG_EDU" > "$SORTED_BDG_EDU"
-fi
-# BrdU
-if [[ ! -s "$SORTED_BDG_BRDU" ]]; then
-  echo "Sorting bedGraph..."
-  LC_ALL=C sort -k1,1 -k2,2n "$RAW_BDG_BRDU" > "$SORTED_BDG_BRDU"
-fi
+# # EdU
+# if [[ ! -s "$SORTED_BDG_EDU" ]]; then
+#   echo "Sorting bedGraph..."
+#   LC_ALL=C sort -k1,1 -k2,2n "$RAW_BDG_EDU" > "$SORTED_BDG_EDU"
+# fi
+# # BrdU
+# if [[ ! -s "$SORTED_BDG_BRDU" ]]; then
+#   echo "Sorting bedGraph..."
+#   LC_ALL=C sort -k1,1 -k2,2n "$RAW_BDG_BRDU" > "$SORTED_BDG_BRDU"
+# fi
 
 
 
@@ -104,10 +105,10 @@ if command -v bedClip >/dev/null 2>&1; then
     echo "Clipping bedGraph to chromosome sizes..."
     bedClip "$SORTED_BDG_EDU" "$CHROM_SIZES" "$CLIPPED_BDG_EDU"
   fi
-  BDG_FOR_BW_EDU="$CLIPPED_BDG_EDU"
+  BDG_FOR_merge_EDU="$CLIPPED_BDG_EDU"
 else
   echo "bedClip not found; proceeding without clipping."
-  BDG_FOR_BW_EDU="$SORTED_BDG_EDU"
+  BDG_FOR_merge_EDU="$SORTED_BDG_EDU"
 fi
 # BrdU
 if command -v bedClip >/dev/null 2>&1; then
@@ -115,60 +116,17 @@ if command -v bedClip >/dev/null 2>&1; then
     echo "Clipping bedGraph to chromosome sizes..."
     bedClip "$SORTED_BDG_BRDU" "$CHROM_SIZES" "$CLIPPED_BDG_BRDU"
   fi
-  BDG_FOR_BW_BRDU="$CLIPPED_BDG_BRDU"
+  BDG_FOR_merge_BRDU="$CLIPPED_BDG_BRDU"
 else
   echo "bedClip not found; proceeding without clipping."
-  BDG_FOR_BW_BRDU="$SORTED_BDG_BRDU"
+  BDG_FOR_merge_BRDU="$SORTED_BDG_BRDU"
 fi
 
 
 
 
-
-
-# ---- Step 3: bedGraph -> bigWig ----
+# ---- Step 3: bedGraph merge  ----
 # EdU
-if [[ ! -s "$BW_OUT_EDU" ]]; then
-  echo "Converting to bigWig: $BDG_FOR_BW_EDU -> $BW_OUT_EDU"
-  bedGraphToBigWig "$BDG_FOR_BW_EDU" "$CHROM_SIZES" "$BW_OUT_EDU"
-else
-  echo "BigWig exists, skipping: $BW_OUT_EDU"
-fi
-
-echo "[$(date)] DONE EDU sample=$SAMPLE"
-
-
-
-
-# BrdU
-if [[ ! -s "$BW_OUT_BRDU" ]]; then
-  echo "Converting to bigWig: $BDG_FOR_BW_BRDU -> $BW_OUT_BRDU"
-  bedGraphToBigWig "$BDG_FOR_BW_BRDU" "$CHROM_SIZES" "$BW_OUT_BRDU"
-else
-  echo "BigWig exists, skipping: $BW_OUT_BRDU"
-fi
-
-echo "[$(date)] DONE BRDU sample=$SAMPLE"
-``
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+if [[ ! -s "$BDG_FOR_BW_EDU" ]]; then
+  echo "merging: $BDG_FOR_merge_EDU -> $BDG_FOR_BW_EDU"
+  be
