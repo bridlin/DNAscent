@@ -34,8 +34,8 @@ with open(input_file, "r") as f:
         # entry lines
         splitLine = line.split()
         posOnRef  = int(splitLine[0])
-        probBrdU  = float(splitLine[1])   # column 2  = BrdU
-        probEdU   = float(splitLine[2])   # column 3  = EdU
+        probEdU   = float(splitLine[1])   # column 2  = EdU 
+        probBrdU  = float(splitLine[2])   # column 3  = BrdU
         kmer      = splitLine[3]
 
         # bedGraph: chrom, start, end, value
