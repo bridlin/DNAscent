@@ -19,8 +19,8 @@ set -euo pipefail
 # ---- Config ----
 SAMPLES_FILE="DNAscent_NanoPore-run1/bam_list.txt"            # one sample ID per line
 DETECT_DIR="DNAscent_NanoPore-run1/dnascent/detect"               # where DNAscent detect outputs are
-BDG_DIR="${DETECT_DIR}/bdg"
-BW_DIR="${DETECT_DIR}/bigwig"
+BDG_DIR="${DETECT_DIR}/bdg_2"
+BW_DIR="${DETECT_DIR}/bigwig_2"
 CHROM_SIZES="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_TbruceiLister427_2018.chrom.sizes"      # precomputed chrom sizes for your reference
 
 
@@ -69,35 +69,35 @@ mkdir -p logs "$BDG_DIR" "$BW_DIR" tmp
 echo "Transforming DNAscent detect to bigwig files"
 echo "Submitting detect to bigwig array...Task ID: ${SLURM_ARRAY_TASK_ID}"
 
-# ---- Step 1: DNAscent detect -> bedGraph (call your Python) ----
-# if [[ ! -s "$RAW_BDG_BRDU" ]]; then
-#   echo "Generating bedGraph from DNAscent detect: $DETECT_INPUT -> $BRDU , $EDU, $BRDU_STRICT and $EDU_STRICT"
-#   python  scripts/DNAscent/detect_to_bdg.py "$DETECT_INPUT" \   
-# else
-#   echo "RAW_BDG exists, skipping generation: $RAW_BDG_BRDU"
-# fi
+---- Step 1: DNAscent detect -> bedGraph (call your Python) ----
+if [[ ! -s "$RAW_BDG_BRDU" ]]; then
+  echo "Generating bedGraph from DNAscent detect: $DETECT_INPUT -> $BRDU , $EDU, $BRDU_STRICT and $EDU_STRICT"
+  python  scripts/DNAscent/detect_to_bdg.py "$DETECT_INPUT" \   
+else
+  echo "RAW_BDG exists, skipping generation: $RAW_BDG_BRDU"
+fi
 
 
-# # Move all 4 files into BDG_DIR
-# mv "$BRDU" "$BDG_DIR/"
-# mv "$EDU" "$BDG_DIR/"
-# mv "$BRDU_STRICT" "$BDG_DIR/"
-# mv "$EDU_STRICT" "$BDG_DIR/"
+# Move all 4 files into BDG_DIR
+mv "$BRDU" "$BDG_DIR/"
+mv "$EDU" "$BDG_DIR/"
+mv "$BRDU_STRICT" "$BDG_DIR/"
+mv "$EDU_STRICT" "$BDG_DIR/"
 
 
 
-# ---- Step 2: Ensure bedGraph is sorted and valid ----
-# Sort by chrom and start; force LC_ALL=C for speed and consistent collation.
-# # EdU
-# if [[ ! -s "$SORTED_BDG_EDU" ]]; then
-#   echo "Sorting bedGraph..."
-#   LC_ALL=C sort -k1,1 -k2,2n "$RAW_BDG_EDU" > "$SORTED_BDG_EDU"
-# fi
-# # BrdU
-# if [[ ! -s "$SORTED_BDG_BRDU" ]]; then
-#   echo "Sorting bedGraph..."
-#   LC_ALL=C sort -k1,1 -k2,2n "$RAW_BDG_BRDU" > "$SORTED_BDG_BRDU"
-# fi
+---- Step 2: Ensure bedGraph is sorted and valid ----
+Sort by chrom and start; force LC_ALL=C for speed and consistent collation.
+# EdU
+if [[ ! -s "$SORTED_BDG_EDU" ]]; then
+  echo "Sorting bedGraph..."
+  LC_ALL=C sort -k1,1 -k2,2n "$RAW_BDG_EDU" > "$SORTED_BDG_EDU"
+fi
+# BrdU
+if [[ ! -s "$SORTED_BDG_BRDU" ]]; then
+  echo "Sorting bedGraph..."
+  LC_ALL=C sort -k1,1 -k2,2n "$RAW_BDG_BRDU" > "$SORTED_BDG_BRDU"
+fi
 
 
 
