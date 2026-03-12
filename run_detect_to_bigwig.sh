@@ -18,7 +18,7 @@ set -euo pipefail
 
 # ---- Config ----
 SAMPLES_FILE="DNAscent_NanoPore-run1/bam_list.txt"            # one sample ID per line
-DETECT_DIR="DNAscent_NanoPore-run1/dnascent/detect"               # where DNAscent detect outputs are
+DETECT_DIR="DNAscent_NanoPore-run1/dnascent/detect/detects"               # where DNAscent detect outputs are
 BDG_DIR="${DETECT_DIR}/bdg_2"
 BW_DIR="${DETECT_DIR}/bigwig_2"
 CHROM_SIZES="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_TbruceiLister427_2018.chrom.sizes"      # precomputed chrom sizes for your reference
