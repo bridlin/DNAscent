@@ -69,7 +69,7 @@ mkdir -p logs "$BDG_DIR" "$BW_DIR" tmp
 echo "Transforming DNAscent detect to bigwig files"
 echo "Submitting detect to bigwig array...Task ID: ${SLURM_ARRAY_TASK_ID}"
 
----- Step 1: DNAscent detect -> bedGraph (call your Python) ----
+# ---- Step 1: DNAscent detect -> bedGraph (call your Python) ----
 if [[ ! -s "$RAW_BDG_BRDU" ]]; then
   echo "Generating bedGraph from DNAscent detect: $DETECT_INPUT -> $BRDU , $EDU, $BRDU_STRICT and $EDU_STRICT"
   python  scripts/DNAscent/detect_to_bdg.py "$DETECT_INPUT" \   
@@ -86,9 +86,10 @@ mv "$EDU_STRICT" "$BDG_DIR/"
 
 
 
----- Step 2: Ensure bedGraph is sorted and valid ----
-Sort by chrom and start; force LC_ALL=C for speed and consistent collation.
+# ---- Step 2: Ensure bedGraph is sorted and valid ----
+# Sort by chrom and start; force LC_ALL=C for speed and consistent collation.
 # EdU
+
 if [[ ! -s "$SORTED_BDG_EDU" ]]; then
   echo "Sorting bedGraph..."
   LC_ALL=C sort -k1,1 -k2,2n "$RAW_BDG_EDU" > "$SORTED_BDG_EDU"
@@ -104,6 +105,7 @@ fi
 # Optional but recommended: Clip intervals to chrom sizes to avoid out-of-range errors.
 # Requires 'bedClip' (UCSC). If not available, skip; but ensure your python script doesn't produce out-of-bound intervals.
 # EdU
+
 if command -v bedClip >/dev/null 2>&1; then
   if [[ ! -s "$CLIPPED_BDG_EDU" ]]; then
     echo "Clipping bedGraph to chromosome sizes..."
