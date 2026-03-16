@@ -43,13 +43,13 @@ sorted="$bam_detect_dir/${bname}.trimmed.aligned.sorted.bam"
 
 
 
-# samtools \
-#   sort \
-#   -@ "$SLURM_CPUS_PER_TASK" \
-#   -o "$sorted" \
-#   "$detect"
+samtools \
+  sort \
+  -@ "$SLURM_CPUS_PER_TASK" \
+  -o "$sorted" \
+  "$detect"
 
-# samtools \
-#   index \
-#   -@ "$SLURM_CPUS_PER_TASK" \
-#   "$sorted"
+samtools \
+  index \
+  -@ "$SLURM_CPUS_PER_TASK" \
+  "$sorted"
