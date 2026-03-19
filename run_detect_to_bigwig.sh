@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#SBATCH --job-name=main_${USER}
+#SBATCH --job-name=detect_to_bigwig
 #SBATCH --array=0-17
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=34G
