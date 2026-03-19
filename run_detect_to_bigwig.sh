@@ -2,7 +2,7 @@
 #SBATCH --job-name=main_${USER}
 #SBATCH --array=0-17
 #SBATCH --cpus-per-task=4
-#SBATCH --mem=16G
+#SBATCH --mem=34G
 #SBATCH --partition=fast
 #SBATCH -o main_%A_%a.out
 #SBATCH -e main_%A_%a.err
@@ -32,8 +32,7 @@ BAM_PATH=$(sed -n "$((SLURM_ARRAY_TASK_ID+1))p" $SAMPLES_FILE)
 # Strip the directory
 SAMPLE=$(basename "$BAM_PATH" | cut -d '.' -f 1,2,3 )
 
-# Strip the extension
-#SAMPLE=$(cut -d '.' -f 1,2,3 ${BAM_FILE})
+
 
 # ---- Paths ----
 DETECT_INPUT="${DETECT_DIR}/${SAMPLE}.detect"   # adapt extension to your DNAscent output
