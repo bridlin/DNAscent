@@ -29,8 +29,8 @@ for sample in ${sample_dir}/*.fastq.gz ; do
         | samtools sort -@ ${SLURM_CPUS_PER_TASK} -o ${sname}_sorted.bam - && \
     samtools \
         index \
-        ${sname}_sorted.bam 
-;done
+        ${sname}_sorted.bam ; 
+done
 
 
 
