@@ -5,7 +5,7 @@ reference="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_Tbrucei
 kit_name="SQK-RBK114-24"                    # your barcode kit
 model="hac"                                 # dorado model: fast|hac|sup or full model string
 device="auto"   
-detect_mode="detect"                        # "detect" for table form output, "bam" for modbam output (requires --modbam-output in DNAscent)    
+detect_mode="bam"                        # "detect" for table form output, "bam" for modbam output (requires --modbam-output in DNAscent)    
 
 array_size=17                               # dorado -x: auto|cpu|cuda:all|cuda:0,1
 
