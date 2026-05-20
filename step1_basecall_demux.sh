@@ -49,7 +49,7 @@ echo "Basecalling with inline barcoding..."
 #     > "$basecall_bam" \
 #     2> "$output_dir/logs/basecaller.log"
     
-# echo " Demultiplexing (split per barcode, no re-classification)..."
+echo " Demultiplexing (split per barcode, no re-classification)..."
 # dorado demux \
 #   --output-dir "$output_dir/demux" \
 #   --emit-summary \
