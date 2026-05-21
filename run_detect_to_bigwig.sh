@@ -50,14 +50,14 @@ echo "[Task $SLURM_ARRAY_TASK_ID] Processing sample $SAMPLE"
 RAW_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.strict.bdg"
 RAW_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.bdg"
 
-SORTED_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.sorted.bdg"
-SORTED_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.bdg"
+SORTED_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.strict.sorted.bdg"
+SORTED_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.sorted.bdg"
 
-CLIPPED_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.clipped.bdg"
-CLIPPED_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.clipped.bdg"
+CLIPPED_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.strict.sorted.clipped.bdg"
+CLIPPED_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.sorted.clipped.bdg"
 
-BDG_FOR_BW_EDU="${BDG_DIR}/${SAMPLE}.EdU.merged.bdg"
-BDG_FOR_BW_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.merged.bdg"
+BDG_FOR_BW_EDU="${BDG_DIR}/${SAMPLE}.EdU.strict.sorted.merged.bdg"
+BDG_FOR_BW_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.sorted.merged.bdg"
 
 BW_OUT_EDU="${BW_DIR}/${SAMPLE}.EdU.bw"
 BW_OUT_BRDU="${BW_DIR}/${SAMPLE}.BrdU.bw"
