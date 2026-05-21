@@ -75,7 +75,7 @@ fi
 # EdU
 if [[ ! -s "$COUNT_EDU" ]]; then
   echo "counting tracks: $FILTERD_BDG_EDU -> $COUNT_EDU"
-  cut -f6  "$FILTERD_BDG_EDU" > "$COUNT_EDU"
+  cut -f6  "$FILTERD_BDG_EDU" | sort | uniq -c > "$COUNT_EDU"
 else
   echo "count exists, skipping: $COUNT_EDU"
 fi
@@ -87,12 +87,9 @@ fi
 # BrdU
 if [[ ! -s "$COUNT_BRDU" ]]; then
   echo "counting tracks: $FILTERD_BDG_BRDU -> $COUNT_BRDU"
-  cut -f6  "$FILTERD_BDG_BRDU" > "$COUNT_BRDU"
+  cut -f6  "$FILTERD_BDG_BRDU" | sort | uniq -c > "$COUNT_BRDU"
 else
   echo "count exists, skipping: $COUNT_BRDU"
-fi
-
-  echo "filter exists, skipping: $COUNT_BRDU"
 fi
 
 
