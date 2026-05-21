@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-#SBATCH --job-name=detect_to_bigwig
+#SBATCH --job-name=filter_bdgs
 #SBATCH --array=0-6
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=34G
 #SBATCH --partition=fast
-#SBATCH -o detect_to_bigwig_%A_%a.out
-#SBATCH -e detect_to_bigwig_%A_%a.err
+#SBATCH -o filter_bdgs_%A_%a.out
+#SBATCH -e filter_bdgs_%A_%a.err
 #SBATCH --mail-type=END
 #SBATCH --mail-user=bridlin.barckmann@umontpellier.fr
 
