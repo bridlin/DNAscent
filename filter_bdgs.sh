@@ -21,6 +21,10 @@ BDG_DIR="${DETECT_DIR}/bdg_q15l500"
 BW_DIR="${DETECT_DIR}/bigwig_q15l500"
 
 
+# ---- Resolve current sample ----
+# 1) Get the BAM filename for this array task
+BAM_PATH=$(sed -n "$((SLURM_ARRAY_TASK_ID+1))p" $SAMPLES_FILE)
+
 # Strip the directory
 SAMPLE=$(basename "$BAM_PATH" | cut -d '.' -f 1,2,3 )
 
