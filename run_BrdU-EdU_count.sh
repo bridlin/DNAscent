@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-#SBATCH --job-name=detect_to_bigwig
+#SBATCH --job-name=count_BrdU-EdU
 #SBATCH --array=0-7
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=34G
 #SBATCH --partition=fast
-#SBATCH -o detect_to_bigwig_%A_%a.out
-#SBATCH -e detect_to_bigwig_%A_%a.err
+#SBATCH -o count_BrdU-EdU_%A_%a.out
+#SBATCH -e count_BrdU-EdU_%A_%a.err
 #SBATCH --mail-type=END
 #SBATCH --mail-user=bridlin.barckmann@umontpellier.fr
 
