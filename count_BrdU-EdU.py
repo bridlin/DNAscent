@@ -7,6 +7,11 @@ import pandas as pd
 file_path = sys.argv[1]
 threshold = float(sys.argv[2])
 
+prefix = file_path.rsplit(".", 1)[0]
+
+output_file = prefix + "_labelling_per_read.csv"
+
+
 def parse_detect(file_path, threshold):
     results = []
 
@@ -72,6 +77,5 @@ def parse_detect(file_path, threshold):
 
 # Run
 df = parse_detect(file_path, threshold)
-df.to_csv("labelling_per_read.csv", index=False)
-
+df.to_csv(output_file, index=False)
 print(df.head())
