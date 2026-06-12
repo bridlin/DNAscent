@@ -72,26 +72,26 @@ echo "Submitting detect to bigwig array...Task ID: ${SLURM_ARRAY_TASK_ID}"
 
 
 # ---- Step 1: DNAscent detect -> bedGraph (run Python if either strict file missing)
-# if [[ ! -s "$RAW_BDG_BRDU" || ! -s "$RAW_BDG_EDU" ]]; then
-#   echo "[Step 1] Generating bedGraph from DNAscent detect -> BrdU/EdU strict"
-#   # Call your converter. Adjust arguments if your script needs more.
-#   python scripts/DNAscent/detect_to_bdg.py "$DETECT_INPUT"
+if [[ ! -s "$RAW_BDG_BRDU" || ! -s "$RAW_BDG_EDU" ]]; then
+  echo "[Step 1] Generating bedGraph from DNAscent detect -> BrdU/EdU strict"
+  # Call your converter. Adjust arguments if your script needs more.
+  python scripts/DNAscent/detect_to_bdg.py "$DETECT_INPUT"
 
-#   # Move outputs into BDG_DIR if they were written to DETECT_DIR
-#   for src in "$BRDU" "$EDU" "$BRDU_STRICT" "$EDU_STRICT"; do
-#     [[ -e "$src" ]] || continue  # skip if not created in DETECT_DIR
-#     dst="$BDG_DIR/$(basename "$src")"
-#     if [[ -s "$dst" ]]; then
-#       echo "[Step 1] $dst already present; removing duplicate at source."
-#       rm -f -- "$src"
-#     else
-#       echo "[Step 1] Moving $(basename "$src") -> $BDG_DIR/"
-#       mv -f -- "$src" "$dst"
-#     fi
-#   done
-# else
-#   echo "[Step 1] Raw strict bedGraphs already present, skipping generation."
-# fi
+  # Move outputs into BDG_DIR if they were written to DETECT_DIR
+  for src in "$BRDU" "$EDU" "$BRDU_STRICT" "$EDU_STRICT"; do
+    [[ -e "$src" ]] || continue  # skip if not created in DETECT_DIR
+    dst="$BDG_DIR/$(basename "$src")"
+    if [[ -s "$dst" ]]; then
+      echo "[Step 1] $dst already present; removing duplicate at source."
+      rm -f -- "$src"
+    else
+      echo "[Step 1] Moving $(basename "$src") -> $BDG_DIR/"
+      mv -f -- "$src" "$dst"
+    fi
+  done
+else
+  echo "[Step 1] Raw strict bedGraphs already present, skipping generation."
+fi
 
 
 
