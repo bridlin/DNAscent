@@ -71,7 +71,7 @@ def parse_detect(file_path, threshold):
 
 
 # Run
-df = parse_detect("your.detect", threshold=0.5)
+df = parse_detect(file_path, threshold)
 df.to_csv("labelling_per_read.csv", index=False)
 
 print(df.head())
