@@ -77,5 +77,5 @@ def parse_detect(file_path, threshold):
 
 # Run
 df = parse_detect(file_path, threshold)
-df.to_csv(output_file, index=False)
+df.to_csv(output_file, sep="\t",index=False)
 print(df.head())
