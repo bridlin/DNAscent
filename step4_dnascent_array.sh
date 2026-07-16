@@ -55,8 +55,8 @@ apptainer exec \
     --bam /aligned/${sample}.sorted.bam \
     --reference /ref/reference.fa \
     --index /index/pod.index \
-    --quality 15 \
-    --length 500 \
+    --quality 20 \
+    --length 1000 \
     --output /out/${sample}.${detect_mode} \
     --threads "$SLURM_CPUS_PER_TASK" 
 

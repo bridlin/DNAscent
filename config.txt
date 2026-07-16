@@ -1,6 +1,6 @@
 # ---- Required inputs ----
-analysis_name="NanoPore-run2"
-pod5_dir="pod5_run2"                        # directory with .pod5
+analysis_name="NanoPore-run3"
+pod5_dir="pod5_run3"                        # directory with .pod5
 reference="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_TbruceiLister427_2018_Genome.fasta"          # fasta
 kit_name="SQK-RBK114-24"                    # your barcode kit
 model="hac"                                 # dorado model: fast|hac|sup or full model string
