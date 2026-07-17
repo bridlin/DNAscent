@@ -35,74 +35,74 @@ echo "pod5 input = $pod5_dir"
 echo "kit-name" = $kit_name
 
 
-echo "===== DEBUG ====="
-hostname
-pwd
+# echo "===== DEBUG ====="
+# hostname
+# pwd
 
-echo "pod5_dir=$pod5_dir"
+# echo "pod5_dir=$pod5_dir"
 
-ls -ld "$pod5_dir"
+# ls -ld "$pod5_dir"
 
-find "$pod5_dir" -name "*.pod5" | head
+# find "$pod5_dir" -name "*.pod5" | head
 
-find "$pod5_dir" -name "*.pod5" | wc -l
+# find "$pod5_dir" -name "*.pod5" | wc -l
 
-echo "================="
+# echo "================="
 
-FILE=$(find "$pod5_dir" -name "*.pod5" | head -1)
+# FILE=$(find "$pod5_dir" -name "*.pod5" | head -1)
 
-echo "TEST FILE=$FILE"
+# echo "TEST FILE=$FILE"
 
-pod5 inspect summary "$FILE"
+# pod5 inspect summary "$FILE"
 
-echo "===== test file access ====="
+# echo "===== test file access ====="
 
-ls -lh /shared/projects2/mivegec_analysis_sns_seq/pod5_run3/FBE77896_b1ba7c8d_a9590380_10.pod5
+# ls -lh /shared/projects2/mivegec_analysis_sns_seq/pod5_run3/FBE77896_b1ba7c8d_a9590380_10.pod5
 
-ls -lh /shared/projects/mivegec_analysis_sns_seq/pod5_run3/FBE77896_b1ba7c8d_a9590380_10.pod5
+# ls -lh /shared/projects/mivegec_analysis_sns_seq/pod5_run3/FBE77896_b1ba7c8d_a9590380_10.pod5
 
-echo "===== test basecalling ====="
+# echo "===== test basecalling ====="
 
-FILE=/shared/projects2/mivegec_analysis_sns_seq/pod5_run3/FBE77896_b1ba7c8d_a9590380_10.pod5
+# FILE=/shared/projects2/mivegec_analysis_sns_seq/pod5_run3/FBE77896_b1ba7c8d_a9590380_10.pod5
 
-dorado basecaller \
-    "$model" \
-    "$FILE" \
-    -x "$device" \
-    > single_test.bam \
-    2> single_test.log
+# dorado basecaller \
+#     "$model" \
+#     "$FILE" \
+#     -x "$device" \
+#     > single_test.bam \
+#     2> single_test.log
 
-echo $?
-cat single_test.log
-ls -lh single_test.bam
-
-
-
-echo "================="
+# echo $?
+# cat single_test.log
+# ls -lh single_test.bam
 
 
-###############################################################################
-# STEP 1 — Basecalling and demultiplexing
-###############################################################################
 
-# Classify during basecalling, then split without re-classifying
-# Ref: Inline classification and --no-classify during demux. [2](https://software-docs.nanoporetech.com/dorado/latest/barcoding/barcoding/)
-echo "Basecalling with inline barcoding..."
-basecall_bam="$output_dir/basecall/${analysis_name}.bam"
-dorado basecaller "$model" "$pod5_dir" \
-    -x "$device" \
-    --kit-name "$kit_name" \
-    --no-trim \
-    > "$basecall_bam" \
-    2> "$output_dir/logs/basecaller.log"
+# echo "================="
+
+
+# ###############################################################################
+# # STEP 1 — Basecalling and demultiplexing
+# ###############################################################################
+
+# # Classify during basecalling, then split without re-classifying
+# # Ref: Inline classification and --no-classify during demux. [2](https://software-docs.nanoporetech.com/dorado/latest/barcoding/barcoding/)
+# echo "Basecalling with inline barcoding..."
+# basecall_bam="$output_dir/basecall/${analysis_name}.bam"
+# dorado basecaller "$model" "$pod5_dir" \
+#     -x "$device" \
+#     --kit-name "$kit_name" \
+#     --no-trim \
+#     > "$basecall_bam" \
+#     2> "$output_dir/logs/basecaller.log"
     
-echo " Demultiplexing (split per barcode, no re-classification)..."
-dorado demux \
-  --output-dir "$output_dir/demux" \
-  --emit-summary \
-  --no-classify \
-  "$basecall_bam" \
-  2> "$output_dir/logs/demux.log"
+# echo " Demultiplexing (split per barcode, no re-classification)..."
+# dorado demux \
+#   --output-dir "$output_dir/demux" \
+#   --emit-summary \
+#   --no-classify \
+#   "$basecall_bam" \
+#   2> "$output_dir/logs/demux.log"
 
 
 

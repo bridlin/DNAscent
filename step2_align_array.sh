@@ -50,29 +50,29 @@ echo $trimmed
 echo $aligned
 echo $sorted
 
-# 1) TRIM
-dorado trim "$bam" \
-  --sequencing-kit "$kit_name" \
-  > "$trimmed"
+# # 1) TRIM
+# dorado trim "$bam" \
+#   --sequencing-kit "$kit_name" \
+#   > "$trimmed"
 
-# 2) ALIGN
-dorado aligner \
-  --threads "$SLURM_CPUS_PER_TASK" \
-  "$reference"\
-  "$trimmed" \
-  > "$aligned" \
-  2>> "$output_dir/logs/${bname}_align.log"
+# # 2) ALIGN
+# dorado aligner \
+#   --threads "$SLURM_CPUS_PER_TASK" \
+#   "$reference"\
+#   "$trimmed" \
+#   > "$aligned" \
+#   2>> "$output_dir/logs/${bname}_align.log"
 
-samtools \
-  sort \
-  -@ "$SLURM_CPUS_PER_TASK" \
-  -o "$sorted" \
-  "$aligned"
+# samtools \
+#   sort \
+#   -@ "$SLURM_CPUS_PER_TASK" \
+#   -o "$sorted" \
+#   "$aligned"
 
-samtools \
-  index \
-  -@ "$SLURM_CPUS_PER_TASK" \
-  "$sorted"
+# samtools \
+#   index \
+#   -@ "$SLURM_CPUS_PER_TASK" \
+#   "$sorted"
 
 # rm -f "$aligned"
 
