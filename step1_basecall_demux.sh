@@ -9,7 +9,7 @@
 #SBATCH --output=slurm_log/%x_%A_%a.out
 #SBATCH --error=slurm_log/%x_%A_%a.err
 
-
+set -euo pipefail
 
 
 
@@ -55,6 +55,25 @@ echo "TEST FILE=$FILE"
 
 pod5 inspect summary "$FILE"
 
+
+echo "===== test basecalling ====="
+
+FILE=/shared/projects2/mivegec_analysis_sns_seq/pod5_run3/FBE77896_b1ba7c8d_a9590380_10.pod5
+
+dorado basecaller \
+    "$model" \
+    "$FILE" \
+    -x "$device" \
+    > single_test.bam \
+    2> single_test.log
+
+echo $?
+cat single_test.log
+ls -lh single_test.bam
+
+
+
+echo "================="
 
 
 ###############################################################################
