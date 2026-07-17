@@ -49,6 +49,12 @@ find "$pod5_dir" -name "*.pod5" | wc -l
 
 echo "================="
 
+FILE=$(find "$pod5_dir" -name "*.pod5" | head -1)
+
+echo "TEST FILE=$FILE"
+
+pod5 inspect summary "$FILE"
+
 
 
 ###############################################################################
