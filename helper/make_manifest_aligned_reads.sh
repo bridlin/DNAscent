@@ -8,7 +8,7 @@ echo "aligned_dir = $aligned_dir"
 
 
 # For DNAscent array (aligned outputs)
-find "$aligned_dir" -type f -name "*.bam" | sort > "$output_dir/bam_list.txt"
+find "$aligned_dir" -type f -name "*.aligned.sorted.bam" | sort > "$output_dir/bam_list.txt"
 
 
 if [ ! -s "$output_dir/bam_list.txt" ]; then
