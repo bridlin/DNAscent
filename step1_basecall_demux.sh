@@ -34,6 +34,23 @@ echo "analysis name = $analysis_name"
 echo "pod5 input = $pod5_dir"
 echo "kit-name" = $kit_name
 
+
+echo "===== DEBUG ====="
+hostname
+pwd
+
+echo "pod5_dir=$pod5_dir"
+
+ls -ld "$pod5_dir"
+
+find "$pod5_dir" -name "*.pod5" | head
+
+find "$pod5_dir" -name "*.pod5" | wc -l
+
+echo "================="
+
+
+
 ###############################################################################
 # STEP 1 — Basecalling and demultiplexing
 ###############################################################################
