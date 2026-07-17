@@ -14,7 +14,7 @@
 
 module purge
 module load singularity
-module load dorado/1.0.2
+module load dorado/1.4.0
 module load samtools/1.21
 
 set -euo pipefail
