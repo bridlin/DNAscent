@@ -36,7 +36,7 @@ echo $reference
 echo $container_sif
 
 bam=$(sed -n "${SLURM_ARRAY_TASK_ID}p" "$bam_list")
-sample=$(basename "$bam" .aligned.sorted.bam)
+sample=$(basename "$bam" .trimmed.aligned.sorted.bam)
 
 
 
@@ -52,7 +52,7 @@ apptainer exec \
   -B "$pod5_dir":/pod5 \
   "$container_sif" \
   /app/DNAscent/bin/DNAscent detect \
-    --bam /aligned/${sample}.sorted.bam \
+    --bam /aligned/${bam} \
     --reference /ref/reference.fa \
     --index /index/pod.index \
     --quality 20 \
