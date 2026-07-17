@@ -55,6 +55,11 @@ echo "TEST FILE=$FILE"
 
 pod5 inspect summary "$FILE"
 
+echo "===== test file access ====="
+
+ls -lh /shared/projects2/mivegec_analysis_sns_seq/pod5_run3/FBE77896_b1ba7c8d_a9590380_10.pod5
+
+ls -lh /shared/projects/mivegec_analysis_sns_seq/pod5_run3/FBE77896_b1ba7c8d_a9590380_10.pod5
 
 echo "===== test basecalling ====="
 
