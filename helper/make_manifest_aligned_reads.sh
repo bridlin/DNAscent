@@ -8,5 +8,10 @@ echo "aligned_dir = $aligned_dir"
 
 
 # For DNAscent array (aligned outputs)
-ls "$aligned_dir"/*.sorted.bam > "$output_dir/bam_list.txt"
+find "$aligned_dir" -type f -name "*.bam" | sort > "$output_dir/bam_list.txt"
 
+
+if [ ! -s "$output_dir/bam_list.txt" ]; then
+    echo "ERROR: No BAM files found in $aligned_dir"
+    exit 1
+fi
