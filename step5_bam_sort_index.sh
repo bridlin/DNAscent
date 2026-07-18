@@ -37,8 +37,8 @@ bam_detect_dir="$output_dir/dnascent/detect"
 bam=$(sed -n "${SLURM_ARRAY_TASK_ID}p" "$demux_list")
 bname=$(basename "$bam" .bam)
 
-detect="$bam_detect_dir/${bname}.trimmed.aligned.bam"
-sorted="$bam_detect_dir/${bname}.trimmed.aligned.sorted.bam"
+detect="$bam_detect_dir/${bname}.bam"
+sorted="$bam_detect_dir/${bname}.sorted.bam"
 
 
 
