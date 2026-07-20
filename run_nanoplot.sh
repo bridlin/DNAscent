@@ -12,17 +12,7 @@ module purge
 module load nanoplot/1.46.2
 
 
-# for files in DNAscent_NanoPore-run3/demux/*.bam ; do
-# 	NanoPlot \
-# 		-o nanoplot_run3 \
-# 		--ubam ${files} ; done
 
-
-# input = "DNAscent_NanoPore-run3/demux/"
-
-# 	NanoPlot \
-# 		-o nanoplot_run3 \
-# 		--ubam ${input} ; done
 
 for i in 05 06 07 08 09 10 ; do
 NanoPlot \
