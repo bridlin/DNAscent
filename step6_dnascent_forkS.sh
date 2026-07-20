@@ -40,7 +40,7 @@ echo $detect_dir
 
 
 bam=$(sed -n "${SLURM_ARRAY_TASK_ID}p" "$bam_list")
-sample=$(basename "$bam" .sorted.bam)
+sample=$(basename "$bam" .trimmed.aligned.sorted.bam)
 
 
 # Before apptainer exec, create a per-sample outdir
