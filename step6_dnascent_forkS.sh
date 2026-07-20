@@ -49,28 +49,28 @@ mkdir -p "$sample_out" 2>/dev/null || true
 
 echo "DNAscent forkSense for ${sample} ..."
 
-# Optional pre-run debug: list current contents of sample_out
-echo "[DEBUG pre] Contents of ${sample_out}:"
-ls -l "$sample_out" || true
+# # Optional pre-run debug: list current contents of sample_out
+# echo "[DEBUG pre] Contents of ${sample_out}:"
+# ls -l "$sample_out" || true
 
-apptainer exec \
-  --pwd /out \
-  -B "$sample_out":/out \
-  -B "$detect_dir":/detect \
-  "$container_sif" \
-  /app/DNAscent/bin/DNAscent forkSense \
-    --detect /detect/${sample}.sorted.bam \
-    --output /out/${sample} \
-    --order BrdU,EdU \
-    --markAnalogues \
-    --markOrigins \
-    --markTerminations \
-    --markForks \
-    --threads "$SLURM_CPUS_PER_TASK"
+# apptainer exec \
+#   --pwd /out \
+#   -B "$sample_out":/out \
+#   -B "$detect_dir":/detect \
+#   "$container_sif" \
+#   /app/DNAscent/bin/DNAscent forkSense \
+#     --detect /detect/${sample}.sorted.bam \
+#     --output /out/${sample} \
+#     --order BrdU,EdU \
+#     --markAnalogues \
+#     --markOrigins \
+#     --markTerminations \
+#     --markForks \
+#     --threads "$SLURM_CPUS_PER_TASK"
 
-# Optional post-run debug: verify outputs landed in the per-sample dir
-echo "[DEBUG post] Contents of ${sample_out}:"
-ls -l "$sample_out" || true
+# # Optional post-run debug: verify outputs landed in the per-sample dir
+# echo "[DEBUG post] Contents of ${sample_out}:"
+# ls -l "$sample_out" || true
 
-echo "DNAscent forkSense done: ${sample} → ${sample_out}"
+# echo "DNAscent forkSense done: ${sample} → ${sample_out}"
 
