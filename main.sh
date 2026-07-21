@@ -52,8 +52,7 @@ echo "Building manifest files for alignment..."
 
 MAN1=$(sbatch \
   --parsable \
- 
-  "scripts/DNAscent/helper/make_manifest_demux-bams.sh")
+ "scripts/DNAscent/helper/make_manifest_demux-bams.sh")
 
 echo "   Manifest generation submitted. job id: $MAN1"
 
