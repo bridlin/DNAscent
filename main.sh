@@ -39,25 +39,25 @@ fi
 # STEP 1 — Basecalling + Demux
 ###############################################################################
 
-echo "Step 1: Basecall + demux"
-echo "Submitting Step 1: Basecall + demux..."
+# echo "Step 1: Basecall + demux"
+# echo "Submitting Step 1: Basecall + demux..."
 
-BASECALL_JOBID=$(sbatch \
-  --parsable "scripts/DNAscent/step1_basecall_demux.sh")
+# BASECALL_JOBID=$(sbatch \
+#   --parsable "scripts/DNAscent/step1_basecall_demux.sh")
 
-echo "   basecalling and demux job id: $BASECALL_JOBID"
+# echo "   basecalling and demux job id: $BASECALL_JOBID"
 
 ################ Prepare manifests for alignment ################
 echo "Building manifest files for alignment..."
 
 MAN1=$(sbatch \
   --parsable \
-  --dependency=afterok:${BASECALL_JOBID} \
+ 
   "scripts/DNAscent/helper/make_manifest_demux-bams.sh")
 
 echo "   Manifest generation submitted. job id: $MAN1"
 
-
+ # --dependency=afterok:${BASECALL_JOBID} \
 ###############################################################################
 # STEP 2 — submitting Alignment array (depends on Step 1)
 ###############################################################################
