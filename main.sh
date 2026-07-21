@@ -111,7 +111,7 @@ echo "Step 4: DNAscent detect array"
 echo "Submitting Step 4 DNAscent index..."
 
 DNASCENT_JOBID=$(sbatch \
-  --array=1-${array_size}%20 \
+  --array=9-${array_size}%20 \
   --parsable \
   --dependency=afterok:${DNAscent_index_JOBID} \
   --export=ALL \
