@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=detect_to_bigwig
-#SBATCH --array=0-9
+#SBATCH --array=0-5
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=34G
 #SBATCH --partition=fast
@@ -17,7 +17,7 @@ module load bedtools/2.31.1
 set -euo pipefail
 
 # ---- Config ----
-SAMPLES_FILE="DNAscent_NanoPore-run2/bam_list.txt"            # one sample ID per line
+SAMPLES_FILE="DNAscent_NanoPore-run3/bam_list.txt"            # one sample ID per line
 DETECT_DIR="DNAscent_NanoPore-run3/dnascent/detect/detects"               # where DNAscent detect outputs are
 BDG_DIR="${DETECT_DIR}/bdg_q20l1000"
 BW_DIR="${DETECT_DIR}/bigwig_q20l1000"
