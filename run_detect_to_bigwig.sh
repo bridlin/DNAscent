@@ -30,7 +30,8 @@ mkdir -p logs "$BDG_DIR" "$BW_DIR" tmp
 BAM_PATH=$(sed -n "$((SLURM_ARRAY_TASK_ID+1))p" $SAMPLES_FILE)
 
 # Strip the directory
-SAMPLE=$(basename "$BAM_PATH" | cut -d '.' -f 1,2,3 )
+
+SAMPLE=$(basename "$BAM_PATH" .trimmed.aligned.sorted.bam)
 
 
 
