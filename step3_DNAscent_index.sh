@@ -1,8 +1,6 @@
 #!/bin/bash
 #SBATCH --mail-type=END
 #SBATCH --mail-user=b-barckmann@chu-montpellier.fr
-#SBATCH --partition=gpu
-#SBATCH --gres=gpu:l40s:2
 #SBATCH --cpus-per-task=6
 #SBATCH --mem=16G
 #SBATCH --job-name=index_

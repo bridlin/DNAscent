@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=dnascent_array
 #SBATCH --partition=gpu
-#SBATCH --gres=gpu:l40s:2
+#SBATCH --gres=gpu:l40s:1
 #SBATCH --cpus-per-task=6
 #SBATCH --mem=16G
 #SBATCH --job-name=dnascent_
