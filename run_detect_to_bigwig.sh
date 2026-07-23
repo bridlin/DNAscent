@@ -19,8 +19,8 @@ set -euo pipefail
 # ---- Config ----
 SAMPLES_FILE="DNAscent_NanoPore-run3/bam_list.txt"            # one sample ID per line
 DETECT_DIR="DNAscent_NanoPore-run3/dnascent/detect/detects"               # where DNAscent detect outputs are
-BDG_DIR="${DETECT_DIR}/bdg_q20l1000_2"
-BW_DIR="${DETECT_DIR}/bigwig_q20l1000_2"
+BDG_DIR="${DETECT_DIR}/bdg_q20l1000_3"
+BW_DIR="${DETECT_DIR}/bigwig_q20l1000_3"
 CHROM_SIZES="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_TbruceiLister427_2018.chrom.sizes"      # precomputed chrom sizes for your reference
 
 mkdir -p logs "$BDG_DIR" "$BW_DIR" tmp
@@ -48,23 +48,25 @@ EDU_STRICT="${DETECT_DIR}/${SAMPLE}.EdU.strict.bdg"
 
 echo "[Task $SLURM_ARRAY_TASK_ID] Processing sample $SAMPLE"
 
-RAW_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.strict.bdg"
-RAW_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.bdg"
 
-SORTED_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.strict.sorted.bdg"
-SORTED_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.sorted.bdg"
 
-CLIPPED_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.strict.sorted.clipped.bdg"
-CLIPPED_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.sorted.clipped.bdg"
+SORTED_STRICT_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.strict.sorted.bdg"
+SORTED_STRICT_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.sorted.bdg"
 
-BDG_FOR_BW_EDU="${BDG_DIR}/${SAMPLE}.EdU.strict.sorted.merged.bdg"
-BDG_FOR_BW_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.sorted.merged.bdg"
+SORTED_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.sorted.bdg"
+SORTED_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.bdg"
+
+$BDG_FILTERED_EDU="${BDG_DIR}/${SAMPLE}.EdU.sorted.filtered.bdg"
+$BDG_FILTERED_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.filtered.bdg"
+
+$BDG_STRICT_FILTERED_EDU="${BDG_DIR}/${SAMPLE}.EdU.strict.sorted.filtered.bdg"
+$BDG_STRICT_FILTERED_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.sorted.filtered.bdg"
+
+BDG_MERGED_EDU="${BDG_DIR}/${SAMPLE}.EdU.strict.sorted.merged.bdg"
+BDG_MERGED_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.sorted.merged.bdg"
 
 BW_OUT_EDU="${BW_DIR}/${SAMPLE}.EdU.bw"
 BW_OUT_BRDU="${BW_DIR}/${SAMPLE}.BrdU.bw"
-
-
-
 
 echo "Transforming DNAscent detect to bigwig files"
 echo "Submitting detect to bigwig array...Task ID: ${SLURM_ARRAY_TASK_ID}"
@@ -101,95 +103,90 @@ fi
 # Sort by chrom and start; force LC_ALL=C for speed and consistent collation.
 # EdU
 
+if [[ ! -s "$SORTED_STRICT_BDG_EDU" ]]; then
+  echo "Sorting bedGraph..."
+  LC_ALL=C sort -k1,1 -k2,2n "$EDU_STRICT" > "$SORTED_STRICT_BDG_EDU"
+fi
+# BrdU
+if [[ ! -s "$SORTED_STRICT_BDG_BRDU" ]]; then
+  echo "Sorting bedGraph..."
+  LC_ALL=C sort -k1,1 -k2,2n "$BRDU_STRICT" > "$SORTED_STRICT_BDG_BRDU"
+fi
+
+
 if [[ ! -s "$SORTED_BDG_EDU" ]]; then
   echo "Sorting bedGraph..."
-  LC_ALL=C sort -k1,1 -k2,2n "$RAW_BDG_EDU" > "$SORTED_BDG_EDU"
+  LC_ALL=C sort -k1,1 -k2,2n "$EDU" > "$SORTED_BDG_EDU"
 fi
 # BrdU
 if [[ ! -s "$SORTED_BDG_BRDU" ]]; then
   echo "Sorting bedGraph..."
-  LC_ALL=C sort -k1,1 -k2,2n "$RAW_BDG_BRDU" > "$SORTED_BDG_BRDU"
+  LC_ALL=C sort -k1,1 -k2,2n "$BRDU" > "$SORTED_BDG_BRDU"
 fi
 
 
 
-# Optional but recommended: Clip intervals to chrom sizes to avoid out-of-range errors.
-# Requires 'bedClip' (UCSC). If not available, skip; but ensure your python script doesn't produce out-of-bound intervals.
+# # ---- Step 3: bedGraph filtering  ----
 # EdU
-
-if command -v bedClip >/dev/null 2>&1; then
-  if [[ ! -s "$CLIPPED_BDG_EDU" ]]; then
-    echo "Clipping bedGraph to chromosome sizes..."
-    bedClip "$SORTED_BDG_EDU" "$CHROM_SIZES" "$CLIPPED_BDG_EDU"
-  fi
-  BDG_FOR_merge_EDU="$CLIPPED_BDG_EDU"
-else
-  echo "bedClip not found; proceeding without clipping."
-  BDG_FOR_merge_EDU="$SORTED_BDG_EDU"
-fi
-# BrdU
-if command -v bedClip >/dev/null 2>&1; then
-  if [[ ! -s "$CLIPPED_BDG_BRDU" ]]; then
-    echo "Clipping bedGraph to chromosome sizes..."
-    bedClip "$SORTED_BDG_BRDU" "$CHROM_SIZES" "$CLIPPED_BDG_BRDU"
-  fi
-  BDG_FOR_merge_BRDU="$CLIPPED_BDG_BRDU"
-else
-  echo "bedClip not found; proceeding without clipping."
-  BDG_FOR_merge_BRDU="$SORTED_BDG_BRDU"
-fi
-
-
-
-
-# # ---- Step 3: bedGraph merge  ----
-# EdU
-if [[ ! -s "$BDG_FOR_BW_EDU" ]]; then
-  echo "merging: $BDG_FOR_merge_EDU -> $BDG_FOR_BW_EDU"
-  bedtools merge -d -1 -i "$BDG_FOR_merge_EDU" -c 4 -o mean >  "$BDG_FOR_BW_EDU"
-else
-  echo "merge exists, skipping: $BDG_FOR_BW_EDU"
-fi
-
-
-
+awk  '{ OFS="\t" } {if ($4 >= 0.5) print $0 }' "$SORTED_STRICT_BDG_EDU" > "$BDG_STRICT_FILTERED_EDU"
 
 # BrdU
-if [[ ! -s "$BDG_FOR_BW_BRDU" ]]; then
-  echo "merging: $BDG_FOR_merge_BRDU -> $BDG_FOR_BW_BRDU"
-  bedtools merge -d -1 -i "$BDG_FOR_merge_BRDU" -c 4 -o mean >  "$BDG_FOR_BW_BRDU"
+awk  '{ OFS="\t" } {if ($4 >= 0.5) print $0 }' "$SORTED_STRICT_BDG_BRDU" > "$BDG_STRICT_FILTERED_BRDU"
+
+
+# EdU
+awk  '{ OFS="\t" } {if ($4 >= 0.5) print $0 }' "$SORTED_BDG_EDU" > "$BDG_FILTERED_EDU"
+
+# BrdU
+awk  '{ OFS="\t" } {if ($4 >= 0.5) print $0 }' "$SORTED_BDG_BRDU" > "$BDG_FILTERED_BRDU"
+
+
+
+# # ---- Step 4: bedGraph merge  ----
+# EdU
+
+
+
+if [[ ! -s "$BDG_MERGED_EDU" ]]; then
+  echo "merging: $BDG_STRICT_FILTERED_EDU -> $BDG_MERGED_EDU"
+  bedtools merge -d -1 -i "$BDG_STRICT_FILTERED_EDU" -c 4 -o mean > "$BDG_MERGED_EDU"
 else
-  echo "merge exists, skipping: $BDG_FOR_BW_BRDU"
+  echo "merge exists, skipping: $BDG_MERGED_EDU"
 fi
 
-
-
+# BrdU
+if [[ ! -s "$BDG_MERGED_BRDU" ]]; then
+  echo "merging: $BDG_STRICT_FILTERED_BRDU -> $BDG_MERGED_BRDU"
+  bedtools merge -d -1 -i "$BDG_STRICT_FILTERED_BRDU" -c 4 -o mean > "$BDG_MERGED_BRDU"
+else
+  echo "merge exists, skipping: $BDG_MERGED_BRDU"
+fi
 
 
 
 # ---- Step 4: bedGraph -> bigWig ----
 # EdU
 if [[ ! -s "$BW_OUT_EDU" ]]; then
-  echo "Converting to bigWig: $BDG_FOR_BW_EDU -> $BW_OUT_EDU"
-  bedGraphToBigWig "$BDG_FOR_BW_EDU" "$CHROM_SIZES" "$BW_OUT_EDU"
+  echo "Converting to bigWig: $BDG_MERGED_EDU -> $BW_OUT_EDU"
+  bedGraphToBigWig "$BDG_MERGED_EDU" "$CHROM_SIZES" "$BW_OUT_EDU"
 else
   echo "BigWig exists, skipping: $BW_OUT_EDU"
 fi
 
 echo "[$(date)] DONE EDU sample=$SAMPLE"
 
-
-
-
 # BrdU
 if [[ ! -s "$BW_OUT_BRDU" ]]; then
-  echo "Converting to bigWig: $BDG_FOR_BW_BRDU -> $BW_OUT_BRDU"
-  bedGraphToBigWig "$BDG_FOR_BW_BRDU" "$CHROM_SIZES" "$BW_OUT_BRDU"
+  echo "Converting to bigWig: $BDG_MERGED_BRDU -> $BW_OUT_BRDU"
+  bedGraphToBigWig "$BDG_MERGED_BRDU" "$CHROM_SIZES" "$BW_OUT_BRDU"
 else
   echo "BigWig exists, skipping: $BW_OUT_BRDU"
 fi
 
 echo "[$(date)] DONE BRDU sample=$SAMPLE"
+``
+
+
 ``
 
 
