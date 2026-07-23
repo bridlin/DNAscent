@@ -48,7 +48,10 @@ EDU_STRICT="${DETECT_DIR}/${SAMPLE}.EdU.strict.bdg"
 
 echo "[Task $SLURM_ARRAY_TASK_ID] Processing sample $SAMPLE"
 
-
+BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.bdg"
+BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.bdg"
+BDG_BRDU_STRICT="${BDG_DIR}/${SAMPLE}.BrdU.strict.bdg"
+BDG_EDU_STRICT="${BDG_DIR}/${SAMPLE}.EdU.strict.bdg"
 
 SORTED_STRICT_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.strict.sorted.bdg"
 SORTED_STRICT_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.sorted.bdg"
@@ -105,7 +108,7 @@ fi
 
 if [[ ! -s "$SORTED_STRICT_BDG_EDU" ]]; then
   echo "Sorting bedGraph..."
-  LC_ALL=C sort -k1,1 -k2,2n "$EDU_STRICT" > "$SORTED_STRICT_BDG_EDU"
+  LC_ALL=C sort -k1,1 -k2,2n "$BDG_EDU_STRICT" > "$SORTED_STRICT_BDG_EDU"
 fi
 # BrdU
 if [[ ! -s "$SORTED_STRICT_BDG_BRDU" ]]; then
@@ -116,7 +119,7 @@ fi
 
 if [[ ! -s "$SORTED_BDG_EDU" ]]; then
   echo "Sorting bedGraph..."
-  LC_ALL=C sort -k1,1 -k2,2n "$EDU" > "$SORTED_BDG_EDU"
+  LC_ALL=C sort -k1,1 -k2,2n "$BDG_EDU" > "$SORTED_BDG_EDU"
 fi
 # BrdU
 if [[ ! -s "$SORTED_BDG_BRDU" ]]; then
