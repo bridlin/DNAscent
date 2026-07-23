@@ -113,7 +113,7 @@ fi
 # BrdU
 if [[ ! -s "$SORTED_STRICT_BDG_BRDU" ]]; then
   echo "Sorting bedGraph..."
-  LC_ALL=C sort -k1,1 -k2,2n "$BRDU_STRICT" > "$SORTED_STRICT_BDG_BRDU"
+  LC_ALL=C sort -k1,1 -k2,2n "$BDG_BRDU_STRICT" > "$SORTED_STRICT_BDG_BRDU"
 fi
 
 
@@ -124,7 +124,7 @@ fi
 # BrdU
 if [[ ! -s "$SORTED_BDG_BRDU" ]]; then
   echo "Sorting bedGraph..."
-  LC_ALL=C sort -k1,1 -k2,2n "$BRDU" > "$SORTED_BDG_BRDU"
+  LC_ALL=C sort -k1,1 -k2,2n "$BDG_BRDU" > "$SORTED_BDG_BRDU"
 fi
 
 
