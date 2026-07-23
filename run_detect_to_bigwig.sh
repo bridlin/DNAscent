@@ -56,11 +56,11 @@ SORTED_STRICT_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.sorted.bdg"
 SORTED_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.sorted.bdg"
 SORTED_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.bdg"
 
-$BDG_FILTERED_EDU="${BDG_DIR}/${SAMPLE}.EdU.sorted.filtered.bdg"
-$BDG_FILTERED_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.filtered.bdg"
+BDG_FILTERED_EDU="${BDG_DIR}/${SAMPLE}.EdU.sorted.filtered.bdg"
+BDG_FILTERED_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.filtered.bdg"
 
-$BDG_STRICT_FILTERED_EDU="${BDG_DIR}/${SAMPLE}.EdU.strict.sorted.filtered.bdg"
-$BDG_STRICT_FILTERED_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.sorted.filtered.bdg"
+BDG_STRICT_FILTERED_EDU="${BDG_DIR}/${SAMPLE}.EdU.strict.sorted.filtered.bdg"
+BDG_STRICT_FILTERED_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.sorted.filtered.bdg"
 
 BDG_MERGED_EDU="${BDG_DIR}/${SAMPLE}.EdU.strict.sorted.merged.bdg"
 BDG_MERGED_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.sorted.merged.bdg"
