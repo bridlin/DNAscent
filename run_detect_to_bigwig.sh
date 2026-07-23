@@ -78,7 +78,7 @@ echo "Submitting detect to bigwig array...Task ID: ${SLURM_ARRAY_TASK_ID}"
 
 
 # ---- Step 1: DNAscent detect -> bedGraph (run Python if either strict file missing)
-if [[ ! -s "$BRDU_STRICT" || ! -s "$EDU_STRICT" ]]; then
+if [[ ! -s "$BDG_BRDU_STRICT" || ! -s "$BDG_EDU_STRICT" ]]; then
   echo "[Step 1] Generating bedGraph from DNAscent detect -> BrdU/EdU strict"
   # Call your converter. Adjust arguments if your script needs more.
   python scripts/DNAscent/detect_to_bdg.py "$DETECT_INPUT"
