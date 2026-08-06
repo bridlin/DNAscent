@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=detect_to_bigwig
-#SBATCH --array=0-1
+#SBATCH --array=0-0
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=34G
 #SBATCH --partition=fast
