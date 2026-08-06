@@ -65,7 +65,7 @@ echo "Step 2: Alignment"
 echo "Submitting Step 2 alignment array..."
 
 ALIGN_JOBID=$(sbatch \
-  --array=6-${array_size}%20 \
+  --array=0-${array_size}%20 \
   --parsable \
   --dependency=afterok:${MAN1} \
   "scripts/DNAscent/step2_align_array.sh")
@@ -110,7 +110,7 @@ echo "Step 4: DNAscent detect array"
 echo "Submitting Step 4 DNAscent index..."
 
 DNASCENT_JOBID=$(sbatch \
-  --array=6-${array_size}%20 \
+  --array=0-${array_size}%20 \
   --parsable \
   --dependency=afterok:${DNAscent_index_JOBID} \
   --export=ALL \
@@ -127,7 +127,7 @@ echo "Step 5: sorting and indexing the output BAMs"
 echo "Submitting Step 5: sorting and indexing the output BAMs..."
 
 BAM_SORT_JOBID=$(sbatch \
-  --array=6-${array_size}%20 \
+  --array=0-${array_size}%20 \
   --parsable \
   --dependency=afterok:${DNASCENT_JOBID} \
   "scripts/DNAscent/step5_bam_sort_index.sh") 
@@ -145,7 +145,7 @@ echo "Step 6: DNAscent forksense"
 echo "Submitting Step 6 DNAscent array ..."
 
 DNASCENT_forkS_JOBID=$(sbatch \
-  --array=6-${array_size}%20 \
+  --array=0-${array_size}%20 \
   --parsable \
   --dependency=afterok:${DNASCENT_JOBID} \
   --export=ALL \

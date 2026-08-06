@@ -17,7 +17,7 @@ module load bedtools/2.31.1
 set -euo pipefail
 
 # ---- Config ----
-SAMPLES_FILE="DNAscent_NanoPore-run3/bam_list.txt"            # one sample ID per line
+SAMPLES_FILE="DNAscent_NanoPore-run3/bam_list_2.txt"            # one sample ID per line
 DETECT_DIR="DNAscent_NanoPore-run3/dnascent/detect/detects"               # where DNAscent detect outputs are
 BDG_DIR="${DETECT_DIR}/bdg_q20l1000_3"
 BW_DIR="${DETECT_DIR}/bigwig_q20l1000_3"
