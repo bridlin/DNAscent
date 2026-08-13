@@ -54,13 +54,26 @@ fi
 # ---- Step 1: convert bedGraph to binary bedGraph (1 if > threshold, 0 otherwise) and compute density per window
 awk -v var=$PROB 'BEGIN{OFS="\t"} {$4=($4>var)?1:0; print}' ${SORTED_BDG_EDU} \
 > ${SORTED_BINARY_BDG_EDU}    
-           
+
+awk -v var=$PROB 'BEGIN{OFS="\t"} {$4=($4>var)?1:0; print}' ${SORTED_BDG_BRDU} \
+> ${SORTED_BINARY_BDG_BRDU}  
+
+
+
+
 # ---- Step 2: compute density per window
 bedtools map \
 -a $GENOME_BED \
 -b ${SORTED_BINARY_BDG_EDU} \
 -c 4 \
 -o sum \
-> ${BDG_DIR}/density_${PROB}_${SAMPLE}.bed 
-awk 'BEGIN{OFS="\t"} {pct=($9>0)?100*$13/$9:0; printf "%s\t%s\t%s\t%.2f\t%s\t%s\n",$1,$2,$3,pct,$9,$13}' ${BDG_DIR}/density_${PROB}_${SAMPLE}.bed > ${BDG_DIR}/density_${PROB}_${SAMPLE}.bed.bdg   
-           
+> ${BDG_DIR}/density_EdU${PROB}_${SAMPLE}.bed 
+awk 'BEGIN{OFS="\t"} {pct=($9>0)?100*$13/$9:0; printf "%s\t%s\t%s\t%.2f\t%s\t%s\n",$1,$2,$3,pct,$9,$13}' ${BDG_DIR}/density_EdU${PROB}_${SAMPLE}.bed > ${BDG_DIR}/density_EdU${PROB}_${SAMPLE}.bed.bdg   
+
+ bedtools map \
+-a $GENOME_BED \
+-b ${SORTED_BINARY_BDG_BRDU} \
+-c 4 \
+-o sum \
+> ${BDG_DIR}/density_BrdU${PROB}_${SAMPLE}.bed 
+awk 'BEGIN{OFS="\t"} {pct=($9>0)?100*$13/$9:0; printf "%s\t%s\t%s\t%.2f\t%s\t%s\n",$1,$2,$3,pct,$9,$13}' ${BDG_DIR}/density_BrdU${PROB}_${SAMPLE}.bed > ${BDG_DIR}/density_BrdU${PROB}_${SAMPLE}.bed.bdg             
