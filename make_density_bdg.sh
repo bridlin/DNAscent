@@ -17,9 +17,22 @@ module load bedtools
 SAMPLES_FILE="DNAscent_NanoPore-run3/bam_list.txt"            # one sample ID per line
 DETECT_DIR="DNAscent_NanoPore-run3/dnascent/detect/detects"               # where DNAscent detect outputs are
 BDG_DIR="${DETECT_DIR}/bdg_q20l1000_3"
+PROB="0.8"  # Probability threeshold for BrdU/EdU labeling detection (0.5, 0.8, 0.9, etc.)
+
+genome_fasta="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_TbruceiLister427_2018_Genome.fasta"  # precomputed genome fasta file for your reference
+genome_chrom_sizes="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_TbruceiLister427_2018.chrom.sizes"  # precomputed chrom sizes for your reference
+NUC_GENOME_BED="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/NucComp_Tbruceii_2018_400-25bp_sorted.bed"  # precomputed genome bed file with sliding window for your reference
+GENOME_BED="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/Tbruceii_2018_400-25bp_sorted.bed"  # precomputed genome bed file with sliding window for your reference
+
+# ---- Resolve current sample ----
+# 1) Get the BAM filename for this array task
+BAM_PATH=$(sed -n "$((SLURM_ARRAY_TASK_ID+1))p" $SAMPLES_FILE)
+
+# Strip the directory
+SAMPLE=$(basename "$BAM_PATH" .trimmed.aligned.sorted.bam)
+
 SORTED_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.sorted.bdg"
 SORTED_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.bdg"
-PROB="0.8"  # Probability threeshold for BrdU/EdU labeling detection (0.5, 0.8, 0.9, etc.)
 SORTED_BINARY_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.sorted.binary.${PROB}.bdg"
 SORTED_BINARY_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.binary.${PROB}.bdg"
 density_EdU_BED="${BDG_DIR}/density_EdU${PROB}_${SAMPLE}.bed"
@@ -27,19 +40,7 @@ density_BrdU_BED="${BDG_DIR}/density_BrdU${PROB}_${SAMPLE}.bed"
 density_EdU_BDG="${BDG_DIR}/density_EdU${PROB}_${SAMPLE}.bdg"
 density_BrdU_BDG="${BDG_DIR}/density_BrdU${PROB}_${SAMPLE}.bdg"
 
-genome_fasta="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_TbruceiLister427_2018_Genome.fasta"  # precomputed genome fasta file for your reference
-genome_chrom_sizes="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_TbruceiLister427_2018.chrom.sizes"  # precomputed chrom sizes for your reference
-NUC_GENOME_BED="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/NucComp_Tbruceii_2018_400-25bp_sorted.bed"  # precomputed genome bed file with sliding window for your reference
-GENOME_BED="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/Tbruceii_2018_400-25bp_sorted.bed"  # precomputed genome bed file with sliding window for your reference
 
-
-# ---- Resolve current sample ----
-# 1) Get the BAM filename for this array task
-BAM_PATH=$(sed -n "$((SLURM_ARRAY_TASK_ID+1))p" $SAMPLES_FILE)
-
-# Strip the directory
-
-SAMPLE=$(basename "$BAM_PATH" .trimmed.aligned.sorted.bam)
 
 #---- check for genome bed file ----
 if [ ! -f "$NUC_GENOME_BED" ]; then
@@ -57,10 +58,10 @@ if [ ! -f "$NUC_GENOME_BED" ]; then
 fi
 
 # ---- Step 1: convert bedGraph to binary bedGraph (1 if > threshold, 0 otherwise) and compute density per window
-awk -v var1=$PROB -v file=${SORTED_BDG_EDU} 'BEGIN{OFS="\t"} {$4=($4>var1)?1:0; print}' $file \
+awk -v var1=$PROB  'BEGIN{OFS="\t"} {$4=($4>var1)?1:0; print}' ${SORTED_BDG_EDU} \
 > ${SORTED_BINARY_BDG_EDU}    
 
-awk -v var1=$PROB -v file=${SORTED_BDG_BRDU} 'BEGIN{OFS="\t"} {$4=($4>var1)?1:0; print}' $file \
+awk -v var1=$PROB  'BEGIN{OFS="\t"} {$4=($4>var1)?1:0; print}' ${SORTED_BDG_BRDU} \
 > ${SORTED_BINARY_BDG_BRDU}  
 
 
