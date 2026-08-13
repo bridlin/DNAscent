@@ -4,8 +4,8 @@
 #SBATCH --array=0-9
 #SBATCH --mem=32G
 #SBATCH --partition=fast
-#SBATCH -o density_%j.out
-#SBATCH -e density_%j.err
+#SBATCH -o density_%A_%a.out
+#SBATCH -e density_%A_%a.err
 #SBATCH --mail-type=END
 #SBATCH --mail-user=bridlin.barckmann@umontpellier.fr
 
