@@ -19,6 +19,7 @@ DETECT_DIR="DNAscent_NanoPore-run3/dnascent/detect/detects"               # wher
 BDG_DIR="${DETECT_DIR}/bdg_q20l1000_3"
 SORTED_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.sorted.bdg"
 SORTED_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.bdg"
+PROB="0.8"  # Probability threeshold for BrdU/EdU labeling detection (0.5, 0.8, 0.9, etc.)
 SORTED_BINARY_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.sorted.binary.${PROB}.bdg"
 SORTED_BINARY_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.binary.${PROB}.bdg"
 density_EdU_BED="${BDG_DIR}/density_EdU${PROB}_${SAMPLE}.bed"
@@ -30,7 +31,7 @@ genome_fasta="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_Tbru
 genome_chrom_sizes="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_TbruceiLister427_2018.chrom.sizes"  # precomputed chrom sizes for your reference
 NUC_GENOME_BED="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/NucComp_Tbruceii_2018_400-25bp_sorted.bed"  # precomputed genome bed file with sliding window for your reference
 GENOME_BED="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/Tbruceii_2018_400-25bp_sorted.bed"  # precomputed genome bed file with sliding window for your reference
-PROB="0.8"  # Probability threeshold for BrdU/EdU labeling detection (0.5, 0.8, 0.9, etc.)
+
 
 # ---- Resolve current sample ----
 # 1) Get the BAM filename for this array task
@@ -44,15 +45,15 @@ SAMPLE=$(basename "$BAM_PATH" .trimmed.aligned.sorted.bam)
 if [ ! -f "$NUC_GENOME_BED" ]; then
     echo "Error: Genome bed file not found, generating genome bed file..."
     bedtools makewindows \
-	-g  $genome_chrom_sizes \
-	-w 400 \
-	-s 25 \
-	> $GENOME_BED
+	    -g  $genome_chrom_sizes \
+	    -w 400 \
+	    -s 25 \
+	    > $GENOME_BED
 
-bedtools nuc \
-	-fi $genome_fasta  \
-	-bed $GENOME_BED \
-	>  $NUC_GENOME_BED
+    bedtools nuc \
+	    -fi $genome_fasta  \
+	    -bed $GENOME_BED \
+	    >  $NUC_GENOME_BED
 fi
 
 # ---- Step 1: convert bedGraph to binary bedGraph (1 if > threshold, 0 otherwise) and compute density per window
@@ -67,19 +68,19 @@ awk -v var1=$PROB -v file=${SORTED_BDG_BRDU} 'BEGIN{OFS="\t"} {$4=($4>var1)?1:0;
 
 # ---- Step 2: compute density per window
 bedtools map \
--a $GENOME_BED \
+-a $NUC_GENOME_BED \
 -b ${SORTED_BINARY_BDG_EDU} \
 -c 4 \
 -o sum \
 > ${BDG_DIR}/density_EdU${PROB}_${SAMPLE}.bed 
-awk -v density_bed=${density_EdU_BED} -v density_bdg=${density_EdU_BDG} 'BEGIN{OFS="\t"} {pct=($9>0)?100*$13/$9:0; printf "%s\t%s\t%s\t%.2f\t%s\t%s\n",$1,$2,$3,pct,$9,$13}' density_bed > density_bdg   
+awk  'BEGIN{OFS="\t"} {pct=($9>0)?100*$13/$9:0; printf "%s\t%s\t%s\t%.2f\t%s\t%s\n",$1,$2,$3,pct,$9,$13}' ${density_EdU_BED} > ${density_EdU_BDG}
 rm ${density_EdU_BED}
 
  bedtools map \
--a $GENOME_BED \
+-a $NUC_GENOME_BED \
 -b ${SORTED_BINARY_BDG_BRDU} \
 -c 4 \
 -o sum \
 > ${BDG_DIR}/density_BrdU${PROB}_${SAMPLE}.bed 
-awk -v density_bed=${density_BrdU_BED} -v density_bdg=${density_BrdU_BDG} 'BEGIN{OFS="\t"} {pct=($9>0)?100*$13/$9:0; printf "%s\t%s\t%s\t%.2f\t%s\t%s\n",$1,$2,$3,pct,$9,$13}' density_bed > density_bdg
+awk  'BEGIN{OFS="\t"} {pct=($9>0)?100*$13/$9:0; printf "%s\t%s\t%s\t%.2f\t%s\t%s\n",$1,$2,$3,pct,$9,$13}' ${density_BrdU_BED} > ${density_BrdU_BDG}
 rm ${density_BrdU_BED}             
