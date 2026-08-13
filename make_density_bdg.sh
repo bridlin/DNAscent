@@ -14,13 +14,17 @@ module load bedtools
 
 
 # ---- Config ----
-SAMPLES_FILE="DNAscent_NanoPore-run3/bam_list_2.txt"            # one sample ID per line
+SAMPLES_FILE="DNAscent_NanoPore-run3/bam_list.txt"            # one sample ID per line
 DETECT_DIR="DNAscent_NanoPore-run3/dnascent/detect/detects"               # where DNAscent detect outputs are
 BDG_DIR="${DETECT_DIR}/bdg_q20l1000_3"
 SORTED_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.sorted.bdg"
 SORTED_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.bdg"
 SORTED_BINARY_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.sorted.binary.${PROB}.bdg"
 SORTED_BINARY_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.binary.${PROB}.bdg"
+density_EdU_BED="${BDG_DIR}/density_EdU${PROB}_${SAMPLE}.bed"
+density_BrdU_BED="${BDG_DIR}/density_BrdU${PROB}_${SAMPLE}.bed"
+density_EdU_BDG="${BDG_DIR}/density_EdU${PROB}_${SAMPLE}.bdg"
+density_BrdU_BDG="${BDG_DIR}/density_BrdU${PROB}_${SAMPLE}.bdg"
 
 genome_fasta="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_TbruceiLister427_2018_Genome.fasta"  # precomputed genome fasta file for your reference
 genome_chrom_sizes="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_TbruceiLister427_2018.chrom.sizes"  # precomputed chrom sizes for your reference
@@ -52,10 +56,10 @@ bedtools nuc \
 fi
 
 # ---- Step 1: convert bedGraph to binary bedGraph (1 if > threshold, 0 otherwise) and compute density per window
-awk -v var=$PROB 'BEGIN{OFS="\t"} {$4=($4>var)?1:0; print}' ${SORTED_BDG_EDU} \
+awk -v var1=$PROB -v file=${SORTED_BDG_EDU} 'BEGIN{OFS="\t"} {$4=($4>var1)?1:0; print}' $file \
 > ${SORTED_BINARY_BDG_EDU}    
 
-awk -v var=$PROB 'BEGIN{OFS="\t"} {$4=($4>var)?1:0; print}' ${SORTED_BDG_BRDU} \
+awk -v var1=$PROB -v file=${SORTED_BDG_BRDU} 'BEGIN{OFS="\t"} {$4=($4>var1)?1:0; print}' $file \
 > ${SORTED_BINARY_BDG_BRDU}  
 
 
@@ -68,7 +72,8 @@ bedtools map \
 -c 4 \
 -o sum \
 > ${BDG_DIR}/density_EdU${PROB}_${SAMPLE}.bed 
-awk 'BEGIN{OFS="\t"} {pct=($9>0)?100*$13/$9:0; printf "%s\t%s\t%s\t%.2f\t%s\t%s\n",$1,$2,$3,pct,$9,$13}' ${BDG_DIR}/density_EdU${PROB}_${SAMPLE}.bed > ${BDG_DIR}/density_EdU${PROB}_${SAMPLE}.bed.bdg   
+awk -v density_bed=${density_EdU_BED} -v density_bdg=${density_EdU_BDG} 'BEGIN{OFS="\t"} {pct=($9>0)?100*$13/$9:0; printf "%s\t%s\t%s\t%.2f\t%s\t%s\n",$1,$2,$3,pct,$9,$13}' density_bed > density_bdg   
+rm ${density_EdU_BED}
 
  bedtools map \
 -a $GENOME_BED \
@@ -76,4 +81,5 @@ awk 'BEGIN{OFS="\t"} {pct=($9>0)?100*$13/$9:0; printf "%s\t%s\t%s\t%.2f\t%s\t%s\
 -c 4 \
 -o sum \
 > ${BDG_DIR}/density_BrdU${PROB}_${SAMPLE}.bed 
-awk 'BEGIN{OFS="\t"} {pct=($9>0)?100*$13/$9:0; printf "%s\t%s\t%s\t%.2f\t%s\t%s\n",$1,$2,$3,pct,$9,$13}' ${BDG_DIR}/density_BrdU${PROB}_${SAMPLE}.bed > ${BDG_DIR}/density_BrdU${PROB}_${SAMPLE}.bed.bdg             
+awk -v density_bed=${density_BrdU_BED} -v density_bdg=${density_BrdU_BDG} 'BEGIN{OFS="\t"} {pct=($9>0)?100*$13/$9:0; printf "%s\t%s\t%s\t%.2f\t%s\t%s\n",$1,$2,$3,pct,$9,$13}' density_bed > density_bdg
+rm ${density_BrdU_BED}             
