@@ -19,8 +19,8 @@ DETECT_DIR="DNAscent_NanoPore-run3/dnascent/detect/detects"               # wher
 BDG_DIR="${DETECT_DIR}/bdg_q20l1000_3"
 SORTED_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.sorted.bdg"
 SORTED_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.bdg"
-SORTED_BINARY_BDG_EDU="${BDG_DIR}/${SAMPLE}.${PROB}.EdU.sorted.binary.bdg"
-SORTED_BINARY_BDG_BRDU="${BDG_DIR}/${SAMPLE}.${PROB}.BrdU.sorted.binary.bdg"
+SORTED_BINARY_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.sorted.binary.${PROB}.bdg"
+SORTED_BINARY_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.binary.${PROB}.bdg"
 
 genome_fasta="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_TbruceiLister427_2018_Genome.fasta"  # precomputed genome fasta file for your reference
 genome_chrom_sizes="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_TbruceiLister427_2018.chrom.sizes"  # precomputed chrom sizes for your reference
