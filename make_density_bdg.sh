@@ -17,6 +17,11 @@ module load bedtools
 SAMPLES_FILE="DNAscent_NanoPore-run3/bam_list_2.txt"            # one sample ID per line
 DETECT_DIR="DNAscent_NanoPore-run3/dnascent/detect/detects"               # where DNAscent detect outputs are
 BDG_DIR="${DETECT_DIR}/bdg_q20l1000_3"
+SORTED_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.sorted.bdg"
+SORTED_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.bdg"
+SORTED_BINARY_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.sorted.binary.bdg"
+SORTED_BINARY_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.binary.bdg"
+
 genome_fasta="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_TbruceiLister427_2018_Genome.fasta"  # precomputed genome fasta file for your reference
 genome_chrom_sizes="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_TbruceiLister427_2018.chrom.sizes"  # precomputed chrom sizes for your reference
 NUC_GENOME_BED="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/NucComp_Tbruceii_2018_400-25bp_sorted.bed"  # precomputed genome bed file with sliding window for your reference
@@ -47,13 +52,13 @@ bedtools nuc \
 fi
 
 # ---- Step 1: convert bedGraph to binary bedGraph (1 if > threshold, 0 otherwise) and compute density per window
-awk -v var=$PROB 'BEGIN{OFS="\t"} {$4=($4>var)?1:0; print}' ${BDG_DIR}/${SAMPLE}.sorted.bdg \
-> ${BDG_DIR}/${SAMPLE}.sorted.binary.bdg    
+awk -v var=$PROB 'BEGIN{OFS="\t"} {$4=($4>var)?1:0; print}' ${SORTED_BDG_EDU} \
+> ${SORTED_BINARY_BDG_EDU}    
            
 # ---- Step 2: compute density per window
 bedtools map \
 -a $GENOME_BED \
--b ${BDG_DIR}/${SAMPLE}.sorted.binary.bdg \
+-b ${SORTED_BINARY_BDG_EDU} \
 -c 4 \
 -o sum \
 > ${BDG_DIR}/density_${PROB}_${SAMPLE}.bed 
