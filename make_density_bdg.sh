@@ -21,8 +21,8 @@ PROB="0.8"  # Probability threeshold for BrdU/EdU labeling detection (0.5, 0.8, 
 
 genome_fasta="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_TbruceiLister427_2018_Genome.fasta"  # precomputed genome fasta file for your reference
 genome_chrom_sizes="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_TbruceiLister427_2018.chrom.sizes"  # precomputed chrom sizes for your reference
-NUC_GENOME_BED="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/NucComp_Tbruceii_2018_400-25bp_sorted.bed"  # precomputed genome bed file with sliding window for your reference
-GENOME_BED="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/Tbruceii_2018_400-25bp_sorted.bed"  # precomputed genome bed file with sliding window for your reference
+NUC_GENOME_BED="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/NucComp_Tbruceii_2018_400bp_sorted.bed"  # precomputed genome bed file with sliding window for your reference
+GENOME_BED="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/Tbruceii_2018_400bp_sorted.bed"  # precomputed genome bed file with sliding window for your reference
 
 # ---- Resolve current sample ----
 # 1) Get the BAM filename for this array task
@@ -35,10 +35,10 @@ SORTED_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.sorted.bdg"
 SORTED_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.bdg"
 SORTED_BINARY_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.sorted.binary.${PROB}.bdg"
 SORTED_BINARY_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.binary.${PROB}.bdg"
-density_EdU_BED="${BDG_DIR}/density_EdU${PROB}_${SAMPLE}.bed"
-density_BrdU_BED="${BDG_DIR}/density_BrdU${PROB}_${SAMPLE}.bed"
-density_EdU_BDG="${BDG_DIR}/density_EdU${PROB}_${SAMPLE}.bdg"
-density_BrdU_BDG="${BDG_DIR}/density_BrdU${PROB}_${SAMPLE}.bdg"
+density_EdU_BED="${BDG_DIR}/density_EdU${PROB}_${SAMPLE}_400bp.bed"
+density_BrdU_BED="${BDG_DIR}/density_BrdU${PROB}_${SAMPLE}_400bp.bed"
+density_EdU_BDG="${BDG_DIR}/density_EdU${PROB}_${SAMPLE}_400bp.bdg"
+density_BrdU_BDG="${BDG_DIR}/density_BrdU${PROB}_${SAMPLE}_400bp.bdg"
 
 
 
@@ -48,7 +48,7 @@ if [ ! -f "$NUC_GENOME_BED" ]; then
     bedtools makewindows \
 	    -g  $genome_chrom_sizes \
 	    -w 400 \
-	    -s 25 \
+	    -s 400 \
 	    > $GENOME_BED
 
     bedtools nuc \
@@ -77,7 +77,7 @@ bedtools map \
 awk  'BEGIN{OFS="\t"} {pct=($9>0)?100*$13/$9:0; printf "%s\t%s\t%s\t%.2f\t%s\t%s\n",$1,$2,$3,pct,$9,$13}' ${density_EdU_BED} > ${density_EdU_BDG}
 rm ${density_EdU_BED}
 
- bedtools map \
+bedtools map \
 -a $NUC_GENOME_BED \
 -b ${SORTED_BINARY_BDG_BRDU} \
 -c 4 \
