@@ -33,6 +33,8 @@ SAMPLE=$(basename "$BAM_PATH" .trimmed.aligned.sorted.bam)
 
 SORTED_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.sorted.bdg"
 SORTED_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.bdg"
+BINARY_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.binary.${PROB}.bdg"
+BINARY_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.binary.${PROB}.bdg"
 SORTED_BINARY_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.sorted.binary.${PROB}.bdg"
 SORTED_BINARY_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.binary.${PROB}.bdg"
 density_EdU_BED="${BDG_DIR}/density_EdU${PROB}_${SAMPLE}_400bp.bed"
@@ -55,16 +57,24 @@ if [ ! -f "$NUC_GENOME_BED" ]; then
 	    -fi $genome_fasta  \
 	    -bed $GENOME_BED \
 	    >  $NUC_GENOME_BED
+    sort -k1,1 -k2,2n $NUC_GENOME_BED > ${NUC_GENOME_BED}.sorted
+    mv ${NUC_GENOME_BED}.sorted $NUC_GENOME_BED     
 fi
+
+
+
+
 
 # ---- Step 1: convert bedGraph to binary bedGraph (1 if > threshold, 0 otherwise) 
 awk -v var1=$PROB  'BEGIN{OFS="\t"} {$4=($4>var1)?1:0; print}' ${SORTED_BDG_EDU} \
-> ${SORTED_BINARY_BDG_EDU}    
+> ${BINARY_BDG_EDU}    
 
 awk -v var1=$PROB  'BEGIN{OFS="\t"} {$4=($4>var1)?1:0; print}' ${SORTED_BDG_BRDU} \
-> ${SORTED_BINARY_BDG_BRDU}  
+> ${BINARY_BDG_BRDU}  
 
-
+# ------ Sort the binary bedGraph files
+sort -k1,1 -k2,2n ${BINARY_BDG_EDU} > ${SORTED_BINARY_BDG_EDU}
+sort -k1,1 -k2,2n ${BINARY_BDG_BRDU} > ${SORTED_BINARY_BDG_BRDU}
 
 
 # ---- Step 2: compute density per window
