@@ -48,59 +48,59 @@ density_EdU_BW="${BDG_DIR}/density_EdU${PROB}_${SAMPLE}_400bp.bw"
 density_BrdU_BW="${BDG_DIR}/density_BrdU${PROB}_${SAMPLE}_400bp.bw"
 
 
-#---- check for genome bed file ----
-if [ ! -f "$NUC_GENOME_BED" ]; then
-    echo "Error: Genome bed file not found, generating genome bed file..."
-    bedtools makewindows \
-	    -g  $genome_chrom_sizes \
-	    -w 400 \
-	    -s 400 \
-	    > $GENOME_BED
+# #---- check for genome bed file ----
+# if [ ! -f "$NUC_GENOME_BED" ]; then
+#     echo "Error: Genome bed file not found, generating genome bed file..."
+#     bedtools makewindows \
+# 	    -g  $genome_chrom_sizes \
+# 	    -w 400 \
+# 	    -s 400 \
+# 	    > $GENOME_BED
 
-    bedtools nuc \
-	    -fi $genome_fasta  \
-	    -bed $GENOME_BED \
-	    >  $NUC_GENOME_BED
-    sort -k1,1 -k2,2n $NUC_GENOME_BED > ${NUC_GENOME_BED}.sorted
-    mv ${NUC_GENOME_BED}.sorted $NUC_GENOME_BED     
-fi
-
-
+#     bedtools nuc \
+# 	    -fi $genome_fasta  \
+# 	    -bed $GENOME_BED \
+# 	    >  $NUC_GENOME_BED
+#     sort -k1,1 -k2,2n $NUC_GENOME_BED > ${NUC_GENOME_BED}.sorted
+#     mv ${NUC_GENOME_BED}.sorted $NUC_GENOME_BED     
+# fi
 
 
 
-# ---- Step 1: convert bedGraph to binary bedGraph (1 if > threshold, 0 otherwise) 
-awk -v var1=$PROB  'BEGIN{OFS="\t"} {$4=($4>var1)?1:0; print}' ${SORTED_BDG_EDU} \
-> ${BINARY_BDG_EDU}    
-
-awk -v var1=$PROB  'BEGIN{OFS="\t"} {$4=($4>var1)?1:0; print}' ${SORTED_BDG_BRDU} \
-> ${BINARY_BDG_BRDU}  
-
-# ------ Sort the binary bedGraph files
-sort -k1,1 -k2,2n ${BINARY_BDG_EDU} > ${SORTED_BINARY_BDG_EDU}
-sort -k1,1 -k2,2n ${BINARY_BDG_BRDU} > ${SORTED_BINARY_BDG_BRDU}
 
 
-# ---- Step 2: compute density per window
-bedtools map \
--a $NUC_GENOME_BED \
--b ${SORTED_BINARY_BDG_EDU} \
--c 4 \
--o sum \
-> ${density_EdU_BED}
-awk  'BEGIN{OFS="\t"} {pct=($9>0)?100*$13/$9:0; printf "%s\t%s\t%s\t%.2f\t%s\t%s\n",$1,$2,$3,pct,$9,$13}' ${density_EdU_BED} > ${density_EdU_BDG}
-#rm ${density_EdU_BED}
+# # ---- Step 1: convert bedGraph to binary bedGraph (1 if > threshold, 0 otherwise) 
+# awk -v var1=$PROB  'BEGIN{OFS="\t"} {$4=($4>var1)?1:0; print}' ${SORTED_BDG_EDU} \
+# > ${BINARY_BDG_EDU}    
+
+# awk -v var1=$PROB  'BEGIN{OFS="\t"} {$4=($4>var1)?1:0; print}' ${SORTED_BDG_BRDU} \
+# > ${BINARY_BDG_BRDU}  
+
+# # ------ Sort the binary bedGraph files
+# sort -k1,1 -k2,2n ${BINARY_BDG_EDU} > ${SORTED_BINARY_BDG_EDU}
+# sort -k1,1 -k2,2n ${BINARY_BDG_BRDU} > ${SORTED_BINARY_BDG_BRDU}
+
+
+# # ---- Step 2: compute density per window
+# bedtools map \
+# -a $NUC_GENOME_BED \
+# -b ${SORTED_BINARY_BDG_EDU} \
+# -c 4 \
+# -o sum \
+# > ${density_EdU_BED}
+# awk  'BEGIN{OFS="\t"} {pct=($9>0)?100*$13/$9:0; printf "%s\t%s\t%s\t%.2f\t%s\t%s\n",$1,$2,$3,pct,$9,$13}' ${density_EdU_BED} > ${density_EdU_BDG}
+# #rm ${density_EdU_BED}
 
 
 
-bedtools map \
--a $NUC_GENOME_BED \
--b ${SORTED_BINARY_BDG_BRDU} \
--c 4 \
--o sum \
-> ${density_BrdU_BED}
-awk  'BEGIN{OFS="\t"} {pct=($9>0)?100*$13/$9:0; printf "%s\t%s\t%s\t%.2f\t%s\t%s\n",$1,$2,$3,pct,$9,$13}' ${density_BrdU_BED} > ${density_BrdU_BDG}
-# rm ${density_BrdU_BED}             
+# bedtools map \
+# -a $NUC_GENOME_BED \
+# -b ${SORTED_BINARY_BDG_BRDU} \
+# -c 4 \
+# -o sum \
+# > ${density_BrdU_BED}
+# awk  'BEGIN{OFS="\t"} {pct=($9>0)?100*$13/$9:0; printf "%s\t%s\t%s\t%.2f\t%s\t%s\n",$1,$2,$3,pct,$9,$13}' ${density_BrdU_BED} > ${density_BrdU_BDG}
+# # rm ${density_BrdU_BED}             
 
 
 
