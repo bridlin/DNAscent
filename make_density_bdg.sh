@@ -11,6 +11,7 @@
 
 module purge
 module load bedtools
+module load ucsc-bedgraphtobigwig/377
 
 
 # ---- Config ----
@@ -41,7 +42,10 @@ density_EdU_BED="${BDG_DIR}/density_EdU${PROB}_${SAMPLE}_400bp.bed"
 density_BrdU_BED="${BDG_DIR}/density_BrdU${PROB}_${SAMPLE}_400bp.bed"
 density_EdU_BDG="${BDG_DIR}/density_EdU${PROB}_${SAMPLE}_400bp.bdg"
 density_BrdU_BDG="${BDG_DIR}/density_BrdU${PROB}_${SAMPLE}_400bp.bdg"
-
+${Stirct_density_EdU_BDG} ="${BDG_DIR}/density_EdU${PROB}_${SAMPLE}_400bp.strict.bdg"
+${Stirct_density_BrdU_BDG} ="${BDG_DIR}/density_BrdU${PROB}_${SAMPLE}_400bp.strict.bdg"
+density_EdU_BW="${BDG_DIR}/density_EdU${PROB}_${SAMPLE}_400bp.bw"
+density_BrdU_BW="${BDG_DIR}/density_BrdU${PROB}_${SAMPLE}_400bp.bw"
 
 
 #---- check for genome bed file ----
@@ -97,3 +101,17 @@ bedtools map \
 > ${density_BrdU_BED}
 awk  'BEGIN{OFS="\t"} {pct=($9>0)?100*$13/$9:0; printf "%s\t%s\t%s\t%.2f\t%s\t%s\n",$1,$2,$3,pct,$9,$13}' ${density_BrdU_BED} > ${density_BrdU_BDG}
 # rm ${density_BrdU_BED}             
+
+
+
+#------ making bw from density bdgs
+
+cut -f1,2,3,4 ${density_EdU_BDG} > ${Stirct_density_EdU_BDG}
+
+cut -f1,2,3,4 ${density_BrdU_BDG} > ${Stirct_density_BrdU_BDG}
+
+
+bedGraphToBigWig ${Stirct_density_EdU_BDG} $genome_chrom_sizes  ${density_EdU_BW}
+
+bedGraphToBigWig ${Stirct_density_BrdU_BDG} $genome_chrom_sizes  ${density_BrdU_BW} 
+
