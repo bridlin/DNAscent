@@ -57,7 +57,7 @@ if [ ! -f "$NUC_GENOME_BED" ]; then
 	    >  $NUC_GENOME_BED
 fi
 
-# ---- Step 1: convert bedGraph to binary bedGraph (1 if > threshold, 0 otherwise) and compute density per window
+# ---- Step 1: convert bedGraph to binary bedGraph (1 if > threshold, 0 otherwise) 
 awk -v var1=$PROB  'BEGIN{OFS="\t"} {$4=($4>var1)?1:0; print}' ${SORTED_BDG_EDU} \
 > ${SORTED_BINARY_BDG_EDU}    
 
@@ -72,10 +72,10 @@ bedtools map \
 -a $NUC_GENOME_BED \
 -b ${SORTED_BINARY_BDG_EDU} \
 -c 4 \
--o sum,count \
+-o sum \
 > ${density_EdU_BED}
 awk  'BEGIN{OFS="\t"} {pct=($9>0)?100*$13/$9:0; printf "%s\t%s\t%s\t%.2f\t%s\t%s\n",$1,$2,$3,pct,$9,$13}' ${density_EdU_BED} > ${density_EdU_BDG}
-rm ${density_EdU_BED}
+#rm ${density_EdU_BED}
 
 
 
@@ -83,7 +83,7 @@ bedtools map \
 -a $NUC_GENOME_BED \
 -b ${SORTED_BINARY_BDG_BRDU} \
 -c 4 \
--o sum,count \
+-o sum \
 > ${density_BrdU_BED}
 awk  'BEGIN{OFS="\t"} {pct=($9>0)?100*$13/$9:0; printf "%s\t%s\t%s\t%.2f\t%s\t%s\n",$1,$2,$3,pct,$9,$13}' ${density_BrdU_BED} > ${density_BrdU_BDG}
-## rm ${density_BrdU_BED}             
+# rm ${density_BrdU_BED}             
