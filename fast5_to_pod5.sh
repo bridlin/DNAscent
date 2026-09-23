@@ -11,8 +11,10 @@
 module purge
 module load  pod5/0.3.27
 
-
-python -c "import pod5; print(pod5.__file__)"
+export PYTHONNOUSERSITE=1
+ 
+which pod5
+which python
 
 # ---- Config ----
 FAST5_FILE="data_test" 
