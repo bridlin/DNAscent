@@ -12,11 +12,11 @@ module purge
 module load  pod5/0.3.27
 
 
+python -c "import pod5; print(pod5.__file__)"
+
 # ---- Config ----
-FAST56_FILE="data_test" 
+FAST5_FILE="data_test" 
 POD5_DIR="pod5_test"
 
 
-
-
-pod5 convert fast5 ${FAST56_FILE} -o ${POD5_DIR}/reads.pod5
+pod5 convert fast5 ${FAST5_FILE} -o ${POD5_DIR}/reads.pod5
