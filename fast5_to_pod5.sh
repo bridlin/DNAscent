@@ -12,7 +12,7 @@ module purge
 module load  pod5/0.3.27
 
 export PYTHONNOUSERSITE=1
- 
+
 which pod5
 which python
 
