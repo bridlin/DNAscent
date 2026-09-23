@@ -85,24 +85,24 @@ echo "kit-name" = $kit_name
 # # STEP 1 — Basecalling and demultiplexing
 # ###############################################################################
 
-# # Classify during basecalling, then split without re-classifying
-# # Ref: Inline classification and --no-classify during demux. [2](https://software-docs.nanoporetech.com/dorado/latest/barcoding/barcoding/)
-# echo "Basecalling with inline barcoding..."
-# basecall_bam="$output_dir/basecall/${analysis_name}.bam"
-# dorado basecaller "$model" "$pod5_dir" \
-#     -x "$device" \
-#     --kit-name "$kit_name" \
-#     --no-trim \
-#     > "$basecall_bam" \
-#     2> "$output_dir/logs/basecaller.log"
+# Classify during basecalling, then split without re-classifying
+# Ref: Inline classification and --no-classify during demux. [2](https://software-docs.nanoporetech.com/dorado/latest/barcoding/barcoding/)
+echo "Basecalling with inline barcoding..."
+basecall_bam="$output_dir/basecall/${analysis_name}.bam"
+dorado basecaller "$model" "$pod5_dir" \
+    -x "$device" \
+    --kit-name "$kit_name" \
+    --no-trim \
+    > "$basecall_bam" \
+    2> "$output_dir/logs/basecaller.log"
     
-# echo " Demultiplexing (split per barcode, no re-classification)..."
-# dorado demux \
-#   --output-dir "$output_dir/demux" \
-#   --emit-summary \
-#   --no-classify \
-#   "$basecall_bam" \
-#   2> "$output_dir/logs/demux.log"
+echo " Demultiplexing (split per barcode, no re-classification)..."
+dorado demux \
+  --output-dir "$output_dir/demux" \
+  --emit-summary \
+  --no-classify \
+  "$basecall_bam" \
+  2> "$output_dir/logs/demux.log"
 
 
 
