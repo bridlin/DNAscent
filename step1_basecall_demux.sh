@@ -16,7 +16,7 @@ set -euo pipefail
 module purge
 module load singularity
 module load cuda-toolkit/12.9.1
-module load dorado/1.4.0
+module load dorado/0.9.1  #dorado/1.4.0
 
 nvidia-smi
 
@@ -35,50 +35,7 @@ echo "pod5 input = $pod5_dir"
 echo "kit-name" = $kit_name
 
 
-# echo "===== DEBUG ====="
-# hostname
-# pwd
 
-# echo "pod5_dir=$pod5_dir"
-
-# ls -ld "$pod5_dir"
-
-# find "$pod5_dir" -name "*.pod5" | head
-
-# find "$pod5_dir" -name "*.pod5" | wc -l
-
-# echo "================="
-
-# FILE=$(find "$pod5_dir" -name "*.pod5" | head -1)
-
-# echo "TEST FILE=$FILE"
-
-# pod5 inspect summary "$FILE"
-
-# echo "===== test file access ====="
-
-# ls -lh /shared/projects2/mivegec_analysis_sns_seq/pod5_run3/FBE77896_b1ba7c8d_a9590380_10.pod5
-
-# ls -lh /shared/projects/mivegec_analysis_sns_seq/pod5_run3/FBE77896_b1ba7c8d_a9590380_10.pod5
-
-# echo "===== test basecalling ====="
-
-# FILE=/shared/projects2/mivegec_analysis_sns_seq/pod5_run3/FBE77896_b1ba7c8d_a9590380_10.pod5
-
-# dorado basecaller \
-#     "$model" \
-#     "$FILE" \
-#     -x "$device" \
-#     > single_test.bam \
-#     2> single_test.log
-
-# echo $?
-# cat single_test.log
-# ls -lh single_test.bam
-
-
-
-# echo "================="
 
 
 # ###############################################################################
