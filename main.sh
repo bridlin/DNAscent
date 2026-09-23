@@ -52,11 +52,12 @@ echo "Building manifest files for alignment..."
 
 MAN1=$(sbatch \
   --parsable \
+  --dependency=afterok:${BASECALL_JOBID} \
  "scripts/DNAscent/helper/make_manifest_demux-bams.sh")
 
 echo "   Manifest generation submitted. job id: $MAN1"
 
- # --dependency=afterok:${BASECALL_JOBID} \
+ 
 ###############################################################################
 # STEP 2 — submitting Alignment array (depends on Step 1)
 ###############################################################################
