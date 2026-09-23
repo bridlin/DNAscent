@@ -7,7 +7,7 @@ model="hac"                                # dorado model: fast|hac|sup or full 
 device="auto"   
 detect_mode="detect"                           # "detect" for table form output, "bam" for modbam output (requires --modbam-output in DNAscent)    
 
-array_size=6                               # adapt to number of samples
+array_size=2                              # adapt to number of samples
 # ---- Derived output root ----
 output_dir=DNAscent_$analysis_name
 dnascent_index_dir="${output_dir}/dnascent/index_${analysis_name}"
