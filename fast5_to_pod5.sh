@@ -17,7 +17,7 @@ which pod5
 which python
 
 # ---- Config ----
-FAST5_FILE="data_test" 
+FAST5_FILE="data_test/2022_02_01_MJ_ONT_A2058_untreated/" 
 POD5_DIR="pod5_test"
 
 
