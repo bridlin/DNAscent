@@ -51,7 +51,7 @@ apptainer exec \
   -B "$output_dir/dnascent/detect":/out \
   -B "$pod5_dir":/pod5 \
   "$container_sif" \
-  /app/DNAscent/bin/DNAscent detect \
+  /DNAscent/bin/DNAscent detect \
     --bam /aligned/${sample}.trimmed.aligned.sorted.bam \
     --reference /ref/reference.fa \
     --index /index/pod.index \
