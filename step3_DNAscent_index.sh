@@ -38,6 +38,7 @@ if [[ ! -f "${dnascent_index_dir}/.built.ok" ]]; then
         "${container_sif}" \
         /DNAscent/bin/DNAscent index \
             --files /pod5 \
+            --sequencing-summary guppy_out_jones2025/sequencing_summary.txt \
             --output /index/pod.index
 
     touch "${dnascent_index_dir}/.built.ok"
