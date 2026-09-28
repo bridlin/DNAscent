@@ -36,7 +36,7 @@ echo $reference
 echo $container_sif
 
 bam=$(sed -n "${SLURM_ARRAY_TASK_ID}p" "$bam_list")
-sample=$(basename "$bam" .trimmed.aligned.sorted.bam)
+sample=$(basename "$bam" .bam)
 
 
 
