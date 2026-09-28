@@ -14,18 +14,18 @@ set -euo pipefail
 
 
 
-bam_list="$output_dir/bam_list.txt"
+# bam_list="$output_dir/bam_list.txt"
 
-IDX=${SLURM_ARRAY_TASK_ID}
+# IDX=${SLURM_ARRAY_TASK_ID}
 
-# Read the line for this array index
-LINE=$(sed -n "${IDX}p" "$output_dir/bam_list.txt" || true)
+# # Read the line for this array index
+# LINE=$(sed -n "${IDX}p" "$output_dir/bam_list.txt" || true)
 
-# If empty → no sample for this array index → exit safely
-if [[ -z "${LINE:-}" ]]; then
-    echo "Index ${IDX}: no entry found in bam_list.txt → skipping."
-    exit 0
-fi
+# # If empty → no sample for this array index → exit safely
+# if [[ -z "${LINE:-}" ]]; then
+#     echo "Index ${IDX}: no entry found in bam_list.txt → skipping."
+#     exit 0
+# fi
 
 
 
