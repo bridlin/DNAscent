@@ -13,7 +13,7 @@ output_dir=DNAscent_$analysis_name
 dnascent_index_dir="${output_dir}/dnascent/index_${analysis_name}"
 
 # ---- DNAscent / container ----
-container_sif="dnascent_tools/containers/dnascent_3.1.2.sif"               # dnascent_4.1.1.sif
+container_sif="dnascent_tools/containers/dnascent_4.1.1.sif"               # 
 
 
 # ---- Resources ----
