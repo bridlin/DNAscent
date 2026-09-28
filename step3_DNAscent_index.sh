@@ -17,6 +17,8 @@ module load apptainer/1.3.6
 
 
 dnascent_index_dir="${output_dir}/dnascent/index_${analysis_name}"
+sequencing_summary="guppy_out_jones2025/sequencing_summary.txt"
+
 
 mkdir -p "${dnascent_index_dir}"
 
@@ -35,10 +37,11 @@ if [[ ! -f "${dnascent_index_dir}/.built.ok" ]]; then
     apptainer exec \
         -B "${pod5_dir}:/pod5" \
         -B "${dnascent_index_dir}:/index" \
+        -B "${sequencing_summary}:/sequencing_summary" \
         "${container_sif}" \
         /DNAscent/bin/DNAscent index \
             --files /pod5 \
-            --sequencing-summary guppy_out_jones2025/sequencing_summary.txt \
+            --sequencing-summary /sequencing_summary \
             --output /index/pod.index
 
     touch "${dnascent_index_dir}/.built.ok"
