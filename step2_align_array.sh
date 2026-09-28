@@ -43,7 +43,7 @@ trimmed="$output_dir/aligned/${bname}.trimmed.bam"
 aligned="$output_dir/aligned/${bname}.trimmed.aligned.bam"
 sorted="$output_dir/aligned/${bname}.trimmed.aligned.sorted.bam"
 
-mkdir -p "$output_dir/aligned"
+# mkdir -p "$output_dir/aligned"
 
 echo "trimming and aligning ${bname} ..."
 echo $trimmed
