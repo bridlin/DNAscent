@@ -39,7 +39,7 @@ if [[ ! -f "${dnascent_index_dir}/.built.ok" ]]; then
         -B "${dnascent_index_dir}:/index" \
         -B "${sequencing_summary}:/sequencing_summary" \
         "${container_sif}" \
-        /DNAscent/bin/DNAscent index \
+        /app//DNAscent/bin/DNAscent index \
             --files /pod5 \
             --sequencing-summary /sequencing_summary \
             --output /index/pod.index
