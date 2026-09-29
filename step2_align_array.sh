@@ -27,14 +27,14 @@ bname=$(basename "$bam" .bam)
 
 IDX=${SLURM_ARRAY_TASK_ID}
 
-# Read the line for this index
-LINE=$(sed -n "${IDX}p" "$output_dir/demux_list.txt" || true)
+# # Read the line for this index
+# LINE=$(sed -n "${IDX}p" "$output_dir/demux_list.txt" || true)
 
-# If empty → no sample for this index → exit safely
-if [[ -z "${LINE:-}" ]]; then
-    echo "Index ${IDX}: no entry found in demux_list.txt → skipping."
-    exit 0
-fi
+# # If empty → no sample for this index → exit safely
+# if [[ -z "${LINE:-}" ]]; then
+#     echo "Index ${IDX}: no entry found in demux_list.txt → skipping."
+#     exit 0
+# fi
 
 
 
