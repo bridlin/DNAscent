@@ -17,7 +17,7 @@ module load apptainer/1.3.6
 
 
 dnascent_index_dir="${output_dir}/dnascent/index_${analysis_name}"
-sequencing_summary="guppy_out_jones2025/sequencing_summary.txt"
+sequencing_summary="guppy_out_totanes/sequencing_summary.txt"
 
 
 mkdir -p "${dnascent_index_dir}"
