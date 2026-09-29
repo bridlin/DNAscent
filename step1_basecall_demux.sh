@@ -1,8 +1,7 @@
 #!/bin/bash
 #SBATCH --mail-type END
 #SBATCH --mail-user b-barckmann@chu-montpellier.fr
-#SBATCH --partition=gpu
-#SBATCH --gres=gpu:l40s:2
+#SBATCH --partition=fast
 #SBATCH --cpus-per-task=6
 #SBATCH --mem=16G
 #SBATCH --job-name=basecall_
@@ -18,7 +17,8 @@ module load singularity
 module load cuda-toolkit/12.9.1
 module load dorado/0.9.1  #dorado/1.4.0
 
-nvidia-smi
+# nvidia-smi
+# #SBATCH --gres=gpu:l40s:2 
 
 need() { command -v "$1" >/dev/null 2>&1 || { echo "Missing tool: $1"; exit 1; }; }
 
