@@ -31,7 +31,7 @@ if [[ ! -f "${dnascent_index_dir}/.built.ok" ]]; then
     echo "Building DNAscent index..."
 
     # Optional: check DNAscent availability
-    apptainer exec "${container_sif}" /DNAscent/bin/DNAscent --version
+    apptainer exec "${container_sif}" /app/DNAscent/bin/DNAscent --version
 
     # Build index
     apptainer exec \
@@ -39,7 +39,7 @@ if [[ ! -f "${dnascent_index_dir}/.built.ok" ]]; then
         -B "${dnascent_index_dir}:/index" \
         -B "${sequencing_summary}:/sequencing_summary" \
         "${container_sif}" \
-        /app//DNAscent/bin/DNAscent index \
+        /app/DNAscent/bin/DNAscent index \
             --files /pod5 \
             --sequencing-summary /sequencing_summary \
             --output /index/pod.index
