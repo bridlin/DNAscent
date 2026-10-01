@@ -36,7 +36,7 @@ with open(input_file, "r") as f:
         posOnRef  = int(splitLine[0])
         probEdU   = float(splitLine[1])   # column 2  = EdU 
         probBrdU  = float(splitLine[2])   # column 3  = BrdU
-        kmer      = splitLine[3]
+        #kmer      = splitLine[3]
 
         # bedGraph: chrom, start, end, value
         out_brdU.write(f"{chromosome}\t{posOnRef}\t{posOnRef+1}\t{probBrdU:.6f}\t{strand}\t{readID}\n")
