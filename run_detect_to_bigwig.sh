@@ -28,10 +28,11 @@ mkdir -p logs "$BDG_DIR" "$BW_DIR" tmp
 # ---- Resolve current sample ----
 # 1) Get the BAM filename for this array task
 BAM_PATH=$(sed -n "$((SLURM_ARRAY_TASK_ID+1))p" $SAMPLES_FILE)
+echo "[Task $SLURM_ARRAY_TASK_ID] BAM path: $BAM_PATH"
 
 # Strip the directory
 
-SAMPLE=$(basename "$BAM_PATH" .trimmed.aligned.sorted.bam)
+SAMPLE=$(basename "$BAM_PATH" .bam)
 
 
 
