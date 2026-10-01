@@ -17,11 +17,11 @@ module load bedtools/2.31.1
 set -euxo pipefail
 
 # ---- Config ----
-SAMPLES_FILE="DNAscent_DNAscent_NanoPore_jones_guppy/bam_list.txt"            # one sample ID per line
-DETECT_DIR="DNAscent_DNAscent_NanoPore_jones_guppy/dnascent/detect"               # where DNAscent detect outputs are
+SAMPLES_FILE="DNAscent_NanoPore_totanes_guppy/bam_list.txt"            # one sample ID per line
+DETECT_DIR="DNAscent_NanoPore_totanes_guppy/dnascent/detect"               # where DNAscent detect outputs are
 BDG_DIR="${DETECT_DIR}/bdg"
 BW_DIR="${DETECT_DIR}/bigwig"
-CHROM_SIZES="genome/GRCh38_chrom-sizes.txt"      # precomputed chrom sizes for your reference
+CHROM_SIZES="genome/Plasmodium_falciparum_3D7_ASM276v2/GCF_000002765.4/PF_3D7_ASM276v2_chrom-sizes.txt"      # precomputed chrom sizes for your reference
 
 mkdir -p logs "$BDG_DIR" "$BW_DIR" tmp
 
