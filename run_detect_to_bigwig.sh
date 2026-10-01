@@ -14,7 +14,7 @@ module load python
 module load ucsc-bedgraphtobigwig/377
 module load bedtools/2.31.1
 
-set -euo pipefail
+set -euxo pipefail
 
 # ---- Config ----
 SAMPLES_FILE="DNAscent_DNAscent_NanoPore_jones_guppy/bam_list.txt"            # one sample ID per line
