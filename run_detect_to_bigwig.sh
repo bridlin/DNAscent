@@ -107,26 +107,26 @@ fi
 # Sort by chrom and start; force LC_ALL=C for speed and consistent collation.
 # EdU
 
-if [[ ! -s "$SORTED_STRICT_BDG_EDU" ]]; then
-  echo "Sorting bedGraph..."
-  LC_ALL=C sort -k1,1 -k2,2n "$BDG_EDU_STRICT" > "$SORTED_STRICT_BDG_EDU"
-fi
-# BrdU
-if [[ ! -s "$SORTED_STRICT_BDG_BRDU" ]]; then
-  echo "Sorting bedGraph..."
-  LC_ALL=C sort -k1,1 -k2,2n "$BDG_BRDU_STRICT" > "$SORTED_STRICT_BDG_BRDU"
-fi
+# if [[ ! -s "$SORTED_STRICT_BDG_EDU" ]]; then
+#   echo "Sorting bedGraph..."
+#   LC_ALL=C sort -k1,1 -k2,2n "$BDG_EDU_STRICT" > "$SORTED_STRICT_BDG_EDU"
+# fi
+# # BrdU
+# if [[ ! -s "$SORTED_STRICT_BDG_BRDU" ]]; then
+#   echo "Sorting bedGraph..."
+#   LC_ALL=C sort -k1,1 -k2,2n "$BDG_BRDU_STRICT" > "$SORTED_STRICT_BDG_BRDU"
+# fi
 
 
-if [[ ! -s "$SORTED_BDG_EDU" ]]; then
-  echo "Sorting bedGraph..."
-  LC_ALL=C sort -k1,1 -k2,2n "$BDG_EDU" > "$SORTED_BDG_EDU"
-fi
-# BrdU
-if [[ ! -s "$SORTED_BDG_BRDU" ]]; then
-  echo "Sorting bedGraph..."
-  LC_ALL=C sort -k1,1 -k2,2n "$BDG_BRDU" > "$SORTED_BDG_BRDU"
-fi
+# if [[ ! -s "$SORTED_BDG_EDU" ]]; then
+#   echo "Sorting bedGraph..."
+#   LC_ALL=C sort -k1,1 -k2,2n "$BDG_EDU" > "$SORTED_BDG_EDU"
+# fi
+# # BrdU
+# if [[ ! -s "$SORTED_BDG_BRDU" ]]; then
+#   echo "Sorting bedGraph..."
+#   LC_ALL=C sort -k1,1 -k2,2n "$BDG_BRDU" > "$SORTED_BDG_BRDU"
+# fi
 
 
 
