@@ -17,11 +17,11 @@ module load bedtools/2.31.1
 set -euxo pipefail
 
 # ---- Config ----
-SAMPLES_FILE="DNAscent_DNAscent_NanoPore_jones_guppy/bam_list.txt"            # one sample ID per line
-DETECT_DIR="DNAscent_DNAscent_NanoPore_jones_guppy/dnascent/detect"               # where DNAscent detect outputs are
+SAMPLES_FILE="DNAscent_NanoPore_totanes_guppy/bam_list.txt"            # one sample ID per line
+DETECT_DIR="DNAscent_NanoPore_totanes_guppy/dnascent/detect"               # where DNAscent detect outputs are
 BDG_DIR="${DETECT_DIR}/bdg"
 BW_DIR="${DETECT_DIR}/bigwig"
-CHROM_SIZES="genome/GRCh38_chrom-sizes.txt"      # precomputed chrom sizes for your reference
+CHROM_SIZES="genome/Plasmodium_falciparum_3D7_ASM276v2/GCF_000002765.4/PF_3D7_ASM276v2_chrom-sizes.txt"      # precomputed chrom sizes for your reference genome/GRCh38_chrom-sizes.txt
 
 mkdir -p logs "$BDG_DIR" "$BW_DIR" tmp
 
@@ -107,26 +107,26 @@ fi
 # Sort by chrom and start; force LC_ALL=C for speed and consistent collation.
 # EdU
 
-# if [[ ! -s "$SORTED_STRICT_BDG_EDU" ]]; then
-#   echo "Sorting bedGraph..."
-#   LC_ALL=C sort -k1,1 -k2,2n "$BDG_EDU_STRICT" > "$SORTED_STRICT_BDG_EDU"
-# fi
-# # BrdU
-# if [[ ! -s "$SORTED_STRICT_BDG_BRDU" ]]; then
-#   echo "Sorting bedGraph..."
-#   LC_ALL=C sort -k1,1 -k2,2n "$BDG_BRDU_STRICT" > "$SORTED_STRICT_BDG_BRDU"
-# fi
+if [[ ! -s "$SORTED_STRICT_BDG_EDU" ]]; then
+  echo "Sorting bedGraph..."
+  LC_ALL=C sort -k1,1 -k2,2n "$BDG_EDU_STRICT" > "$SORTED_STRICT_BDG_EDU"
+fi
+# BrdU
+if [[ ! -s "$SORTED_STRICT_BDG_BRDU" ]]; then
+  echo "Sorting bedGraph..."
+  LC_ALL=C sort -k1,1 -k2,2n "$BDG_BRDU_STRICT" > "$SORTED_STRICT_BDG_BRDU"
+fi
 
 
-# if [[ ! -s "$SORTED_BDG_EDU" ]]; then
-#   echo "Sorting bedGraph..."
-#   LC_ALL=C sort -k1,1 -k2,2n "$BDG_EDU" > "$SORTED_BDG_EDU"
-# fi
-# # BrdU
-# if [[ ! -s "$SORTED_BDG_BRDU" ]]; then
-#   echo "Sorting bedGraph..."
-#   LC_ALL=C sort -k1,1 -k2,2n "$BDG_BRDU" > "$SORTED_BDG_BRDU"
-# fi
+if [[ ! -s "$SORTED_BDG_EDU" ]]; then
+  echo "Sorting bedGraph..."
+  LC_ALL=C sort -k1,1 -k2,2n "$BDG_EDU" > "$SORTED_BDG_EDU"
+fi
+# BrdU
+if [[ ! -s "$SORTED_BDG_BRDU" ]]; then
+  echo "Sorting bedGraph..."
+  LC_ALL=C sort -k1,1 -k2,2n "$BDG_BRDU" > "$SORTED_BDG_BRDU"
+fi
 
 
 
