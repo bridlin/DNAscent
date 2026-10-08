@@ -138,11 +138,11 @@ awk  '{ OFS="\t" } {if ($4 >= 0.5) print $0 }' "$SORTED_STRICT_BDG_EDU" > "$BDG_
 awk  '{ OFS="\t" } {if ($4 >= 0.5) print $0 }' "$SORTED_STRICT_BDG_BRDU" > "$BDG_STRICT_FILTERED_BRDU"
 
 
-# EdU
-awk  '{ OFS="\t" } {if ($4 >= 0.5) print $0 }' "$SORTED_BDG_EDU" > "$BDG_FILTERED_EDU"
+# # EdU
+# awk  '{ OFS="\t" } {if ($4 >= 0.5) print $0 }' "$SORTED_BDG_EDU" > "$BDG_FILTERED_EDU"
 
-# BrdU
-awk  '{ OFS="\t" } {if ($4 >= 0.5) print $0 }' "$SORTED_BDG_BRDU" > "$BDG_FILTERED_BRDU"
+# # BrdU
+# awk  '{ OFS="\t" } {if ($4 >= 0.5) print $0 }' "$SORTED_BDG_BRDU" > "$BDG_FILTERED_BRDU"
 
 
 
