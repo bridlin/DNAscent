@@ -7,14 +7,14 @@ set -euo pipefail
 # need samtools
 # need apptainer
 
-[[ -d "$pod5_dir" ]] || { echo "pod5_dir not found: $pod5_dir"; exit 1; }
-shopt -s nullglob
-pod5_files=("$pod5_dir"/*.fast5)
-(( ${#pod5_files[@]} > 0 )) || { echo "No .fast5 files in $pod5_dir"; exit 1; }
+# [[ -d "$pod5_dir" ]] || { echo "pod5_dir not found: $pod5_dir"; exit 1; }
+# shopt -s nullglob
+# pod5_files=("$pod5_dir"/*.fast5)
+# (( ${#pod5_files[@]} > 0 )) || { echo "No .fast5 files in $pod5_dir"; exit 1; }
 
-[[ -s "$reference" ]] || { echo "reference not found or empty: $reference"; exit 1; }
+# [[ -s "$reference" ]] || { echo "reference not found or empty: $reference"; exit 1; }
 
-mkdir -p "$output_dir"/{basecall,demux,aligned,dnascent,logs}
+# mkdir -p "$output_dir"/{basecall,demux,aligned,dnascent,logs}
 
 
 
