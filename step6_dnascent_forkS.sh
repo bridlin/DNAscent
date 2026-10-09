@@ -59,9 +59,9 @@ apptainer exec \
   -B "$detect_dir":/detect \
   "$container_sif" \
   /app/DNAscent/bin/DNAscent forkSense \
-    --detect /detect/${sample}.sorted.bam \
+    --detect /detect/${sample}.detect \
     --output /out/${sample} \
-    --order BrdU,EdU \
+    --order EdU,BrdU \
     --markAnalogues \
     --markOrigins \
     --markTerminations \
