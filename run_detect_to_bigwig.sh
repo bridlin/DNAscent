@@ -132,10 +132,10 @@ fi
 
 # # ---- Step 3: bedGraph filtering  ----
 # EdU
-awk  '{ OFS="\t" } {if ($4 >= 0.5) print $0 }' "$SORTED_STRICT_BDG_EDU" > "$BDG_STRICT_FILTERED_EDU"
+# awk  '{ OFS="\t" } {if ($4 >= 0.5) print $0 }' "$SORTED_STRICT_BDG_EDU" > "$BDG_STRICT_FILTERED_EDU"
 
 # BrdU
-awk  '{ OFS="\t" } {if ($4 >= 0.5) print $0 }' "$SORTED_STRICT_BDG_BRDU" > "$BDG_STRICT_FILTERED_BRDU"
+# awk  '{ OFS="\t" } {if ($4 >= 0.5) print $0 }' "$SORTED_STRICT_BDG_BRDU" > "$BDG_STRICT_FILTERED_BRDU"
 
 
 # # EdU
