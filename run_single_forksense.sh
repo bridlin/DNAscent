@@ -14,10 +14,10 @@ module load apptainer/1.3.6
 set -euo pipefail
 
 
-output_dir="DNAscent_DNAscent_NanoPore_jones_guppy"
+output_dir="DNAscent_NanoPore_totanes_guppy"
 container_sif="dnascent_tools/containers/mboemo_dnascent_dnascent_3.1.2.sif"  
 detect_dir="$output_dir/dnascent/detect"
-sample="A2058_untreated"  # sample name passed as first argument
+sample="totanes_aligned_PF"  # sample name passed as first argument
 
 
 echo $container_sif
