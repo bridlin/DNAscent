@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=dnascent_array
-#SBATCH --partition=gpu
-#SBATCH --gres=gpu:l40s:2
+#SBATCH --partition=fast
 #SBATCH --cpus-per-task=6
-#SBATCH --mem=16G
+#SBATCH --mem=32G
 #SBATCH --job-name=forksense_
 #SBATCH --output=slurm_log/%x_%A_%a.out
 #SBATCH --error=slurm_log/%x_%A_%a.err
