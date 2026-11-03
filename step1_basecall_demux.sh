@@ -16,7 +16,7 @@ set -euo pipefail
 module purge
 module load singularity
 module load cuda-toolkit/12.9.1
-module load dorado/0.9.1  #dorado/1.4.0
+module load dorado/1.4.0  
 
 nvidia-smi
 
@@ -45,22 +45,22 @@ echo "kit-name" = $kit_name
 # Classify during basecalling, then split without re-classifying
 # Ref: Inline classification and --no-classify during demux. [2](https://software-docs.nanoporetech.com/dorado/latest/barcoding/barcoding/)
 echo "Basecalling with inline barcoding..."
-# basecall_bam="$output_dir/basecall/${analysis_name}.bam"
-# dorado basecaller "$model" "$pod5_dir" \
-#     -x "$device" \
-#     --no-trim \
-#     > "$basecall_bam" \
-#     2> "$output_dir/logs/basecaller.log"
+basecall_bam="$output_dir/basecall/${analysis_name}.bam"
+dorado basecaller "$model" "$pod5_dir" \
+    -x "$device" \
+    --no-trim \
+    > "$basecall_bam" \
+    2> "$output_dir/logs/basecaller.log"
     
 
-    #--kit-name "$kit_name" \
-# echo " Demultiplexing (split per barcode, no re-classification)..."
-# dorado demux \
-#   --output-dir "$output_dir/demux" \
-#   --emit-summary \
-#   --no-classify \
-#   "$basecall_bam" \
-#   2> "$output_dir/logs/demux.log"
+    --kit-name "$kit_name" \
+echo " Demultiplexing (split per barcode, no re-classification)..."
+dorado demux \
+  --output-dir "$output_dir/demux" \
+  --emit-summary \
+  --no-classify \
+  "$basecall_bam" \
+  2> "$output_dir/logs/demux.log"
 
 
 
