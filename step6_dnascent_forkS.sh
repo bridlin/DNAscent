@@ -60,7 +60,7 @@ apptainer exec \
   /app/DNAscent/bin/DNAscent forkSense \
     --detect /detect/${sample}.sorted.bam \
     --output /out/${sample} \
-    --order BrdU,EdU \
+    --order EdU,BrdU \
     --markAnalogues \
     --markOrigins \
     --markTerminations \

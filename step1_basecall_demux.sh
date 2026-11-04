@@ -46,23 +46,33 @@ echo "kit-name" = $kit_name
 # Ref: Inline classification and --no-classify during demux. [2](https://software-docs.nanoporetech.com/dorado/latest/barcoding/barcoding/)
 echo "Basecalling with inline barcoding..."
 basecall_bam="$output_dir/basecall/${analysis_name}.bam"
-dorado basecaller "$model" "$pod5_dir" \
-    -x "$device" \
-    --no-trim \
-    --kit-name "$kit_name" \
-    > "$basecall_bam" \
-    2> "$output_dir/logs/basecaller.log"
-    
+done_file="$output_dir/basecall/.basecalling_done"
 
-    
-echo " Demultiplexing (split per barcode, no re-classification)..."
-dorado demux \
-  --output-dir "$output_dir/demux" \
-  --emit-summary \
-  --no-classify \
-  "$basecall_bam" \
-  2> "$output_dir/logs/demux.log"
+if [[ ! -f "$done_file" ]]; then
+    echo "basecalling pod5 files..."
+    dorado basecaller "$model" "$pod5_dir" \
+        -x "$device" \
+        --no-trim \
+        --kit-name "$kit_name" \
+        > "$basecall_bam" \
+        2> "$output_dir/logs/basecaller.log"
+        touch "$done_file"
+else
+    echo "basecalling already doone. Skipping basecalling."
+fi
 
+if [[ ! -f "$output_dir/demux/sequencing_summary.txt" ]]; then
+    echo " Demultiplexing (split per barcode, no re-classification)..."
+    dorado demux \
+    --output-dir "$output_dir/demux" \
+    --emit-summary \
+    --no-classify \
+    "$basecall_bam" \
+    2> "$output_dir/logs/demux.log"
+
+else
+    echo "demultiplexing already doone. Skipping demultiplexing."
+fi
 
 
 
