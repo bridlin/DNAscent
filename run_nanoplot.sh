@@ -25,5 +25,5 @@ for i in 11 12 13 14  ; do
 bam_file="$demux_dir/barcode${i}/FBG84466_pass_barcode${i}_7adce89a_00000000_0.bam"
 echo "Running NanoPlot for barcode ${bam_file}..."
 NanoPlot \
-	-o nanoplot_run3/barcode${i} \
+	-o $output_dir/nanoplot_barcode${i} \
 	--ubam "$bam_file" ; done

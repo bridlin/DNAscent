@@ -42,6 +42,7 @@ fi
 trimmed="$output_dir/aligned/${bname}.trimmed.bam"
 aligned="$output_dir/aligned/${bname}.trimmed.aligned.bam"
 sorted="$output_dir/aligned/${bname}.trimmed.aligned.sorted.bam"
+done_file="$output_dir/aligned/.aligned_done"
 
 mkdir -p "$output_dir/aligned"
 
@@ -50,34 +51,38 @@ echo $trimmed
 echo $aligned
 echo $sorted
 
-# 1) TRIM
-dorado trim "$bam" \
-  --sequencing-kit "$kit_name" \
-  > "$trimmed"
+if [[ ! -f "$done_file" ]]; then
+    echo "aligning read files..."
+  # 1) TRIM
+  dorado trim "$bam" \
+    --sequencing-kit "$kit_name" \
+    > "$trimmed"
 
-# 2) ALIGN
-dorado aligner \
-  --threads "$SLURM_CPUS_PER_TASK" \
-  "$reference"\
-  "$trimmed" \
-  > "$aligned" \
-  2>> "$output_dir/logs/${bname}_align.log"
+  # 2) ALIGN
+  dorado aligner \
+    --threads "$SLURM_CPUS_PER_TASK" \
+    "$reference"\
+    "$trimmed" \
+    > "$aligned" \
+    2>> "$output_dir/logs/${bname}_align.log"
 
-samtools \
-  sort \
-  -@ "$SLURM_CPUS_PER_TASK" \
-  -o "$sorted" \
-  "$aligned"
+  samtools \
+    sort \
+    -@ "$SLURM_CPUS_PER_TASK" \
+    -o "$sorted" \
+    "$aligned"
 
-samtools \
-  index \
-  -@ "$SLURM_CPUS_PER_TASK" \
-  "$sorted"
+  samtools \
+    index \
+    -@ "$SLURM_CPUS_PER_TASK" \
+    "$sorted"
 
-# rm -f "$aligned"
+  # rm -f "$aligned"
+  echo "trimmed and aligned: ${bname}"
+  touch "$done_file"
 
-echo "trimmed and aligned: ${bname}"
-
-
+else
+    echo "alignment already done. Skipping alignment."
+fi
 
 
