@@ -11,10 +11,19 @@
 module purge
 module load nanoplot/1.46.2
 
+source scripts/DNAscent/config.txt
 
 
 
-for i in 05 06 07 08 09 10 ; do
+demux_dir="$output_dir/demux/28_october_2026_Nano_4/unknown/20261029_1553_0_FBG84466_7adce89a/bam_pass/"
+
+echo "output_dir = $output_dir"
+echo "demux_dir = $demux_dir"		
+
+
+for i in 11 12 13 14  ; do
+bam_file="$demux_dir/barcode${i}/FBG84466_pass_barcode${i}_7adce89a_00000000_0.bam"
+echo "Running NanoPlot for barcode ${bam_file}..."
 NanoPlot \
 	-o nanoplot_run3/barcode${i} \
-	--ubam DNAscent_NanoPore-run3/demux/2026_07_08_nano_BrdU_and_EdU/unknown/20260708_1126_0_FBE77896_b1ba7c8d/bam_pass/barcode${i}/FBE77896_pass_barcode${i}_b1ba7c8d_00000000_0.bam ; done
+	--ubam "$bam_file" ; done
