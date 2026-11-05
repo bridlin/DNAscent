@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=filter_bdgs
-#SBATCH --array=0
+#SBATCH --array=2-2
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=34G
 #SBATCH --partition=fast
@@ -16,7 +16,7 @@ module load samtools/1.21
 set -euo pipefail
 
 # ---- Config ----
-SAMPLES_FILE="DNAscent_NanoPore_run4/bam_list.txt"            # one sample ID per line
+SAMPLES_FILE="DNAscent_NanoPore_run4/bam_list_2.txt"            # one sample ID per line
 DETECT_DIR="DNAscent_NanoPore_run4/dnascent/detect/detects"               # where DNAscent detect outputs are
 BDG_DIR="${DETECT_DIR}/bdg_q20l1000"
 BW_DIR="${DETECT_DIR}/bigwig_q20l1000"
