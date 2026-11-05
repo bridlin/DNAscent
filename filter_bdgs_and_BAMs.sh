@@ -15,11 +15,11 @@ module purge
 set -euo pipefail
 
 # ---- Config ----
-SAMPLES_FILE="DNAscent_NanoPore-run2/bam_list.txt"            # one sample ID per line
-DETECT_DIR="DNAscent_NanoPore-run2/dnascent/detect/detects"               # where DNAscent detect outputs are
-BDG_DIR="${DETECT_DIR}/bdg_q15l500"
-BW_DIR="${DETECT_DIR}/bigwig_q15l500"
-
+SAMPLES_FILE="DNAscent_NanoPore_run4/bam_list.txt"            # one sample ID per line
+DETECT_DIR="DNAscent_NanoPore_run4/dnascent/detect/detects"               # where DNAscent detect outputs are
+BDG_DIR="${DETECT_DIR}/bdg_q20l1000"
+BW_DIR="${DETECT_DIR}/bigwig_q20l1000"
+filter_cutoff=0.5
 
 # ---- Resolve current sample ----
 # 1) Get the BAM filename for this array task
@@ -30,12 +30,7 @@ SAMPLE=$(basename "$BAM_PATH" | cut -d '.' -f 1,2,3 )
 
 # Expected python output files:
 
-
-
 echo "[Task $SLURM_ARRAY_TASK_ID] Processing sample $SAMPLE"
-
-
-filter_cutoff=0.3
 
 
 RAW_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.bdg"
@@ -44,14 +39,12 @@ RAW_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.bdg"
 FILTERD_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.${filter_cutoff}filtered.bdg"
 FILTERD_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.${filter_cutoff}filtered.bdg"
 
-
 COUNT_EDU="${RAW_BDG_EDU}.count.txt"
 COUNT_BRDU="${RAW_BDG_BRDU}.count.txt"
 
 COUNT_readID_EDU="${RAW_BDG_EDU}readID.count.txt"
 COUNT_readID_BRDU="${RAW_BDG_BRDU}readID.count.txt"
 COUNT_readID_B-E="${BDG_DIR}/${SAMPLE}readID_B+E_.count.txt"
-
 
 BAM_files="${DETECT_DIR}/bams/${SAMPLE}.sorted.bam"
 filtered_BAM="${DETECT_DIR}/bams/${SAMPLE}.sorted_filtered${filter_cutoff}_B+E.bam"
