@@ -43,8 +43,8 @@ echo "[Task $SLURM_ARRAY_TASK_ID] Processing sample $SAMPLE"
 
 
 
-FILTERD_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.${filter_cutoff}filtered.bdg"
-FILTERD_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.${filter_cutoff}filtered.bdg"
+FILTERD_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.strict.sorted.${filter_cutoff}filtered.bdg"
+FILTERD_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.sorted.${filter_cutoff}filtered.bdg"
 
 COUNT_EDU="${FILTERD_BDG_EDU}.count.txt"
 COUNT_BRDU="${FILTERD_BDG_BRDU}.count.txt"
