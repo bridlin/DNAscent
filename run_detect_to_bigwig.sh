@@ -17,11 +17,15 @@ module load bedtools/2.31.1
 set -euo pipefail
 
 # ---- Config ----
+### adapt the array size to the samples in the analysis!!!
+
 SAMPLES_FILE="DNAscent_NanoPore_run4/bam_list_2.txt"            # one sample ID per line
 DETECT_DIR="DNAscent_NanoPore_run4/dnascent/detect/detects"               # where DNAscent detect outputs are
 BDG_DIR="${DETECT_DIR}/bdg_q20l1000"
 BW_DIR="${DETECT_DIR}/bigwig_q20l1000"
 CHROM_SIZES="genome/TriTrypDB-55_TbruceiLister427_2018_Genome/TriTrypDB-55_TbruceiLister427_2018.chrom.sizes"      # precomputed chrom sizes for your reference
+filter_cutoff=0.5
+
 
 mkdir -p logs "$BDG_DIR" "$BW_DIR" tmp
 
@@ -59,11 +63,11 @@ SORTED_STRICT_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.sorted.bdg"
 SORTED_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.sorted.bdg"
 SORTED_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.bdg"
 
-BDG_FILTERED_EDU="${BDG_DIR}/${SAMPLE}.EdU.sorted.filtered.bdg"
-BDG_FILTERED_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.filtered.bdg"
+BDG_FILTERED_EDU="${BDG_DIR}/${SAMPLE}.EdU.sorted.${filter_cutoff}filtered.bdg"
+BDG_FILTERED_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.${filter_cutoff}filtered.bdg"
 
-BDG_STRICT_FILTERED_EDU="${BDG_DIR}/${SAMPLE}.EdU.strict.sorted.filtered.bdg"
-BDG_STRICT_FILTERED_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.sorted.filtered.bdg"
+BDG_STRICT_FILTERED_EDU="${BDG_DIR}/${SAMPLE}.EdU.strict.sorted.${filter_cutoff}filtered.bdg"
+BDG_STRICT_FILTERED_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.sorted.${filter_cutoff}filtered.bdg"
 
 BDG_MERGED_EDU="${BDG_DIR}/${SAMPLE}.EdU.strict.sorted.merged.bdg"
 BDG_MERGED_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.sorted.merged.bdg"
@@ -129,19 +133,48 @@ fi
 
 
 
-# # ---- Step 3: bedGraph filtering  ----
-# EdU
-awk  '{ OFS="\t" } {if ($4 >= 0.5) print $0 }' "$SORTED_STRICT_BDG_EDU" > "$BDG_STRICT_FILTERED_EDU"
-
-# BrdU
-awk  '{ OFS="\t" } {if ($4 >= 0.5) print $0 }' "$SORTED_STRICT_BDG_BRDU" > "$BDG_STRICT_FILTERED_BRDU"
+# # ---- Step 3: bedGraph filtering for filter_cutoff
 
 
 # EdU
-awk  '{ OFS="\t" } {if ($4 >= 0.5) print $0 }' "$SORTED_BDG_EDU" > "$BDG_FILTERED_EDU"
+if [[ ! -s "$BDG_STRICT_FILTERED_EDU" ]]; then
+  echo "filtering: $SORTED_STRICT_BDG_EDU-> $BDG_STRICT_FILTERED_EDU"
+  awk -v var1=$filter_cutoff '{ OFS="\t" } {if ($4 >= var1) print $0 }' "$SORTED_STRICT_BDG_EDU" > "$BDG_STRICT_FILTERED_EDU"
+else
+  echo "filter exists, skipping: $BDG_STRICT_FILTERED_EDU"
+fi
 
 # BrdU
-awk  '{ OFS="\t" } {if ($4 >= 0.5) print $0 }' "$SORTED_BDG_BRDU" > "$BDG_FILTERED_BRDU"
+if [[ ! -s "$BDG_STRICT_FILTERED_BRDU" ]]; then
+  echo "filtering: $SORTED_STRICT_BDG_BRDU -> $BDG_STRICT_FILTERED_BRDU"
+  awk -v var1=$filter_cutoff '{ OFS="\t" } {if ($4 >= var1) print $0 }' "$SORTED_STRICT_BDG_BRDU" > "$BDG_STRICT_FILTERED_BRDU"
+else
+  echo "filter exists, skipping: $BDG_STRICT_FILTERED_BRDU"
+fi
+
+
+
+
+# EdU
+if [[ ! -s "$BDG_FILTERED_EDU" ]]; then
+  echo "filtering: $SORTED_BDG_EDU -> $BDG_FILTERED_EDU"
+  awk -v var1=$filter_cutoff '{ OFS="\t" } {if ($4 >= var1) print $0 }' "$SORTED_BDG_EDU" > "$BDG_FILTERED_EDU"
+else
+  echo "filter exists, skipping: $BDG_FILTERED_EDU"
+fi
+
+# BrdU
+if [[ ! -s "$BDG_FILTERED_BRDU" ]]; then
+  echo "filtering: $SORTED_BDG_BRDU -> $BDG_FILTERED_BRDU"
+  awk -v var1=$filter_cutoff '{ OFS="\t" } {if ($4 >= var1) print $0 }' "$SORTED_BDG_BRDU" > "$BDG_FILTERED_BRDU"
+else
+  echo "filter exists, skipping: $BDG_FILTERED_BRDU"
+fi
+
+
+
+
+
 
 
 

@@ -16,6 +16,8 @@ module load samtools/1.21
 set -euo pipefail
 
 # ---- Config ----
+
+### adapt the array size to the samples in the analysis!!!
 SAMPLES_FILE="DNAscent_NanoPore_run4/bam_list_2.txt"            # one sample ID per line
 DETECT_DIR="DNAscent_NanoPore_run4/dnascent/detect/detects"               # where DNAscent detect outputs are
 BDG_DIR="${DETECT_DIR}/bdg_q20l1000"
@@ -32,15 +34,14 @@ BAM_PATH=$(sed -n "$((SLURM_ARRAY_TASK_ID+1))p" $SAMPLES_FILE)
 }
 
 # Strip the directory
-SAMPLE=$(basename "$BAM_PATH" | cut -d '.' -f 1,2,3 )
+SAMPLE=$(basename "$BAM_PATH" | cut -d '.' -f 1 )
 
 # Expected python output files:
 
 echo "[Task $SLURM_ARRAY_TASK_ID] Processing sample $SAMPLE"
 
 
-RAW_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.bdg"
-RAW_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.bdg"
+
 
 FILTERD_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.${filter_cutoff}filtered.bdg"
 FILTERD_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.${filter_cutoff}filtered.bdg"
@@ -57,25 +58,7 @@ filtered_BAM="${DETECT_DIR}/bams/${SAMPLE}.sorted_filtered${filter_cutoff}_B+E.b
 
 
 
-# # ---- Step 1: bedGraph filtering for filter_cutoff  ----
-# EdU
-if [[ ! -s "$FILTERD_BDG_EDU" ]]; then
-  echo "filtering: $RAW_BDG_EDU -> $FILTERD_BDG_EDU"
-  awk -v var1=$filter_cutoff '{ OFS="\t" } {if ($4 >= var1) print $0 }' "$RAW_BDG_EDU" > "$FILTERD_BDG_EDU"
-else
-  echo "filter exists, skipping: $FILTERD_BDG_EDU"
-fi
-
-# BrdU
-if [[ ! -s "$FILTERD_BDG_BRDU" ]]; then
-  echo "filtering: $RAW_BDG_BRDU -> $FILTERD_BDG_BRDU"
-  awk -v var1=$filter_cutoff '{ OFS="\t" } {if ($4 >= var1) print $0 }' "$RAW_BDG_BRDU" > "$FILTERD_BDG_BRDU"
-else
-  echo "filter exists, skipping: $FILTERD_BDG_BRDU"
-fi
-
-
-# # ---- Step 2: count tracks   ----
+# # ---- Step 1: count tracks from filtered bdgs (done in detect to bigwig script)  ----
 # EdU
 if [[ ! -s "$COUNT_EDU" ]]; then
   echo "counting tracks: $FILTERD_BDG_EDU -> $COUNT_EDU"
@@ -99,7 +82,7 @@ cut -f 2 "$COUNT_EDU"  | sort | uniq >  "$COUNT_readID_EDU"
 ### fuse read ID for BrdU and EdU labered reads
 cat  "$COUNT_readID_BRDU" "$COUNT_readID_EDU" | sort  | uniq > "$COUNT_readID_BE" 
 
-# # ---- Step 3: bam filtering   ----
+# # ---- Step 2: bam filtering   ----
 ### filter BAM files for reads with at least 1 BrdU or EdU labeled bases over the filter_cutoff
 
 samtools view -b -N \
