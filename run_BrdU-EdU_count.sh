@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=count_BrdU-EdU
-#SBATCH --array=0-9
+#SBATCH --array=1-4
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=34G
 #SBATCH --partition=fast
@@ -16,8 +16,8 @@ module load python
 set -euo pipefail
 
 # ---- Config ----
-SAMPLES_FILE="DNAscent_NanoPore-run4/bam_list_2.txt"            # one sample ID per line
-DETECT_DIR="DNAscent_NanoPore-run4/dnascent/detect/detects"               # where DNAscent detect outputs are
+SAMPLES_FILE="DNAscent_NanoPore_run4/bam_list_2.txt"            # one sample ID per line
+DETECT_DIR="DNAscent_NanoPore_run4/dnascent/detect/detects"               # where DNAscent detect outputs are
 
 
 
