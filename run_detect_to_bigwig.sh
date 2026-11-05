@@ -69,11 +69,11 @@ BDG_FILTERED_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.sorted.${filter_cutoff}filtered.bdg
 BDG_STRICT_FILTERED_EDU="${BDG_DIR}/${SAMPLE}.EdU.strict.sorted.${filter_cutoff}filtered.bdg"
 BDG_STRICT_FILTERED_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.sorted.${filter_cutoff}filtered.bdg"
 
-BDG_MERGED_EDU="${BDG_DIR}/${SAMPLE}.EdU.strict.sorted.merged.bdg"
-BDG_MERGED_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.sorted.merged.bdg"
+BDG_MERGED_EDU="${BDG_DIR}/${SAMPLE}.EdU.strict.sorted.${filter_cutoff}filtered.merged.bdg"
+BDG_MERGED_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.strict.sorted.${filter_cutoff}filtered.merged.bdg"
 
-BW_OUT_EDU="${BW_DIR}/${SAMPLE}.EdU.bw"
-BW_OUT_BRDU="${BW_DIR}/${SAMPLE}.BrdU.bw"
+BW_OUT_EDU="${BW_DIR}/${SAMPLE}.EdU.${filter_cutoff}filtered.bw"
+BW_OUT_BRDU="${BW_DIR}/${SAMPLE}.BrdU.${filter_cutoff}filtered.bw"
 
 echo "Transforming DNAscent detect to bigwig files"
 echo "Submitting detect to bigwig array...Task ID: ${SLURM_ARRAY_TASK_ID}"
