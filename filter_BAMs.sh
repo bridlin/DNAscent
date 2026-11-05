@@ -20,6 +20,7 @@ set -euo pipefail
 ### adapt the array size to the samples in the analysis!!!
 SAMPLES_FILE="DNAscent_NanoPore_run4/bam_list_2.txt"            # one sample ID per line
 DETECT_DIR="DNAscent_NanoPore_run4/dnascent/detect/detects"               # where DNAscent detect outputs are
+BAM_DIR="DNAscent_NanoPore_run4/dnascent/detect/bams"               # where DNAscent detect outputs are
 BDG_DIR="${DETECT_DIR}/bdg_q20l1000"
 BW_DIR="${DETECT_DIR}/bigwig_q20l1000"
 filter_cutoff=0.5
@@ -53,8 +54,8 @@ COUNT_readID_EDU="${FILTERD_BDG_EDU}.readID.count.txt"
 COUNT_readID_BRDU="${FILTERD_BDG_BRDU}.readID.count.txt"
 COUNT_readID_BE="${BDG_DIR}/${SAMPLE}.readID_B+E_.count.txt"
 
-BAM_files="${DETECT_DIR}/bams/${SAMPLE}.sorted.bam"
-filtered_BAM="${DETECT_DIR}/bams/${SAMPLE}.sorted_filtered${filter_cutoff}_B+E.bam"
+BAM_files="${BAM_DIR}/${SAMPLE}.sorted.bam"
+filtered_BAM="${BAM_DIR}/${SAMPLE}.sorted_filtered${filter_cutoff}_B+E.bam"
 
 
 
