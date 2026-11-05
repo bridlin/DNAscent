@@ -4,8 +4,8 @@
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=34G
 #SBATCH --partition=fast
-#SBATCH -o filter_bdgs_and_bams_%A_%a.out
-#SBATCH -e filter_bdgs_and_bams_%A_%a.err
+#SBATCH -o filter_bams_%A_%a.out
+#SBATCH -e filter_bams_%A_%a.err
 #SBATCH --mail-type=END
 #SBATCH --mail-user=bridlin.barckmann@umontpellier.fr
 
@@ -46,12 +46,12 @@ echo "[Task $SLURM_ARRAY_TASK_ID] Processing sample $SAMPLE"
 FILTERD_BDG_EDU="${BDG_DIR}/${SAMPLE}.EdU.${filter_cutoff}filtered.bdg"
 FILTERD_BDG_BRDU="${BDG_DIR}/${SAMPLE}.BrdU.${filter_cutoff}filtered.bdg"
 
-COUNT_EDU="${RAW_BDG_EDU}.count.txt"
-COUNT_BRDU="${RAW_BDG_BRDU}.count.txt"
+COUNT_EDU="${FILTERD_BDG_EDU}.count.txt"
+COUNT_BRDU="${FILTERD_BDG_BRDU}.count.txt"
 
-COUNT_readID_EDU="${RAW_BDG_EDU}readID.count.txt"
-COUNT_readID_BRDU="${RAW_BDG_BRDU}readID.count.txt"
-COUNT_readID_BE="${BDG_DIR}/${SAMPLE}readID_B+E_.count.txt"
+COUNT_readID_EDU="${FILTERD_BDG_EDU}.readID.count.txt"
+COUNT_readID_BRDU="${FILTERD_BDG_BRDU}.readID.count.txt"
+COUNT_readID_BE="${BDG_DIR}/${SAMPLE}.readID_B+E_.count.txt"
 
 BAM_files="${DETECT_DIR}/bams/${SAMPLE}.sorted.bam"
 filtered_BAM="${DETECT_DIR}/bams/${SAMPLE}.sorted_filtered${filter_cutoff}_B+E.bam"
