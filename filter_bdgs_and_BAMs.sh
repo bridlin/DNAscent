@@ -86,8 +86,6 @@ else
   echo "count exists, skipping: $COUNT_BRDU"
 fi
 
-
-
 ### get the read-ID for later bam filtering
 cut -f 2 $COUNT_BRDU | sort | uniq >  $COUNT_readID_BRDU && \
 cut -f 2 $COUNT_EDU | sort | uniq >  $COUNT_readID_EDU && \
@@ -95,7 +93,7 @@ cut -f 2 $COUNT_EDU | sort | uniq >  $COUNT_readID_EDU && \
 ### fuse read ID for BrdU and EdU labered reads
 cat  $COUNT_readID_BRDU $COUNT_readID_EDU | sort  | uniq > ${COUNT_readID_B-E}  && \
 
-
+# # ---- Step 3: bam filtering   ----
 ### filter BAM files for reads with at least 1 BrdU or EdU labeled bases over the filter_cutoff
 
 samtools \
