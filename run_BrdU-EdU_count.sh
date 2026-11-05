@@ -16,8 +16,8 @@ module load python
 set -euo pipefail
 
 # ---- Config ----
-SAMPLES_FILE="DNAscent_NanoPore-run3/bam_list.txt"            # one sample ID per line
-DETECT_DIR="DNAscent_NanoPore-run3/dnascent/detect/detects"               # where DNAscent detect outputs are
+SAMPLES_FILE="DNAscent_NanoPore-run4/bam_list_2.txt"            # one sample ID per line
+DETECT_DIR="DNAscent_NanoPore-run4/dnascent/detect/detects"               # where DNAscent detect outputs are
 
 
 
