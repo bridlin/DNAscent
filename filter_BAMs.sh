@@ -77,8 +77,8 @@ else
 fi
 
 ### get the read-ID for later bam filtering
-cut -f 2 "$COUNT_BRDU" | sort | uniq >  "$COUNT_readID_BRDU" 
-cut -f 2 "$COUNT_EDU"  | sort | uniq >  "$COUNT_readID_EDU" 
+awk '{print $2}' "$COUNT_BRDU" | sort | uniq >  "$COUNT_readID_BRDU" 
+awk '{print $2}' "$COUNT_EDU"  | sort | uniq >  "$COUNT_readID_EDU" 
 
 ### fuse read ID for BrdU and EdU labered reads
 cat  "$COUNT_readID_BRDU" "$COUNT_readID_EDU" | sort  | uniq > "$COUNT_readID_BE" 
