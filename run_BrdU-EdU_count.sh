@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=count_BrdU-EdU
-#SBATCH --array=0
+#SBATCH --array=0-3
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=34G
 #SBATCH --partition=fast
