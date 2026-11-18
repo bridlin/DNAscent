@@ -1,5 +1,3 @@
-from ctypes import alignment
-
 import pysam
 import pandas as pd
 import os
@@ -120,12 +118,12 @@ def parse_detect(file_path, sample_name, threshold, unique_bam_ids=None):
             parts = line.split()
             if len(parts) < 3:
                 continue
-
-            edu_prob = float(parts[1])    # column 2  = EdU 
-            brdu_prob = float(parts[2])   # column 3  = BrdU
-
+            
             # Every line = one T position
             total_T += 1
+            
+            edu_prob = float(parts[1])    # column 2  = EdU 
+            brdu_prob = float(parts[2])   # column 3  = BrdU
 
             if edu_prob >= threshold:
                 edu_count += 1
