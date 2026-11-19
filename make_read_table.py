@@ -147,13 +147,14 @@ def parse_detect(file_path, sample_name, threshold, unique_bam_ids=None):
                 "BrdU_prop_max": brdu_max,
                 "EdU_prop_max": edu_max 
             })
+        df_detect = pd.DataFrame(results)
         # Filter the results to only include reads that are present in the BAM file
         if unique_bam_ids is not None:
-            results = results[
-                results["read_id"].isin(unique_bam_ids)
+            df_detect = df_detect[
+                df_detect["read_id"].isin(unique_bam_ids)
                 ]
 
-    return pd.DataFrame(results)
+    return df_detect
 
 
 def merge_detect_bam(detect_df, bam_df, sample_name):
@@ -208,6 +209,7 @@ def main():
         
         # getting the detect file as df
         unique_bam_ids = get_unique_ids(df_bam)
+        print(f"unique bam ids: {len(unique_bam_ids)}")
         df_detects = parse_detect(detect_path, sample, threshold=0.5,unique_bam_ids = unique_bam_ids)
         check_duplicate_ids(df_detects)
         print(df_detects)  
