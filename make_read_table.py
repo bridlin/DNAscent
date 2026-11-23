@@ -81,6 +81,9 @@ def parse_detect(file_path, sample_name, threshold, unique_bam_ids=None):
 
     with open(target_file) as f:
         read_id = None
+        chromosome = None
+        detect_start = 0
+        detect_end = 0
         edu_count = 0
         brdu_count = 0
         total_T = 0
@@ -93,6 +96,9 @@ def parse_detect(file_path, sample_name, threshold, unique_bam_ids=None):
                 if read_id is not None and total_T > 0:
                     results.append({
                         "read_id": read_id,
+                        "chromosome": chromosome,
+                        "detect_start": detect_start,
+                        "detect_end": detect_end,
                         "total_T": total_T,
                         "EdU_sites": edu_count,
                         "BrdU_sites": brdu_count,
@@ -104,6 +110,9 @@ def parse_detect(file_path, sample_name, threshold, unique_bam_ids=None):
                     })
 
                 read_id = line.split()[0][1:]
+                chromosome = line.split()[1] if len(line.split()) > 1 else None
+                detect_start = int(line.split()[2]) if len(line.split()) > 2 else 0
+                detect_end = int(line.split()[3]) if len(line.split()) > 3 else 0
                 edu_count = 0
                 brdu_count = 0
                 total_T = 0
@@ -139,6 +148,9 @@ def parse_detect(file_path, sample_name, threshold, unique_bam_ids=None):
         if read_id is not None and total_T > 0:
             results.append({
                 "read_id": read_id,
+                "chromosome": chromosome,
+                "detect_start": detect_start,
+                "detect_end": detect_end,
                 "total_T": total_T,
                 "EdU_sites": edu_count,
                 "BrdU_sites": brdu_count,
@@ -158,7 +170,7 @@ def parse_detect(file_path, sample_name, threshold, unique_bam_ids=None):
 
 
 def merge_detect_bam(detect_df, bam_df, sample_name):
-    merged_df = pd.merge(detect_df, bam_df, how='inner', left_on=['read_id'], right_on=['read_id'],left_index=False, right_index=False, sort=True,suffixes=('_x', '_y'), indicator=False)
+    merged_df = pd.merge(detect_df, bam_df, how='inner', left_on=['read_id', 'chromosome', 'detect_start', 'detect_end'], right_on=['read_id', 'chromosome', 'reference_start', 'reference_end'], left_index=False, right_index=False, sort=True, suffixes=('_x', '_y'), indicator=False)
     merged_df["sample"] = sample_name
     return merged_df
 
@@ -186,13 +198,56 @@ def check_duplicate_ids(df):
         print("No duplicate read IDs found.")
 
 
+
+def deduplicate_df(df):
+    duplicate_alignments = df[df.duplicated( subset=[
+            "read_id",
+            "chromosome",
+            "detect_start",
+            "detect_end"
+        ], 
+        keep=False)]
+    if not duplicate_alignments.empty:
+        
+        print(
+            f"WARNING: {len(duplicate_alignments)} duplicate read alignments found:"
+        )
+        print(duplicate_alignments[
+            [
+                "read_id",
+                "chromosome",
+                "detect_start",
+                "detect_end"
+            ]
+        ])
+        
+        print("Removing duplicate alignments...")
+        before = len(df)
+        df = df.drop_duplicates(
+            subset=[
+                "read_id",
+                "chromosome",
+                "detect_start",
+                "detect_end"
+            ]
+        )
+        print(f"Removed {before - len(df)} duplicate rows")
+    else:
+        print("No duplicate read alignments found.")
+
+    return df
+
+
+
+
+
 def get_unique_ids(df_bam):
     return set(df_bam["read_id"])
 
 #### Main ####
 def main():
     if len(sys.argv) == 1: 
-        print('input file paths are missing as command line arguments!!!')
+        print('file path to input files (detect and bam) is missing as command line argument!!!')
     else:
         detect_path = sys.argv[1]
         print(f"detect path: {detect_path}")
@@ -212,21 +267,26 @@ def main():
         print(f"unique bam ids: {len(unique_bam_ids)}")
         df_detects = parse_detect(detect_path, sample, threshold=0.5,unique_bam_ids = unique_bam_ids)
         check_duplicate_ids(df_detects)
-        print(df_detects)  
+        print(df_detects) 
         
-        # merging the two dfs and checking for duplicates
+        
+        # merging the two dfs and checking for duplicate and removing duplicated alignments
         df_reads=[]
         if not df_detects.empty and not df_bam.empty:
             print(compare_readIDs(df_detects, df_bam))
             df_reads = merge_detect_bam(df_detects, df_bam, sample)
             check_duplicate_ids(df_reads)
+            df_reads = deduplicate_df(df_reads)
             print(df_reads)
+            
             print(
                 f"detect={len(df_detects)} "
                 f"bam={len(df_bam)} "
                 f"merged={len(df_reads)}"
             )
+            
         else: print(str(sample)  + 'detects or bam file is empty.')
+        
 
 
 if __name__ == "__main__":
