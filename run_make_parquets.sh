@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=make_parquets
 #SBATCH --cpus-per-task=4
-#SBATCH --mem=34G
+#SBATCH --mem=64G
 #SBATCH --partition=fast
 #SBATCH -o make_parquets_%A_%a.out
 #SBATCH -e make_parquets_%A_%a.err
