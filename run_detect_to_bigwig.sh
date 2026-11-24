@@ -10,7 +10,7 @@
 #SBATCH --mail-user=bridlin.barckmann@umontpellier.fr
 
 module purge
-module load python
+module load python/3.12
 module load ucsc-bedgraphtobigwig/377
 module load bedtools/2.31.1
 
