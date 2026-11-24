@@ -9,7 +9,7 @@
 module purge
 module load python/3.12
 
-detect_dir="DNAscent_NanoPore_run4/dnascent/detect/detects"               # where DNAscent detect outputs are
+detect_dir="DNAscent_NanoPore_run4/dnascent/detect/"               # where DNAscent detect outputs are
 
 
 python scripts/DNAscent/make_read_table.py "$detect_dir"
