@@ -18,7 +18,7 @@ def get_sample_names(results_path):
 
 def parse_bam(bam_path, sample_name):
     reads = []
-    bam_file = os.path.join(bam_path + "/bams/", sample_name + ".sorted.bam")
+    bam_file = os.path.join(bam_path , sample_name + ".sorted.bam")
     
     # Check if the file exists
     if os.path.isfile(bam_file):
