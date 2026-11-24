@@ -70,7 +70,11 @@ def parse_detect(file_path, sample_name):
                             "BrdU_P": brdu_P
                         })
 
+    print("Finished parsing")
+
     df_signal = pd.DataFrame(results)
+
+    print("Finished DataFrame")
 
     # Convert columns to appropriate data types to reduce size of the later paquet file
     df_signal["read_id"] = df_signal["read_id"].astype("category")
@@ -82,6 +86,8 @@ def parse_detect(file_path, sample_name):
 
     df_signal["EdU_P"] = df_signal["EdU_P"].astype("float32")
     df_signal["BrdU_P"] = df_signal["BrdU_P"].astype("float32")
+
+    print("Finished type conversion")
     
     print(df_signal.info(memory_usage="deep"))    
     return df_signal
@@ -111,6 +117,8 @@ def main():
             index=False
         )
 
+        print("Finished parquet export")
+        
         print(
             f"Saved {len(df_signal):,} rows to {outfile}"
         )
