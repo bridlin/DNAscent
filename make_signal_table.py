@@ -26,13 +26,9 @@ def parse_detect(file_path, sample_name):
 
     with open(target_file) as f:
         read_id = None
+        chromosome = None
         rev_strand = False
         T_index = 0
-        T_position = 0
-        edu_P = 0
-        brdu_P = 0
-
-        
         
         for line in f:
             line = line.strip()
@@ -41,28 +37,30 @@ def parse_detect(file_path, sample_name):
             if line.startswith("#") or not line:
                 continue
         
-            parts = line.split()
-            if len(parts) < 3:
-                continue
-
-
-            # New read
+            # New read, and read variables from the read header line
             if line.startswith(">"):
-                read_id = line.split()[0][1:]
-                chromosome = line.split()[1]
-                rev_strand = line.split()[4] == "rev"
-                edu_P = 0
-                brdu_P = 0
+                parts = line.split()
+                read_id = parts[0][1:]
+                chromosome = parts[1]
+                rev_strand = parts[4] == "rev"
+
                 T_index = 0
-                T_reference = 0
                 continue
             
-            # Every line = one T position
+            # Every line = one T position, and read variables from the T lines
+            parts = line.split()
+            if len(parts) != 4:
+                print(f"WARNING: malformed line: {line}")
+                continue
+
             T_index += 1
-            edu_P = float(parts[1])    # column 2  = EdU 
-            brdu_P = float(parts[2])   # column 3  = BrdU
-            T_reference = int(parts[0])  # column 1  = T position
+            T_reference = int(parts[0])     # column 1  = T position
+            edu_P = float(parts[1])         # column 2  = EdU 
+            brdu_P = float(parts[2])        # column 3  = BrdU
+
+            # Append the results to the list
             results.append({
+                            "sample": sample_name,
                             "read_id": read_id,
                             "chromosome": chromosome,
                             "T_reference": T_reference,                            
@@ -72,13 +70,21 @@ def parse_detect(file_path, sample_name):
                             "BrdU_P": brdu_P
                         })
 
-        df_signal = pd.DataFrame(results)
-        
+    df_signal = pd.DataFrame(results)
+
+    # Convert columns to appropriate data types to reduce size of the later paquet file
+    df_signal["read_id"] = df_signal["read_id"].astype("category")
+    df_signal["sample"] = df_signal["sample"].astype("category")
+    df_signal["chromosome"] = df_signal["chromosome"].astype("category")
+
+    df_signal["T_reference"] = df_signal["T_reference"].astype("int32")
+    df_signal["T_index"] = df_signal["T_index"].astype("int32")
+
+    df_signal["EdU_P"] = df_signal["EdU_P"].astype("float32")
+    df_signal["BrdU_P"] = df_signal["BrdU_P"].astype("float32")
+    
+    print(df_signal.info(memory_usage="deep"))    
     return df_signal
-
-
-
-
 
 
 #### Main ####
@@ -94,9 +100,9 @@ def main():
     for sample in get_sample_names(detect_path):
         print(f"sample name: {sample}")
 
-        # getting the bam file as df
+        # transforming the detect file to signal per row table format with columns: sample, read_id, chromosome, T_reference, rev_strand, T_index, EdU_P, BrdU_P
         df_signal = pd.DataFrame(parse_detect(detect_path, sample))
-
+        print(df_signal) 
         outfile = f"{detect_path}/{sample}_signal.parquet"
 
         df_signal.to_parquet(
@@ -110,7 +116,7 @@ def main():
         )
 
             
-        print(df_signal) 
+        
 
 
 

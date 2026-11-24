@@ -159,12 +159,14 @@ def parse_detect(file_path, sample_name, threshold, unique_bam_ids=None):
                 "BrdU_prop_max": brdu_max,
                 "EdU_prop_max": edu_max 
             })
-        df_detect = pd.DataFrame(results)
-        # Filter the results to only include reads that are present in the BAM file
-        if unique_bam_ids is not None:
-            df_detect = df_detect[
-                df_detect["read_id"].isin(unique_bam_ids)
-                ]
+    
+    df_detect = pd.DataFrame(results)
+    
+    # Filter the results to only include reads that are present in the BAM file
+    if unique_bam_ids is not None:
+        df_detect = df_detect[
+            df_detect["read_id"].isin(unique_bam_ids)
+            ]
 
     return df_detect
 
@@ -284,7 +286,20 @@ def main():
                 f"bam={len(df_bam)} "
                 f"merged={len(df_reads)}"
             )
+
+
+
+            outfile = f"{detect_path}{sample}_reads.parquet"
             
+            df_reads.to_parquet(
+                outfile,
+                compression="snappy",
+                index=False
+            )
+            
+            print(
+                f"Saved {len(df_reads):,} rows to {outfile}"
+            )
         else: print(str(sample)  + 'detects or bam file is empty.')
         
 
